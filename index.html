@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <title>Sarogati - O Banqueiro AR</title>
+    
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    
+    <style>
+        body { margin: 0; overflow: hidden; font-family: sans-serif; }
+        
+        /* Interface de segurança / Fallback */
+        #ui-overlay {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            pointer-events: none;
+        }
+        .btn-teste {
+            padding: 12px 24px;
+            background: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+            pointer-events: auto;
+            cursor: pointer;
+        }
+        #aviso-cam {
+            background: rgba(0,0,0,0.7);
+            color: #fff;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 12px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="ui-overlay">
+        <button class="btn-teste" onclick="simularAlvo()">🎯 Forçar Visibilidade (Bypass Câmara)</button>
+        <div id="aviso-cam">Se a câmara estiver preta, aceita as permissões HTTPS ou usa o botão acima.</div>
+    </div>
+
+    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+        
+        <a-assets>
+            </a-assets>
+
+        <a-marker id="marcador-avancar" preset="hiro">
+            <a-entity id="grupo-logo" position="0 0.5 0" 
+                      animation="property: rotation; to: 0 360 0; loop: true; dur: 6000; easing: linear"
+                      animation__float="property: position; to: 0 0.7 0; dir: alternate; loop: true; dur: 2000; easing: easeInOutQuad">
+                
+                <a-box position="0 0 0" scale="0.6 0.6 0.6" color="#00a8ff" material="opacity: 0.9; wireframe: false;">
+                    <a-text value="SAROGATI" align="center" position="0 0 0.31" scale="0.4 0.4 0.4" color="white"></a-text>
+                </a-box>
+                
+                </a-entity>
+        </a-marker>
+
+
+        <a-marker id="marcador-dashboard" preset="kanji">
+            
+            <a-plane id="painel-principal" position="0 0.5 0" rotation="-60 0 0" width="3.2" height="1.8" color="#0a192f" material="opacity: 0.85; transparent: true; side: double;">
+                
+                <a-rect width="3.1" height="1.7" fill="none" stroke="#00b894" stroke-width="2"></a-rect>
+
+                <a-entity position="-1 0.4 0.05">
+                    <a-text value="ECONOMIA" color="#00a8ff" align="left" width="2.5" font="mozillavr"></a-text>
+                    <a-text value="Inflacao: 4%" color="#ffffff" align="left" width="2" position="0 -0.3 0"></a-text>
+                    <a-text value="Taxas Juro: 2.5%" color="#ffffff" align="left" width="2" position="0 -0.5 0"></a-text>
+                    
+                    <a-entity position="0 -0.8 0">
+                        <a-sphere radius="0.06" color="#00b894" 
+                                  animation="property: material.opacity; from: 1; to: 0.2; dir: alternate; loop: true; dur: 800"></a-sphere>
+                        <a-text value="Expansao" color="#00b894" align="left" width="1.8" position="0.15 0 0"></a-text>
+                    </a-entity>
+                </a-entity>
+
+                <a-entity position="0 0.4 0.05">
+                    <a-text value="NOTICIAS DO BANQUEIRO" color="#e17055" align="center" width="2.5" font="mozillavr"></a-text>
+                    
+                    <a-plane color="#0f2342" width="1.1" height="0.8" position="0 -0.5 0.01" material="opacity: 0.9">
+                        <a-text id="texto-alerta" 
+                                value="A inicializar os mercados financeiros..." 
+                                color="#fbc531" 
+                                align="center" 
+                                width="1.2" 
+                                wrap-count="18" 
+                                position="0 0 0.02"></a-text>
+                    </a-plane>
+                </a-entity>
+
+                <a-entity position="1 0.4 0.05">
+                    <a-text value="RESERVAS" color="#00a8ff" align="right" width="2.5" font="mozillavr"></a-text>
+                    <a-text value="Liquidez Banco:" color="#ffffff" align="right" width="2" position="0 -0.3 0"></a-text>
+                    <a-text value="50.000 EUR" color="#00b894" align="right" width="2.3" font="mozillavr" position="0 -0.5 0"></a-text>
+                </a-entity>
+
+            </a-plane>
+        </a-marker>
+
+        <a-entity camera></a-entity>
+    </scene>
+
+    <script>
+        // 1. Array de Eventos de Literacia Financeira (O teu Ticker)
+        const alertasDoBanqueiro = [
+            "Dica: Criar um fundo de emergencia reduz o teu risco no jogo!",
+            "Atencao: A inflacao subiu, o teu dinheiro parado rende menos!",
+            "Oportunidade: Taxas de juro baixas favorecem o credito habitacao.",
+            "Sabias? Diversificar os teus investimentos protege o teu patrimonio.",
+            "Regra de Ouro: Paga-te a ti proprio primeiro antes de gastares!"
+        ];
+
+        let indiceAtual = 0;
+        const elementoTexto = document.getElementById('texto-alerta');
+
+        // Função para rodar os alertas com transição mecânica suave
+        function rodarNoticias() {
+            if (!elementoTexto) return;
+            
+            // Pequeno efeito de fade-out simulado trocando o texto rapidamente
+            elementoTexto.setAttribute('value', "A atualizar mercado...");
+            
+            setTimeout(() => {
+                elementoTexto.setAttribute('value', alertasDoBanqueiro[indiceAtual]);
+                indiceAtual = (indiceAtual + 1) % alertasDoBanqueiro.length;
+            }, 300);
+        }
+
+        // Inicia o ciclo de notícias a cada 15 segundos
+        setInterval(rodarNoticias, 15000);
+        // Primeiro disparo imediato após carregar
+        setTimeout(rodarNoticias, 2000);
+
+
+        // 2. FUNÇÃO DE BYPASS (Plano B de Emergência)
+        // Se a câmara do telemóvel falhar por completo, este botão força a renderização
+        // dos objetos no centro do ecrã para que consigas ver o comportamento do jogo.
+        let modoBypass Ativo = false;
+        
+        function simularAlvo() {
+            const cena = document.querySelector('a-scene');
+            const marcador1 = document.getElementById('marcador-avancar');
+            const marcador2 = document.getElementById('marcador-dashboard');
+            
+            if(!modoBypassAtivo) {
+                // Remove o comportamento de tracking para fins de teste visual estático
+                marcador1.removeAttribute('gltf-model'); 
+                
+                // Força os marcadores a agirem como entidades fixas na câmara
+                marcador1.setAttribute('position', '-0.8 0 -2');
+                marcador2.setAttribute('position', '0.8 0 -2');
+                
+                // Emula o evento de deteção artificialmente no motor do A-Frame
+                marcador1.id = "simulado-avancar";
+                marcador2.id = "simulado-dashboard";
+                
+                document.getElementById('aviso-cam').innerText = "Modo de Teste Ativo: Objetos fixados no ecrã.";
+                document.getElementById('aviso-cam').style.background = "#00b894";
+                modoBypassAtivo = true;
+                
+                console.log("WebAR Sandbox Bypass: Objetos renderizados de forma estática.");
+            } else {
+                window.location.reload(); // Faz reset para o modo câmara normal
+            }
+        }
+    </script>
+</body>
+</html>
