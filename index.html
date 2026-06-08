@@ -5,23 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <title>Sarogati - Hub Pro</title>
     
-    <!-- Bibliotecas de Produção: MindAR + A-Frame Puro -->
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
     
-    <!-- Font Awesome e Google Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* CONFIGURAÇÃO PARA TABLET EM ORIENTAÇÃO HORIZONTAL */
+        /* BASE LAYOUT (INSPIRADO EM IMAGE_86B821.JPG) */
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Plus Jakarta Sans', sans-serif; }
         html, body { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
             overflow: hidden; background-color: #f8fafc; color: #1e293b;
         }
 
-        /* VISTAS DA APP (CALIBRADAS PARA DESCONTAR O NAV INFERIOR) */
+        /* VISTAS DA APP */
         .app-view {
             position: absolute; top: 0; left: 0;
             width: 100%; height: calc(100% - 80px);
@@ -29,102 +27,94 @@
         }
         .app-view.active { display: block; }
 
-        /* HEADER DO PAINEL */
+        /* 1) HEADER DO DASHBOARD (MOCKUP REAL) */
         .app-header {
             display: flex; justify-content: space-between; align-items: center;
             width: 100%; margin-bottom: 25px;
         }
-        /* Ajuste do contentor do logótipo no topo do dashboard */
         .brand-logo-img { height: 35px; width: auto; object-fit: contain; }
-        .header-icon { width: 45px; height: 45px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(0,0,0,0.04); color: #64748b; }
-
-        /* 1) ECRÃ INICIAL PURO COM ENTRADA.JPG EM ECRÃ INTEIRO (HORIZONTAL) */
-        #view-welcome {
-            padding: 0;
-            background-image: url('entrada.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            width: 100%;
-            height: calc(100% - 80px);
+        
+        /* Zona do perfil do utilizador */
+        .user-profile-zone { display: flex; align-items: center; gap: 12px; }
+        .user-info-text { text-align: right; }
+        .user-info-text .name { font-size: 14px; font-weight: 700; color: #0f172a; margin: 0; }
+        .user-info-text .rank { font-size: 11px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .user-avatar { 
+            width: 45px; height: 45px; border-radius: 50%; 
+            object-fit: cover; border: 2px solid #ff007f;
+            box-shadow: 0 4px 10px rgba(255, 0, 127, 0.15);
         }
 
-        /* GRID HORIZONTAL PARA TABLET (EVITA SCROLL NO SURFACE) */
+        /* 2) ECRÃ INICIAL COBERTURA TOTAL */
+        #view-welcome {
+            padding: 0; background-image: url('entrada.jpg');
+            background-size: cover; background-position: center;
+            background-repeat: no-repeat; width: 100%; height: calc(100% - 80px);
+        }
+
+        /* GRID HORIZONTAL PARA SURFACE (HORIZONTAL) */
         .tablet-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            align-items: start;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 25px; align-items: start;
         }
         .column-left, .column-right { display: flex; flex-direction: column; gap: 20px; }
 
         /* CARTÕES ESTILO MOCKUP COERENTE */
         .card-white {
             background: white; border-radius: 24px; padding: 24px;
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.03);
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.02);
             border: 1px solid rgba(241, 245, 249, 0.9);
         }
         
-        /* BANNER GRADIENTE HORIZONTAL */
+        /* BANNER GRADIENTE DE LIQUIDEZ */
         .gradient-banner {
             background: linear-gradient(135deg, #ff007f 0%, #7928ca 50%, #00dfd8 100%);
             border-radius: 24px; padding: 25px; color: white; display: flex;
             justify-content: space-between; align-items: center;
-            box-shadow: 0 12px 35px rgba(121, 40, 202, 0.2);
+            box-shadow: 0 12px 35px rgba(121, 40, 202, 0.15);
         }
-        .gb-left .title { font-size: 12px; text-transform: uppercase; opacity: 0.85; letter-spacing: 1px; font-weight: 600; }
+        .gb-left .title { font-size: 11px; text-transform: uppercase; opacity: 0.85; letter-spacing: 1px; font-weight: 600; }
         .gb-left .val { font-size: 32px; font-weight: 800; margin: 4px 0; }
-        .gb-left .sub { font-size: 12px; opacity: 0.9; }
-        .gb-right .lvl { font-size: 14px; font-weight: 800; text-transform: uppercase; background: rgba(255,255,255,0.25); padding: 8px 18px; border-radius: 50px; }
+        .gb-left .sub { font-size: 11px; opacity: 0.9; }
+        .gb-right .lvl { font-size: 13px; font-weight: 800; text-transform: uppercase; background: rgba(255,255,255,0.25); padding: 8px 18px; border-radius: 50px; }
 
-        /* SCORES ALINHADOS */
-        .scores-row { display: flex; justify-content: space-around; gap: 20px; }
-        .score-container { display: flex; align-items: center; gap: 15px; }
-        .score-circle {
-            width: 85px; height: 85px; border-radius: 50%;
-            background: conic-gradient(#ff007f var(--p), #00dfd8 var(--p), #e2e8f0 0);
-            display: flex; align-items: center; justify-content: center; position: relative;
-        }
-        .score-circle::after { content: ''; width: 69px; height: 69px; background: white; border-radius: 50%; position: absolute; }
-        .score-circle span { position: relative; z-index: 2; font-size: 24px; font-weight: 800; color: #0f172a; }
-        .score-info .num { font-size: 34px; font-weight: 800; color: #0f172a; }
-        .score-info .label { font-size: 13px; color: #64748b; font-weight: 600; }
+        /* METRICAS DE PROGRESSO (MOCKUP SUPERIOR DE IMAGE_86B821.JPG) */
+        .progress-metric { margin-bottom: 15px; }
+        .progress-metric:last-child { margin-bottom: 0; }
+        .pm-info { display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 8px; }
+        .pm-info span.val { color: #0f172a; font-weight: 800; }
+        .pm-bar-bg { width: 100%; height: 8px; background: #f1f5f9; border-radius: 10px; overflow: hidden; }
+        .pm-bar-fill { height: 100%; background: linear-gradient(90deg, #ff007f, #7928ca); border-radius: 10px; width: 0; transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1); }
 
-        /* GRID DE INDICADORES ECONÓMICOS */
+        /* TABELA DE DECISÕES (MOCKUP INFERIOR DE IMAGE_86B821.JPG) */
+        .table-title { font-size: 15px; font-weight: 700; color: #0f172a; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .table-title span { font-size: 12px; color: #64748b; font-weight: 500; }
+        .decision-table { width: 100%; border-collapse: collapse; text-align: left; }
+        .decision-table th { font-size: 11px; text-transform: uppercase; color: #64748b; padding: 10px 8px; font-weight: 700; letter-spacing: 0.5px; border-bottom: 1px solid #f1f5f9; }
+        .decision-table td { font-size: 13px; padding: 14px 8px; border-bottom: 1px solid #f8fafc; color: #334155; }
+        .decision-table tr:last-child td { border-bottom: none; }
+        .badge-td { padding: 4px 10px; border-radius: 50px; font-size: 11px; font-weight: 700; display: inline-block; }
+        .badge-td.green { background: #ecfdf5; color: #10b981; }
+        .badge-td.orange { background: #fff7ed; color: #f97316; }
+
+        /* MINI CARDS ECONÓMICOS */
         .mini-cards-row { display: flex; gap: 15px; }
         .mini-card { flex: 1; background: white; border-radius: 20px; padding: 15px; text-align: center; box-shadow: 0 4px 14px rgba(0,0,0,0.01); border: 1px solid #f1f5f9; }
         .mini-card .val { font-size: 18px; font-weight: 800; color: #0f172a; margin-bottom: 2px; }
         .mini-card .lbl { font-size: 11px; color: #64748b; font-weight: 600; }
 
-        /* GRÁFICOS DINÂMICOS */
-        .chart-title { font-size: 15px; font-weight: 700; color: #0f172a; margin-bottom: 15px; display: flex; justify-content: space-between; }
-        .chart-title span { color: #6366f1; font-size: 13px; }
-        
-        .line-chart-svg { width: 100%; height: 110px; }
-        .chart-line-path { stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: drawLine 2s ease-out forwards; }
-        @keyframes drawLine { to { stroke-dashoffset: 0; } }
-
-        .bar-chart-container { display: flex; justify-content: space-between; align-items: flex-end; height: 110px; padding-top: 10px; }
-        .bar-wrapper { display: flex; flex-direction: column; align-items: center; flex: 1; }
-        .bar-graphic { width: 16px; background: linear-gradient(to top, #00dfd8, #6366f1); border-radius: 8px 8px 0 0; height: 0; transition: height 1.2s cubic-bezier(0.4, 0, 0.2, 1); }
-        .bar-wrapper .lbl { font-size: 10px; color: #94a3b8; margin-top: 8px; font-weight: 600; }
-
-        /* TICKER */
+        /* GRÁFICO TICKER */
         .ticker-container-2d { background: #fff3cd; border: 1px solid #ffeeba; border-radius: 20px; padding: 18px; display: flex; gap: 15px; align-items: center; }
         .ticker-container-2d i { color: #ffc107; font-size: 22px; }
-        #ticker-2d-text { font-size: 14px; font-weight: 600; color: #856404; line-height: 1.4; }
+        #ticker-2d-text { font-size: 13px; font-weight: 600; color: #856404; line-height: 1.4; }
 
-        /* NAV INFERIOR ALARGADO PARA TABLET */
+        /* NAV INFERIOR */
         .bottom-nav {
             position: absolute; bottom: 0; left: 0; width: 100%; height: 80px;
             background: white; border-top: 1px solid #f1f5f9;
             display: flex; justify-content: center; align-items: center; gap: 100px; z-index: 100;
             box-shadow: 0 -8px 40px rgba(15, 23, 42, 0.02);
         }
-        .nav-item {
-            display: flex; flex-direction: column; align-items: center;
-            color: #94a3b8; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; min-width: 80px;
-        }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #94a3b8; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; min-width: 80px; }
         .nav-item i { font-size: 24px; margin-bottom: 6px; transition: transform 0.2s; }
         .nav-item.active { color: #ff007f; }
         .nav-item.active i { transform: translateY(-3px); color: #ff007f; }
@@ -137,20 +127,70 @@
 </head>
 <body>
 
-    <!-- ================= 1) ECRÃ DE BOAS-VINDAS (ENTRADA.JPG COMPLETO) ================= -->
     <div id="view-welcome" class="app-view active"></div>
 
-    <!-- ================= 2) DASHBOARD HORIZONTAL MOCKUP ================= -->
     <div id="view-dashboard" class="app-view">
         <div class="app-header">
-            <!-- INTEGRAÇÃO DO LOGO COM TRANSPARÊNCIA NO DASHBOARD -->
             <div class="brand-logo"><img src="logo.png" class="brand-logo-img" alt="Sarogati Logo"></div>
-            <div class="header-icon"><i class="fa-solid fa-bell"></i></div>
+            
+            <div class="user-profile-zone">
+                <div class="user-info-text">
+                    <div class="name">Jogador Banqueiro</div>
+                    <div class="rank">Nível Avançado</div>
+                </div>
+                <img src="user.jpg" class="user-avatar" alt="User Profile">
+            </div>
         </div>
 
         <div class="tablet-layout">
-            <!-- COLUNA ESQUERDA: Métricas Principais e Notícias -->
             <div class="column-left">
+                
+                <div class="card-white">
+                    <div class="table-title" style="margin-bottom: 20px;">Distribuição de Ativos do Jogo <span>Balanço Geral</span></div>
+                    
+                    <div class="progress-metric">
+                        <div class="pm-info"><span>Fundo de Poupança Coletivo</span><span class="val">78%</span></div>
+                        <div class="pm-bar-bg"><div class="pm-bar-fill" id="bar-save" style="--w: 78%;"></div></div>
+                    </div>
+
+                    <div class="progress-metric" style="margin-top: 20px;">
+                        <div class="pm-info"><span>Alocação em Investimentos Básicos</span><span class="val">64%</span></div>
+                        <div class="pm-bar-bg"><div class="pm-bar-fill" id="bar-inv" style="--w: 64%; background: linear-gradient(90deg, #00dfd8, #6366f1);"></div></div>
+                    </div>
+                </div>
+
+                <div class="card-white">
+                    <div class="table-title">Histórico de Decisões <span>Últimas Rodadas</span></div>
+                    <table class="decision-table">
+                        <thead>
+                            <tr>
+                                <th>Ação do Tabuleiro</th>
+                                <th>Impacto Económico</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Reforço de Fundo de Emergência</td>
+                                <td>+1.500 € Liquidez</td>
+                                <td><span class="badge-td green">Sucesso</span></td>
+                            </tr>
+                            <tr>
+                                <td>Subida de Taxa de Juro (BCE)</td>
+                                <td>Crédito Mais Caro</td>
+                                <td><span class="badge-td orange">Alerta</span></td>
+                            </tr>
+                            <tr>
+                                <td>Investimento em Ativos Reais</td>
+                                <td>Proteção de Inflação</td>
+                                <td><span class="badge-td green">Sucesso</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="column-right">
                 <div class="gradient-banner">
                     <div class="gb-left">
                         <div class="title">Liquidez do Jogo</div>
@@ -158,23 +198,6 @@
                         <div class="sub">Reservas do Banqueiro Central</div>
                     </div>
                     <div class="gb-right"><div class="lvl">Avançado</div></div>
-                </div>
-
-                <div class="card-white scores-row">
-                    <div class="score-container">
-                        <div class="score-circle" style="--p: 78%;"><span>78</span></div>
-                        <div class="score-info">
-                            <div class="num">78<span style="font-size:16px; color:#94a3b8;">/100</span></div>
-                            <div class="label">Saúde Financeira</div>
-                        </div>
-                    </div>
-                    <div class="score-container">
-                        <div class="score-circle" style="--p: 72%; background: conic-gradient(#00dfd8 var(--p), #e2e8f0 0);"><span>72</span></div>
-                        <div class="score-info">
-                            <div class="num">72<span style="font-size:16px; color:#94a3b8;">/100</span></div>
-                            <div class="label">Literacia Geral</div>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="mini-cards-row">
@@ -188,34 +211,9 @@
                     <div id="ticker-2d-text">A ler dados e diretivas da Comissão Europeia...</div>
                 </div>
             </div>
-
-            <!-- COLUNA DIREITA: Análise Gráfica Animada -->
-            <div class="column-right">
-                <div class="card-white">
-                    <div class="chart-title">Evolução do Mercado <span>Visualização de Tendência</span></div>
-                    <svg class="line-chart-svg" viewBox="0 0 300 100">
-                        <path class="chart-line-path" d="M10,80 Q50,60 90,70 T170,40 T250,20 T290,10" fill="none" stroke="url(#gradientStroke)" stroke-width="4" stroke-linecap="round"/>
-                        <defs>
-                            <linearGradient id="gradientStroke" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" stop-color="#ff007f" /><stop offset="100%" stop-color="#00dfd8" />
-                            </linearGradient>
-                        </defs>
-                    </svg>
-                </div>
-
-                <div class="card-white">
-                    <div class="chart-title">Adesão ao Modelo Piloto <span>Estudo Estatístico (n=166)</span></div>
-                    <div class="bar-chart-container" id="bar-chart">
-                        <div class="bar-wrapper"><div class="bar-graphic" id="bar1" style="--h: 94px;"></div><div class="lbl">94% Ferramenta</div></div>
-                        <div class="bar-wrapper"><div class="bar-graphic" id="bar2" style="--h: 93px;"></div><div class="lbl">93% Interesse</div></div>
-                        <div class="bar-wrapper"><div class="bar-graphic" id="bar3" style="--h: 77px;"></div><div class="lbl">77% Piloto</div></div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
-    <!-- ================= 3) REALIDADE AUMENTADA (RA) ================= -->
     <div id="view-ar" class="app-view">
         <a-scene mindar-image="imageTargetSrc: ./targets.mind; autoStart: false; filterMinCF:0.001; filterBeta: 0.01;" 
                  embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights: true, antialias: true, alpha: true" 
@@ -223,7 +221,6 @@
             
             <a-assets>
                 <a-asset-item id="logo-jogo" src="./sarogati.glb"></a-asset-item>
-                <!-- ASSET DO LOGOTIPO TEXTURIZADO PARA RA -->
                 <img id="logo-png-asset" src="logo.png">
             </a-assets>
 
@@ -231,30 +228,23 @@
             <a-light type="directional" color="#ffffff" intensity="0.8" position="1 2 1"></a-light>
             <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-            <!-- Alvo 0: Avançar (Logo 3D) -->
             <a-entity mindar-image-target="targetIndex: 0">
                 <a-entity rotation="90 180 0" position="0 0 0">
                     <a-entity gltf-model="#logo-jogo" scale="0.02 0.02 0.02" position="0 0 0"></a-entity>
                 </a-entity>
             </a-entity>
 
-            <!-- Alvo 1: Incerteza (Dashboard 3D com Logo Incorporado) -->
             <a-entity mindar-image-target="targetIndex: 1">
-                <!-- Placa aumentada na altura para acomodar confortavelmente o logótipo no topo -->
                 <a-plane position="0 0 0.05" rotation="-70 0 0" width="1.6" height="1.2" color="#0a192f" material="opacity: 0.88; transparent: true; side: double;">
                     <a-rect width="1.56" height="1.16" fill="none" stroke="#00b894" stroke-width="1"></a-rect>
-                    
-                    <!-- INTEGRAÇÃO DO LOGÓTIPO TRANSPARENTE 2D SOBRE O PAINEL 3D DA BÚSSOLA -->
                     <a-image src="#logo-png-asset" position="0 0.45 0.02" width="0.7" height="0.18" material="transparent: true; alphaTest: 0.5;"></a-image>
 
-                    <!-- Bloco 1: Economia (Ajustado verticalmente devido ao logo) -->
                     <a-entity position="-0.48 0.1 0.02">
                         <a-text value="ECONOMIA" color="#00a8ff" align="left" width="1.1" font="mozillavr"></a-text>
                         <a-text value="Inflacao: 4%" color="#ffffff" align="left" width="0.85" position="0 -0.15 0"></a-text>
                         <a-text value="Taxas Juro: 2.5%" color="#ffffff" align="left" width="0.85" position="0 -0.28 0"></a-text>
                     </a-entity>
 
-                    <!-- Bloco 2: Notícias Ticker -->
                     <a-entity position="0 0.1 0.02">
                         <a-text value="NOTICIAS DO BANQUEIRO" color="#e17055" align="center" width="1.1" font="mozillavr"></a-text>
                         <a-plane color="#0f2342" width="0.52" height="0.45" position="0 -0.26 0.01" material="opacity: 0.9">
@@ -262,7 +252,6 @@
                         </a-plane>
                     </a-entity>
 
-                    <!-- Bloco 3: Reservas -->
                     <a-entity position="0.48 0.1 0.02">
                         <a-text value="RESERVAS" color="#00a8ff" align="right" width="1.1" font="mozillavr"></a-text>
                         <a-text value="Liquidez do Banco:" color="#ffffff" align="right" width="0.85" position="0 -0.15 0"></a-text>
@@ -273,7 +262,6 @@
         </a-scene>
     </div>
 
-    <!-- ================= NAVEGAÇÃO INFERIOR TABLET CLEAN ================= -->
     <nav class="bottom-nav">
         <div class="nav-item active" id="btn-welcome" onclick="mudarAba('welcome')">
             <i class="fa-solid fa-house"></i>Início
@@ -313,16 +301,16 @@
             document.getElementById('view-' + destino).classList.add('active');
             document.getElementById('btn-' + destino).classList.add('active');
             
+            // Disparar preenchimento dinâmico das barras de progresso ao entrar no Dashboard
             if (destino === 'dashboard') {
                 setTimeout(() => {
-                    document.getElementById('bar1').style.height = "94px";
-                    document.getElementById('bar2').style.height = "93px";
-                    document.getElementById('bar3').style.height = "77px";
+                    document.getElementById('bar-save').style.width = "78%";
+                    document.getElementById('bar-inv').style.width = "64%";
                 }, 100);
             } else {
-                document.getElementById('bar1').style.height = "0px";
-                document.getElementById('bar2').style.height = "0px";
-                document.getElementById('bar3').style.height = "0px";
+                // Efeito de Reset para reanimação na próxima transição
+                document.getElementById('bar-save').style.width = "0%";
+                document.getElementById('bar-inv').style.width = "0%";
             }
 
             const cena = document.querySelector('a-scene');
