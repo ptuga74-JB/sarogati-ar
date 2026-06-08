@@ -64,13 +64,18 @@
         .pm-bar-bg { width: 100%; height: 8px; background: #f1f5f9; border-radius: 10px; overflow: hidden; }
         .pm-bar-fill { height: 100%; background: linear-gradient(90deg, #ff007f, #7928ca); border-radius: 10px; width: 0; transition: width 1.5s ease-out; }
 
-        /* HISTÓRICO DE JOGADAS */
+        /* TABELAS DESIGN (HISTÓRICO E RANKING) */
         .decision-table { width: 100%; border-collapse: collapse; text-align: left; }
         .decision-table th { font-size: 11px; text-transform: uppercase; color: #64748b; padding: 10px 8px; font-weight: 700; border-bottom: 1px solid #f1f5f9; }
-        .decision-table td { font-size: 13px; padding: 14px 8px; border-bottom: 1px solid #f8fafc; color: #334155; }
+        .decision-table td { font-size: 13px; padding: 11px 8px; border-bottom: 1px solid #f8fafc; color: #334155; }
+        .decision-table tr:last-child td { border-bottom: none; }
         .badge-td { padding: 4px 10px; border-radius: 50px; font-size: 11px; font-weight: 700; }
         .badge-td.green { background: #ecfdf5; color: #10b981; }
         .badge-td.orange { background: #fff7ed; color: #f97316; }
+        
+        /* Destaque visual para a linha do Esteves na tabela de ranking */
+        .row-highlight-user { background-color: rgba(255, 0, 127, 0.05) !important; font-weight: 700; color: #ff007f !important; }
+        .row-highlight-user td { color: #ff007f !important; }
 
         /* MINI CARDS ECONÓMICOS */
         .mini-cards-row { display: flex; gap: 15px; }
@@ -78,33 +83,30 @@
         .mini-card .val { font-size: 18px; font-weight: 800; color: #0f172a; }
         .mini-card .lbl { font-size: 11px; color: #64748b; font-weight: 600; }
 
-        /* TICKER ALERTAS */
-        .ticker-container-2d { background: #fff3cd; border: 1px solid #ffeeba; border-radius: 20px; padding: 15px; display: flex; gap: 12px; align-items: center; }
-        .ticker-container-2d i { color: #ffc107; font-size: 22px; }
-        #ticker-2d-text { font-size: 13px; font-weight: 600; color: #856404; line-height: 1.4; }
-
-        /* ================= ELEMENTOS NOVOS DA IMAGEM 7CCE07.PNG ================= */
-        
-        /* 1. TIMELINE DE PROGRESSO (VISÃO RÁPIDA) */
+        /* TIMELINE DE PROGRESSO */
         .timeline-pro { position: relative; width: 100%; height: 6px; background: #e2e8f0; border-radius: 10px; margin: 35px 0 20px 0; }
         .timeline-progress-bar { position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: linear-gradient(90deg, #f97316, #ff007f); border-radius: 10px; transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1); }
         .timeline-node { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 26px; height: 26px; border-radius: 50%; background: #0f172a; border: 4px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; color: white; font-size: 9px; }
         .timeline-node .node-lbl { position: absolute; top: -22px; font-size: 11px; font-weight: 800; color: #64748b; }
         
-        /* 2. RECOMENDAÇÕES (PARA MELHORAR) */
+        /* MISSÕES PARA MELHORAR */
         .mission-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #f8fafc; border-radius: 16px; margin-bottom: 10px; border: 1px solid #f1f5f9; }
-        .mission-item:last-child { margin-bottom: 0; }
         .mission-left { display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 600; color: #1e293b; }
         .mission-left i { color: #10b981; font-size: 16px; }
         .mission-points { font-size: 12px; font-weight: 800; color: #10b981; }
 
-        /* 3. GRÁFICO HISTÓRICO VERTICAL (EVOLUÇÃO DE PONTUAÇÃO) */
+        /* GRÁFICO HISTÓRICO VERTICAL */
         .bar-chart-vertical { display: flex; justify-content: space-between; align-items: flex-end; height: 110px; padding-top: 15px; border-bottom: 1px solid #f1f5f9; }
         .v-bar-wrapper { display: flex; flex-direction: column; align-items: center; flex: 1; }
         .v-bar-graphic { width: 10px; background: linear-gradient(to top, #00dfd8 0%, #7928ca 100%); border-radius: 6px 6px 0 0; height: 0; transition: height 1.5s cubic-bezier(0.4, 0, 0.2, 1); }
         .v-bar-wrapper .lbl-month { font-size: 9px; color: #94a3b8; margin-top: 8px; font-weight: 700; text-transform: uppercase; }
 
-        /* NAV INFERIOR SURFACE */
+        /* TICKER ALERTA */
+        .ticker-container-2d { background: #fff3cd; border: 1px solid #ffeeba; border-radius: 20px; padding: 15px; display: flex; gap: 12px; align-items: center; }
+        .ticker-container-2d i { color: #ffc107; font-size: 22px; }
+        #ticker-2d-text { font-size: 13px; font-weight: 600; color: #856404; line-height: 1.4; }
+
+        /* NAV INFERIOR */
         .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 80px; background: white; border-top: 1px solid #f1f5f9; display: flex; justify-content: center; align-items: center; gap: 100px; z-index: 100; box-shadow: 0 -8px 40px rgba(15, 23, 42, 0.02); }
         .nav-item { display: flex; flex-direction: column; align-items: center; color: #94a3b8; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; min-width: 80px; }
         .nav-item i { font-size: 24px; margin-bottom: 6px; transition: transform 0.2s; }
@@ -122,13 +124,14 @@
     <!-- ================= 1) ECRÃ DE BOAS-VINDAS ================= -->
     <div id="view-welcome" class="app-view active"></div>
 
-    <!-- ================= 2) DASHBOARD MOCKUP ATUALIZADO (IMAGE_7CCE07.PNG) ================= -->
+    <!-- ================= 2) DASHBOARD MOCKUP INTEGRADO ================= -->
     <div id="view-dashboard" class="app-view">
         <div class="app-header">
             <div class="brand-logo"><img src="logo.png" class="brand-logo-img" alt="Sarogati Logo"></div>
             <div class="user-profile-zone">
                 <div class="user-info-text">
-                    <div class="name">Jogador Banqueiro</div>
+                    <!-- ATUALIZAÇÃO DO NOME DO JOGADOR -->
+                    <div class="name">Esteves da Silva</div>
                     <div class="rank">Nível Avançado</div>
                 </div>
                 <img src="user.jpg" class="user-avatar" alt="User Profile">
@@ -174,7 +177,7 @@
                 </div>
             </div>
 
-            <!-- COLUNA DIREITA: CONTEÚDO DINÂMICO COMPLETO DA IMAGEM 7CCE07.PNG -->
+            <!-- COLUNA DIREITA: Visão Rápida, Gráfico e Novo Ranking da Comunidade -->
             <div class="column-right">
                 <div class="gradient-banner">
                     <div class="gb-left">
@@ -185,32 +188,19 @@
                     <div class="gb-right"><div class="lvl">Avançado</div></div>
                 </div>
 
-                <!-- NOVO CARTÃO: DESEMPENHO DINÂMICO (Visão Rápida, Sugestões e Evolução) -->
                 <div class="card-white">
                     <div class="card-title-pro">Visão rápida <span>Pontuação de Literacia</span></div>
                     
-                    <!-- Timeline Dinâmica (Marcos 303 / 608 / 1k) -->
+                    <!-- Timeline Dinâmica -->
                     <div class="timeline-pro">
                         <div class="timeline-progress-bar" id="timeline-fill"></div>
                         <div class="timeline-node" style="left: 0%;"><span class="node-lbl">0</span></div>
                         <div class="timeline-node" style="left: 33%; background: #ff007f;"><i class="fa-solid fa-building-columns"></i><span class="node-lbl">303</span></div>
                         <div class="timeline-node" style="left: 66%; background: #00dfd8;"><i class="fa-solid fa-coins"></i><span class="node-lbl">608</span></div>
-                        <div class="timeline-node" id="live-node" style="left: 0%; background: #7928ca; transition: left 1.5s cubic-bezier(0.4, 0, 0.2, 1);"><i class="fa-solid fa-trophy"></i></div>
+                        <div class="timeline-node" id="live-node" style="left: 0%; background: #7928ca;"><i class="fa-solid fa-trophy"></i></div>
                     </div>
 
-                    <!-- Para Melhorar (Missões Ativas) -->
-                    <div class="card-title-pro" style="margin-top: 25px; font-size: 13px; color: #64748b;">Para melhorar</div>
-                    <div class="mission-item">
-                        <div class="mission-left"><i class="fa-solid fa-circle-check"></i> Reduzir gastos supérfluos no tabuleiro</div>
-                        <div class="mission-points">+5 p</div>
-                    </div>
-                    <div class="mission-item">
-                        <div class="mission-left"><i class="fa-solid fa-circle-check"></i> Investir mais surplus em obrigações</div>
-                        <div class="mission-points">+3 p</div>
-                    </div>
-
-                    <!-- Evolução de Pontuação Mensal Progressiva -->
-                    <div class="card-title-pro" style="margin-top: 25px;">Evolução de pontuação</div>
+                    <!-- Evolução Mensal -->
                     <div class="bar-chart-vertical">
                         <div class="v-bar-wrapper"><div class="v-bar-graphic" id="m1" style="--vh: 35px;"></div><div class="lbl-month">Jan</div></div>
                         <div class="v-bar-wrapper"><div class="v-bar-graphic" id="m2" style="--vh: 48px;"></div><div class="lbl-month">Fev</div></div>
@@ -220,6 +210,21 @@
                         <div class="v-bar-wrapper"><div class="v-bar-graphic" id="m6" style="--vh: 95px;"></div><div class="lbl-month">Ago</div></div>
                         <div class="v-bar-wrapper"><div class="v-bar-graphic" id="m7" style="--vh: 100px;"></div><div class="lbl-month">Set</div></div>
                     </div>
+
+                    <!-- ================= NOVO MÓDULO: RANKING DINÂMICO DA COMUNIDADE ================= -->
+                    <div class="card-title-pro" style="margin-top: 25px;">Ranking Global <span>Comunidade de Jogadores</span></div>
+                    <table class="decision-table" id="ranking-table">
+                        <thead>
+                            <tr>
+                                <th>Posição</th>
+                                <th>Nome do Jogador</th>
+                                <th>Índice Sarogati</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ranking-body">
+                            <!-- Injetado dinamicamente via JS para permitir ordenação em tempo real -->
+                        </tbody>
+                    </table>
                 </div>
 
                 <div class="ticker-container-2d">
@@ -245,14 +250,12 @@
             <a-light type="directional" color="#ffffff" intensity="0.8" position="1 2 1"></a-light>
             <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-            <!-- Alvo 0: Avançar -->
             <a-entity mindar-image-target="targetIndex: 0">
                 <a-entity rotation="90 180 0" position="0 0 0">
                     <a-entity gltf-model="#logo-jogo" scale="0.02 0.02 0.02" position="0 0 0"></a-entity>
                 </a-entity>
             </a-entity>
 
-            <!-- Alvo 1: Incerteza -->
             <a-entity mindar-image-target="targetIndex: 1">
                 <a-plane position="0 0 0.05" rotation="-70 0 0" width="1.6" height="1.2" color="#0a192f" material="opacity: 0.88; transparent: true; side: double;">
                     <a-rect width="1.56" height="1.16" fill="none" stroke="#00b894" stroke-width="1"></a-rect>
@@ -308,7 +311,43 @@
         setInterval(rodarEventos, 15000);
         setTimeout(rodarEventos, 1000);
 
-        // GESTOR DE ABAS COM DISPARO DA TIMELINE E GRÁFICOS MENSAIS
+        // BASE DE DADOS SIMULADA PARA O RANKING DA COMUNIDADE
+        let jogadoresComunidade = [
+            { nome: "Ana Rodrigues", score: 84 },
+            { nome: "Esteves da Silva", score: 78, isUser: true }, // Marcado para tracking e destaque
+            { nome: "Carlos Mendes", score: 75 },
+            { nome: "Mariana Costa", score: 69 }
+        ];
+
+        // Função mecânica para renderizar e ordenar o ranking dinamicamente
+        function atualizarTabelaRanking() {
+            const tbody = document.getElementById('ranking-body');
+            if(!tbody) return;
+            tbody.innerHTML = "";
+
+            // Simula uma pequena variação de desempenho nas jogadas da comunidade (-2 a +3 pontos)
+            jogadoresComunidade.forEach(j => {
+                const variacao = Math.floor(Math.random() * 6) - 2;
+                j.score = Math.max(10, Math.min(100, j.score + (j.isUser ? 0 : variacao))); 
+            });
+
+            // Ordena os jogadores de forma decrescente com base no score de literacia
+            jogadoresComunidade.sort((a, b) => b.score - a.score);
+
+            // Desenha as linhas da tabela aplicando a classe CSS rosa se for o Esteves da Silva
+            jogadoresComunidade.forEach((j, index) => {
+                const tr = document.createElement('tr');
+                if(j.isUser) tr.className = "row-highlight-user";
+
+                tr.innerHTML = `
+                    <td><strong>#${index + 1}</strong></td>
+                    <td>${j.nome} ${j.isUser ? ' (Tu)' : ''}</td>
+                    <td><strong>${j.score} / 100</strong></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
         function mudarAba(destino) {
             document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
@@ -317,16 +356,15 @@
             document.getElementById('btn-' + destino).classList.add('active');
             
             if (destino === 'dashboard') {
+                // Executa o motor de ordenação do Ranking
+                atualizarTabelaRanking();
+
                 setTimeout(() => {
-                    // Animação das barras horizontais
                     document.getElementById('bar-save').style.width = "78%";
                     document.getElementById('bar-inv').style.width = "64%";
-                    
-                    // Animação da nova Timeline Dinâmica (Coloca o pino nos 78% do percurso total)
                     document.getElementById('timeline-fill').style.width = "78%";
                     document.getElementById('live-node').style.left = "78%";
                     
-                    // Animação das novas barras verticais mensais (da imagem 7cce07.png)
                     document.getElementById('m1').style.height = "35px";
                     document.getElementById('m2').style.height = "48px";
                     document.getElementById('m3').style.height = "25px";
@@ -336,15 +374,11 @@
                     document.getElementById('m7').style.height = "100px";
                 }, 100);
             } else {
-                // Reset imediato para forçar nova animação na entrada seguinte
                 document.getElementById('bar-save').style.width = "0%";
                 document.getElementById('bar-inv').style.width = "0%";
                 document.getElementById('timeline-fill').style.width = "0%";
                 document.getElementById('live-node').style.left = "0%";
-                
-                for(let i=1; i<=7; i++) {
-                    document.getElementById('m' + i).style.height = "0px";
-                }
+                for(let i=1; i<=7; i++) { document.getElementById('m' + i).style.height = "0px"; }
             }
 
             const cena = document.querySelector('a-scene');
