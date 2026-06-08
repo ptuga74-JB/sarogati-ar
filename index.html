@@ -65,15 +65,14 @@
         <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
         <a-entity mindar-image-target="targetIndex: 0">
-            <a-entity id="contentor-alinhamento" position="0 0 0" rotation="90 180 0">
+            
+            <a-entity id="contentor-logo-fixo" 
+                      position="0 0 0" 
+                      rotation="90 180 0"
+                      animation="property: position; to: 0 0 0.06; dir: alternate; loop: true; dur: 2000; easing: easeInOutQuad">
                 
-                <a-entity id="contentor-flutuacao" 
-                          position="0 0 0"
-                          animation="property: position; to: 0 0.08 0; dir: alternate; loop: true; dur: 2200; easing: easeInOutQuad">
-                    
-                    <a-entity gltf-model="#logo-jogo" scale="0.02 0.02 0.02" position="0 0 0"></a-entity>
-                    
-                </a-entity>
+                <a-entity gltf-model="#logo-jogo" scale="0.02 0.02 0.02" position="0 0 0"></a-entity>
+                
             </a-entity>
         </a-entity>
 
