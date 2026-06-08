@@ -18,7 +18,7 @@
             background-color: transparent !important;
         }
 
-        /* Garante o feed da câmara em ecrã inteiro no fundo */
+        /* Feed da câmara em ecrã inteiro no fundo */
         video {
             position: absolute !important;
             top: 0 !important;
@@ -65,19 +65,20 @@
         <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
         <a-entity mindar-image-target="targetIndex: 0">
-            <a-entity id="contentores-logo" position="0 0 0"
-                      animation="property: rotation; to: 0 360 0; loop: true; dur: 9000; easing: linear"
-                      animation__float="property: position; to: 0 0.1 0; dir: alternate; loop: true; dur: 2500; easing: easeInOutQuad">
-                
-                <a-entity gltf-model="#logo-jogo" scale="0.002 0.002 0.002" position="0 0 0"></a-entity>
-                
+            <a-entity id="contentores-logo" position="0 0 0" rotation="-90 0 0">
+                <a-entity animation="property: rotation; to: 0 360 0; loop: true; dur: 9000; easing: linear"
+                          animation__float="property: position; to: 0 0.1 0; dir: alternate; loop: true; dur: 2500; easing: easeInOutQuad">
+                    
+                    <a-entity gltf-model="#logo-jogo" scale="0.02 0.02 0.02" position="0 0 0"></a-entity>
+                    
+                </a-entity>
             </a-entity>
         </a-entity>
 
 
         <a-entity mindar-image-target="targetIndex: 1">
             
-            <a-plane position="0 0 0.02" rotation="0 0 0" width="1.6" height="1.0" color="#0a192f" material="opacity: 0.88; transparent: true; side: double;">
+            <a-plane position="0 0 0.05" rotation="-70 0 0" width="1.6" height="1.0" color="#0a192f" material="opacity: 0.88; transparent: true; side: double;">
                 
                 <a-rect width="1.56" height="0.96" fill="none" stroke="#00b894" stroke-width="1"></a-rect>
 
@@ -107,9 +108,9 @@
                 </a-entity>
 
             </a-plane>
-        </a-marker>
+        </a-entity>
 
-    </a-scene>
+    </scene>
 
     <script>
         const eventosLiteracia = [
