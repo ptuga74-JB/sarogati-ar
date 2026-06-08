@@ -34,8 +34,8 @@
             display: flex; justify-content: space-between; align-items: center;
             width: 100%; margin-bottom: 25px;
         }
-        .brand-logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 26px; color: #0f172a; }
-        .brand-logo span { background: linear-gradient(135deg, #ff007f, #7928ca); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        /* Ajuste do contentor do logótipo no topo do dashboard */
+        .brand-logo-img { height: 35px; width: auto; object-fit: contain; }
         .header-icon { width: 45px; height: 45px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(0,0,0,0.04); color: #64748b; }
 
         /* 1) ECRÃ INICIAL PURO COM ENTRADA.JPG EM ECRÃ INTEIRO (HORIZONTAL) */
@@ -52,7 +52,7 @@
         /* GRID HORIZONTAL PARA TABLET (EVITA SCROLL NO SURFACE) */
         .tablet-layout {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* Divide o ecrã horizontal em duas colunas principais */
+            grid-template-columns: 1fr 1fr;
             gap: 25px;
             align-items: start;
         }
@@ -129,7 +129,7 @@
         .nav-item.active { color: #ff007f; }
         .nav-item.active i { transform: translateY(-3px); color: #ff007f; }
 
-        /* REALIDADE AUMENTADA (OCUPA TODO O ESPAÇO LIVRE) */
+        /* REALIDADE AUMENTADA */
         #view-ar { width: 100%; height: calc(100% - 80px); background: transparent; position: absolute; top: 0; left: 0; padding: 0; }
         video { position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; object-fit: cover !important; z-index: -2 !important; }
         .a-canvas { width: 100% !important; height: 100% !important; position: absolute; top: 0; left: 0; background-color: transparent !important; }
@@ -137,13 +137,14 @@
 </head>
 <body>
 
-    <!-- ================= 1) ECRÃ DE BOAS-VINDAS (LIMPO, COM ENTRADA.JPG EM COVER) ================= -->
+    <!-- ================= 1) ECRÃ DE BOAS-VINDAS (ENTRADA.JPG COMPLETO) ================= -->
     <div id="view-welcome" class="app-view active"></div>
 
-    <!-- ================= 2) DASHBOARD HORIZONTAL OPTIMIZADO PARA SURFACE ================= -->
+    <!-- ================= 2) DASHBOARD HORIZONTAL MOCKUP ================= -->
     <div id="view-dashboard" class="app-view">
         <div class="app-header">
-            <div class="brand-logo"><i class="fa-solid fa-dice-d20" style="color:#ff007f"></i><span>Sarogati</span></div>
+            <!-- INTEGRAÇÃO DO LOGO COM TRANSPARÊNCIA NO DASHBOARD -->
+            <div class="brand-logo"><img src="logo.png" class="brand-logo-img" alt="Sarogati Logo"></div>
             <div class="header-icon"><i class="fa-solid fa-bell"></i></div>
         </div>
 
@@ -188,7 +189,7 @@
                 </div>
             </div>
 
-            <!-- COLUNA DIREITA: Análise Gráfica Animada (Slide 7) -->
+            <!-- COLUNA DIREITA: Análise Gráfica Animada -->
             <div class="column-right">
                 <div class="card-white">
                     <div class="chart-title">Evolução do Mercado <span>Visualização de Tendência</span></div>
@@ -222,38 +223,47 @@
             
             <a-assets>
                 <a-asset-item id="logo-jogo" src="./sarogati.glb"></a-asset-item>
+                <!-- ASSET DO LOGOTIPO TEXTURIZADO PARA RA -->
+                <img id="logo-png-asset" src="logo.png">
             </a-assets>
 
             <a-light type="ambient" color="#ffffff" intensity="1.4"></a-light>
             <a-light type="directional" color="#ffffff" intensity="0.8" position="1 2 1"></a-light>
             <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-            <!-- Alvo 0: Avançar -->
+            <!-- Alvo 0: Avançar (Logo 3D) -->
             <a-entity mindar-image-target="targetIndex: 0">
                 <a-entity rotation="90 180 0" position="0 0 0">
                     <a-entity gltf-model="#logo-jogo" scale="0.02 0.02 0.02" position="0 0 0"></a-entity>
                 </a-entity>
             </a-entity>
 
-            <!-- Alvo 1: Incerteza -->
+            <!-- Alvo 1: Incerteza (Dashboard 3D com Logo Incorporado) -->
             <a-entity mindar-image-target="targetIndex: 1">
-                <a-plane position="0 0 0.05" rotation="-70 0 0" width="1.6" height="1.0" color="#0a192f" material="opacity: 0.88; transparent: true; side: double;">
-                    <a-rect width="1.56" height="0.96" fill="none" stroke="#00b894" stroke-width="1"></a-rect>
+                <!-- Placa aumentada na altura para acomodar confortavelmente o logótipo no topo -->
+                <a-plane position="0 0 0.05" rotation="-70 0 0" width="1.6" height="1.2" color="#0a192f" material="opacity: 0.88; transparent: true; side: double;">
+                    <a-rect width="1.56" height="1.16" fill="none" stroke="#00b894" stroke-width="1"></a-rect>
                     
-                    <a-entity position="-0.48 0.25 0.02">
+                    <!-- INTEGRAÇÃO DO LOGÓTIPO TRANSPARENTE 2D SOBRE O PAINEL 3D DA BÚSSOLA -->
+                    <a-image src="#logo-png-asset" position="0 0.45 0.02" width="0.7" height="0.18" material="transparent: true; alphaTest: 0.5;"></a-image>
+
+                    <!-- Bloco 1: Economia (Ajustado verticalmente devido ao logo) -->
+                    <a-entity position="-0.48 0.1 0.02">
                         <a-text value="ECONOMIA" color="#00a8ff" align="left" width="1.1" font="mozillavr"></a-text>
                         <a-text value="Inflacao: 4%" color="#ffffff" align="left" width="0.85" position="0 -0.15 0"></a-text>
                         <a-text value="Taxas Juro: 2.5%" color="#ffffff" align="left" width="0.85" position="0 -0.28 0"></a-text>
                     </a-entity>
 
-                    <a-entity position="0 0.25 0.02">
+                    <!-- Bloco 2: Notícias Ticker -->
+                    <a-entity position="0 0.1 0.02">
                         <a-text value="NOTICIAS DO BANQUEIRO" color="#e17055" align="center" width="1.1" font="mozillavr"></a-text>
                         <a-plane color="#0f2342" width="0.52" height="0.45" position="0 -0.26 0.01" material="opacity: 0.9">
                             <a-text id="ticker-3d-text" value="A aceder aos mercados..." color="#fbc531" align="center" width="0.58" wrap-count="17" position="0 0 0.01"></a-text>
                         </a-plane>
                     </a-entity>
 
-                    <a-entity position="0.48 0.25 0.02">
+                    <!-- Bloco 3: Reservas -->
+                    <a-entity position="0.48 0.1 0.02">
                         <a-text value="RESERVAS" color="#00a8ff" align="right" width="1.1" font="mozillavr"></a-text>
                         <a-text value="Liquidez do Banco:" color="#ffffff" align="right" width="0.85" position="0 -0.15 0"></a-text>
                         <a-text value="50.000 EUR" color="#00b894" align="right" width="1.0" font="mozillavr" position="0 -0.28 0"></a-text>
