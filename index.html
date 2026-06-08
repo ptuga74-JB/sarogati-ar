@@ -3,135 +3,265 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <title>Sarogati - O Banqueiro AR</title>
+    <title>Sarogati - O Banqueiro! Digital</title>
     
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <style>
+        /* CONFIGURAÇÕES GERAIS DA APP */
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         html, body { 
-            margin: 0; 
-            padding: 0; 
-            width: 100%; 
-            height: 100%; 
-            overflow: hidden; 
-            background-color: transparent !important;
+            margin: 0; padding: 0; width: 100%; height: 100%; 
+            overflow: hidden; font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: #0a192f; color: #fff;
         }
 
-        /* Feed da câmara em ecrã inteiro no fundo */
+        /* SISTEMA DE ABAS (PÁGINA ÚNICA) */
+        .app-view {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: calc(100% - 70px);
+            display: none; overflow-y: auto; z-index: 1;
+        }
+        .app-view.active { display: block; }
+
+        /* BARRA DE NAVEGAÇÃO INFERIOR */
+        .bottom-nav {
+            position: absolute; bottom: 0; left: 0;
+            width: 100%; height: 70px;
+            background-color: #0f172a;
+            border-top: 1px solid #1e293b;
+            display: flex; justify-content: space-around; align-items: center;
+            z-index: 100;
+        }
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center;
+            color: #64748b; font-size: 11px; cursor: pointer; text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .nav-item i { font-size: 22px; margin-bottom: 4px; }
+        .nav-item.active { color: #3b82f6; }
+
+        /* 1) DESIGN: ECRÃ DE BOAS-VINDAS (SPLASH) */
+        #view-welcome {
+            background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.15), transparent), #0a192f;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 30px; text-align: center;
+        }
+        .welcome-card {
+            max-width: 500px; background: rgba(15, 23, 42, 0.6);
+            padding: 40px 30px; border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .welcome-card h1 { font-size: 42px; margin: 0 0 10px 0; font-weight: 700; letter-spacing: -1px; }
+        .welcome-card .subtitle { color: #6366f1; font-weight: 600; letter-spacing: 3px; font-size: 14px; margin-bottom: 30px; }
+        .welcome-card p { color: #94a3b8; font-size: 16px; line-height: 1.6; margin-bottom: 40px; }
+        .btn-start {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white; border: none; padding: 16px 40px; border-radius: 50px;
+            font-size: 16px; font-weight: 600; cursor: pointer; box-shadow: 0 10px 20px rgba(59,130,246,0.3);
+            transition: transform 0.2s ease;
+        }
+        .btn-start:active { transform: scale(0.95); }
+
+        /* 2) DESIGN: DASHBOARD INTERATIVO 2D */
+        #view-dashboard { background-color: #0f172a; padding: 20px; }
+        .db-header { margin-bottom: 25px; border-bottom: 1px solid #1e293b; padding-bottom: 10px; }
+        .db-header h2 { margin: 0; font-size: 24px; color: #fff; }
+        .db-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 20px; }
+        
+        .card-2d { background: #1e293b; border-radius: 16px; padding: 20px; border-left: 4px solid #3b82f6; }
+        .card-2d.eco { border-left-color: #00a8ff; }
+        .card-2d.news { border-left-color: #e17055; background: #151f32; }
+        .card-2d.res { border-left-color: #00b894; }
+        
+        .card-title-2d { font-size: 12px; text-transform: uppercase; color: #64748b; letter-spacing: 1px; margin-bottom: 10px; font-weight: bold; }
+        .card-value-2d { font-size: 28px; font-weight: 700; color: #fff; }
+        .card-status-2d { display: flex; align-items: center; gap: 8px; font-size: 14px; margin-top: 10px; color: #00b894; }
+        
+        /* Gráfico animado simulado (Slide 7) */
+        .chart-mock { display: flex; align-items: flex-end; gap: 15px; height: 100px; margin-top: 15px; padding-top: 10px; }
+        .chart-bar { flex: 1; background: #3b82f6; border-radius: 4px 4px 0 0; animation: growUp 1s ease-out forwards; height: 0; }
+        @keyframes growUp { to { height: var(--h); } }
+
+        /* Ticker de notícias 2D */
+        #ticker-2d-text { color: #fbc531; font-size: 15px; font-style: italic; min-height: 45px; display: flex; align-items: center; }
+
+        /* 3) DESIGN: MODO REALIDADE AUMENTADA (RA) */
+        #view-ar { width: 100%; height: calc(100% - 70px); background: transparent; position: absolute; top: 0; left: 0; }
+        
+        /* Ajustes forçados para a câmara partilhada do MindAR */
         video {
-            position: absolute !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
-            object-fit: cover !important;
-            z-index: -2 !important;
-            display: block !important;
-            opacity: 1 !important;
+            position: absolute !important; top: 0 !important; left: 0 !important;
+            width: 100% !important; height: 100% !important;
+            object-fit: cover !important; z-index: -2 !important;
         }
-
-        /* Camada gráfica do A-Frame transparente */
         .a-canvas {
-            width: 100% !important;
-            height: 100% !important;
-            top: 0;
-            left: 0;
-            position: absolute;
-            background-color: transparent !important;
+            width: 100% !important; height: 100% !important;
+            position: absolute; top: 0; left: 0; background-color: transparent !important;
         }
-
-        /* Desativa overlays de loading nativos */
-        .mindar-ui-loading { display: none !important; }
-        .mindar-ui-scanning { background: transparent !important; }
+        .mindar-ui-loading, .mindar-ui-scanning { display: none !important; }
     </style>
 </head>
 <body>
 
-    <a-scene mindar-image="imageTargetSrc: ./targets.mind; filterMinCF:0.001; filterBeta: 0.01; uiLoading: no; uiScanning: yes;" 
-             embedded 
-             color-space="sRGB" 
-             renderer="colorManagement: true, physicallyCorrectLights: true, antialias: true, alpha: true" 
-             vr-mode-ui="enabled: false" 
-             device-orientation-permission-ui="enabled: false">
+    <div id="view-welcome" class="app-view active">
+        <div class="welcome-card">
+            <h1>Sarogati</h1>
+            <div class="subtitle">O BANQUEIRO!</div>
+            <p>Bem-vindo ao portal híbrido de literacia financeira. Prepara o teu tabuleiro físico, escolhe o teu modo de jogo preferido abaixo e toma decisões financeiras inteligentes para dominar o mercado.</p>
+            <button class="btn-start" onclick="mudarAba('dashboard')"><i class="fa-solid fa-play"></i> Iniciar Jogo</button>
+        </div>
+    </div>
+
+    <div id="view-dashboard" class="app-view">
+        <div class="db-header">
+            <h2><i class="fa-solid fa-chart-pie" style="color:#3b82f6;"></i> Painel de Mercado</h2>
+        </div>
         
-        <a-assets>
-            <a-asset-item id="logo-jogo" src="./sarogati.glb"></a-asset-item>
-        </a-assets>
+        <div class="db-grid">
+            <div class="card-2d eco">
+                <div class="card-title-2d">Contexto / Economia</div>
+                <div class="card-value-2d">Inflação: 4.0%</div>
+                <div style="color: #cbd5e1; font-size: 15px; margin-top: 4px;">Taxa de Juro (BCE): 2.5%</div>
+                <div class="card-status-2d">
+                    <i class="fa-solid fa-circle-check"></i> Ciclo Económico em Expansão
+                </div>
+            </div>
 
-        <a-light type="ambient" color="#ffffff" intensity="1.4"></a-light>
-        <a-light type="directional" color="#ffffff" intensity="0.8" position="1 2 1"></a-light>
+            <div class="card-2d news">
+                <div class="card-title-2d"><i class="fa-solid fa-bullhorn" style="color:#e17055"></i> Notícias do Banqueiro</div>
+                <div id="ticker-2d-text">A sincronizar com os mercados mundiais...</div>
+            </div>
 
-        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-
-        <a-entity mindar-image-target="targetIndex: 0">
-            <a-entity id="contentor-logo-retro" rotation="90 180 0" position="0 0 0">
+            <div class="card-2d res">
+                <div class="card-title-2d">Reservas do Banco Central</div>
+                <div class="card-value-2d" style="color: #00b894;">50.000 €</div>
                 
-                <a-entity gltf-model="#logo-jogo" scale="0.02 0.02 0.02" position="0 0 0"></a-entity>
-                
-            </a-entity>
-        </a-entity>
+                <div class="chart-mock">
+                    <div class="chart-bar" style="--h: 94%; background-color: #6366f1;"></div>
+                    <div class="chart-bar" style="--h: 93%; background-color: #ec4899;"></div>
+                    <div class="chart-bar" style="--h: 77%; background-color: #00b894;"></div>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:10px; color:#64748b; margin-top:5px;">
+                    <span>APRENDIZAGEM</span><span>INTERESSE</span><span>PILOTO</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
-
-        <a-entity mindar-image-target="targetIndex: 1">
+    <div id="view-ar" class="app-view">
+        <a-scene mindar-image="imageTargetSrc: ./targets.mind; autoStart: false; filterMinCF:0.001; filterBeta: 0.01;" 
+                 embedded 
+                 color-space="sRGB" 
+                 renderer="colorManagement: true, physicallyCorrectLights: true, antialias: true, alpha: true" 
+                 vr-mode-ui="enabled: false" 
+                 device-orientation-permission-ui="enabled: false">
             
-            <a-plane position="0 0 0.05" rotation="-70 0 0" width="1.6" height="1.0" color="#0a192f" material="opacity: 0.88; transparent: true; side: double;">
-                
-                <a-rect width="1.56" height="0.96" fill="none" stroke="#00b894" stroke-width="1"></a-rect>
+            <a-assets>
+                <a-asset-item id="logo-jogo" src="./sarogati.glb"></a-asset-item>
+            </a-assets>
 
-                <a-entity position="-0.48 0.25 0.02">
-                    <a-text value="ECONOMIA" color="#00a8ff" align="left" width="1.1" font="mozillavr"></a-text>
-                    <a-text value="Inflacao: 4%" color="#ffffff" align="left" width="0.85" position="0 -0.15 0"></a-text>
-                    <a-text value="Taxas Juro: 2.5%" color="#ffffff" align="left" width="0.85" position="0 -0.28 0"></a-text>
-                    
-                    <a-entity position="0 -0.42 0">
-                        <a-sphere radius="0.025" color="#00b894" animation="property: material.opacity; from: 1; to: 0.2; dir: alternate; loop: true; dur: 800"></a-sphere>
-                        <a-text value="Expansao" color="#00b894" align="left" width="0.8" position="0.07 0 0"></a-text>
+            <a-light type="ambient" color="#ffffff" intensity="1.4"></a-light>
+            <a-light type="directional" color="#ffffff" intensity="0.8" position="1 2 1"></a-light>
+            <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+            <a-entity mindar-image-target="targetIndex: 0">
+                <a-entity rotation="90 180 0" position="0 0 0">
+                    <a-entity gltf-model="#logo-jogo" scale="0.02 0.02 0.02" position="0 0 0"></a-entity>
+                </a-entity>
+            </a-entity>
+
+            <a-entity mindar-image-target="targetIndex: 1">
+                <a-plane position="0 0 0.05" rotation="-70 0 0" width="1.6" height="1.0" color="#0a192f" material="opacity: 0.88; transparent: true; side: double;">
+                    <a-rect width="1.56" height="0.96" fill="none" stroke="#00b894" stroke-width="1"></a-rect>
+
+                    <a-entity position="-0.48 0.25 0.02">
+                        <a-text value="ECONOMIA" color="#00a8ff" align="left" width="1.1" font="mozillavr"></a-text>
+                        <a-text value="Inflacao: 4%" color="#ffffff" align="left" width="0.85" position="0 -0.15 0"></a-text>
+                        <a-text value="Taxas Juro: 2.5%" color="#ffffff" align="left" width="0.85" position="0 -0.28 0"></a-text>
+                        <a-entity position="0 -0.42 0">
+                            <a-sphere radius="0.025" color="#00b894" animation="property: material.opacity; from: 1; to: 0.2; dir: alternate; loop: true; dur: 800"></a-sphere>
+                            <a-text value="Expansao" color="#00b894" align="left" width="0.8" position="0.07 0 0"></a-text>
+                        </a-entity>
                     </a-entity>
-                </a-entity>
 
-                <a-entity position="0 0.25 0.02">
-                    <a-text value="NOTICIAS DO BANQUEIRO" color="#e17055" align="center" width="1.1" font="mozillavr"></a-text>
-                    
-                    <a-plane color="#0f2342" width="0.52" height="0.45" position="0 -0.26 0.01" material="opacity: 0.9">
-                        <a-text id="ticker-financeiro" value="A aceder aos mercados do Banco..." color="#fbc531" align="center" width="0.58" wrap-count="17" position="0 0 0.01"></a-text>
-                    </a-plane>
-                </a-entity>
+                    <a-entity position="0 0.25 0.02">
+                        <a-text value="NOTICIAS DO BANQUEIRO" color="#e17055" align="center" width="1.1" font="mozillavr"></a-text>
+                        <a-plane color="#0f2342" width="0.52" height="0.45" position="0 -0.26 0.01" material="opacity: 0.9">
+                            <a-text id="ticker-3d-text" value="A aceder aos mercados..." color="#fbc531" align="center" width="0.58" wrap-count="17" position="0 0 0.01"></a-text>
+                        </a-plane>
+                    </a-entity>
 
-                <a-entity position="0.48 0.25 0.02">
-                    <a-text value="RESERVAS" color="#00a8ff" align="right" width="1.1" font="mozillavr"></a-text>
-                    <a-text value="Liquidez do Banco:" color="#ffffff" align="right" width="0.85" position="0 -0.15 0"></a-text>
-                    <a-text value="50.000 EUR" color="#00b894" align="right" width="1.0" font="mozillavr" position="0 -0.28 0"></a-text>
-                </a-entity>
+                    <a-entity position="0.48 0.25 0.02">
+                        <a-text value="RESERVAS" color="#00a8ff" align="right" width="1.1" font="mozillavr"></a-text>
+                        <a-text value="Liquidez do Banco:" color="#ffffff" align="right" width="0.85" position="0 -0.15 0"></a-text>
+                        <a-text value="50.000 EUR" color="#00b894" align="right" width="1.0" font="mozillavr" position="0 -0.28 0"></a-text>
+                    </a-entity>
+                </a-plane>
+            </a-entity>
+        </a-scene>
+    </div>
 
-            </a-plane>
-        </a-entity>
-
-    </a-scene>
+    <nav class="bottom-nav">
+        <div class="nav-item active" id="btn-welcome" onclick="mudarAba('welcome')">
+            <i class="fa-solid fa-house"></i>Inicio
+        </div>
+        <div class="nav-item" id="btn-dashboard" onclick="mudarAba('dashboard')">
+            <i class="fa-solid fa-chart-simple"></i>Dashboard
+        </div>
+        <div class="nav-item" id="btn-ar" onclick="mudarAba('ar')">
+            <i class="fa-solid fa-camera-rotate"></i>Modo RA
+        </div>
+    </nav>
 
     <script>
-        const eventosLiteracia = [
+        // 1. Array global de alertas financeiros partilhados pelas duas interfaces (2D e 3D)
+        const alertas = [
             "Dica: Criar um fundo de emergencia reduz o teu risco no jogo!",
             "Atencao: A inflacao subiu, o teu dinheiro parado rende menos!",
             "Oportunidade: Taxas de juro baixas favorecem o credito habitacao.",
             "Sabias? Diversificar os teus investimentos protege o teu patrimonio.",
             "Regra de Ouro: Paga-te a ti proprio primeiro antes de gastares!"
         ];
-
         let ponteiro = 0;
-        const elementoTexto = document.getElementById('ticker-financeiro');
 
-        function atualizarTicker() {
-            if (!elementoTexto) return;
-            elementoTexto.setAttribute('value', "A processar dados...");
-            setTimeout(() => {
-                elementoTexto.setAttribute('value', eventosLiteracia[ponteiro]);
-                ponteiro = (ponteiro + 1) % eventosLiteracia.length;
-            }, 250);
+        // Função mecânica para atualizar o texto em simultâneo nos dois ecossistemas
+        function rodarEventos() {
+            const txt2d = document.getElementById('ticker-2d-text');
+            const txt3d = document.getElementById('ticker-3d-text');
+            
+            if(txt2d) txt2d.innerText = alertas[ponteiro];
+            if(txt3d) txt3d.setAttribute('value', alertas[ponteiro]);
+            
+            ponteiro = (ponteiro + 1) % alertas.length;
         }
+        setInterval(rodarEventos, 15000);
+        setTimeout(rodarEventos, 1500);
 
-        setInterval(atualizarTicker, 15000);
-        setTimeout(atualizarTicker, 3000);
+        // 2. Controlador de Abas (Gergestão Inteligente da Câmara)
+        function mudarAba(destino) {
+            // Remove o estado ativo de todas as vistas e botões
+            document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+            
+            // Ativa o destino selecionado
+            document.getElementById('view-' + destino).classList.add('active');
+            document.getElementById('btn-' + destino).classList.add('active');
+            
+            // Gestão de Energia da Câmara: Só liga o hardware se o utilizador clicar em Modo RA
+            const cena = document.querySelector('a-scene');
+            if(cena && cena.systems["mindar-image-system"]) {
+                if(destino === 'ar') {
+                    cena.systems["mindar-image-system"].start(); // Acende a câmara
+                } else {
+                    cena.systems["mindar-image-system"].stop();  // Apaga a câmara e poupa RAM
+                }
+            }
+        }
     </script>
 </body>
 </html>
