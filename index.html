@@ -9,7 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
     
     <style>
-        /* FORÇAR ECRÃ INTEIRO REAL EM MOBILE */
+        /* FORÇAR ECRÃ INTEIRO REAL (ELIMINA FUNDO PRETO/CINZENTO) */
         html, body { 
             margin: 0; 
             padding: 0; 
@@ -19,26 +19,27 @@
             background-color: #000;
         }
 
-        /* Forçar o vídeo injetado pelo MindAR a ocupar 100% do ecrã sem cortes cinzentos */
+        /* Força o elemento de vídeo gerado pelo MindAR a ocupar todo o ecrã */
         body video {
-            position: absolute;
-            top: 0;
-            left: 0;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
             width: 100% !important;
             height: 100% !important;
             object-fit: cover !important;
             z-index: -2;
         }
 
-        /* Garantir que o Canvas 3D do A-Frame acompanha o tamanho do vídeo */
+        /* Força o Canvas 3D do A-Frame a acompanhar o ecrã inteiro */
         .a-canvas {
             width: 100% !important;
             height: 100% !important;
             top: 0;
             left: 0;
+            position: absolute;
         }
 
-        /* Limpeza das UIs nativas do MindAR para não quebrarem o layout */
+        /* Limpeza das UIs nativas para não quebrarem o layout */
         .mindar-ui-loading { display: none !important; }
         .mindar-ui-scanning { background: transparent !important; }
     </style>
@@ -67,7 +68,6 @@
                 </a-box>
             </a-entity>
         </a-entity>
-
 
         <a-entity mindar-image-target="targetIndex: 1">
             
@@ -105,7 +105,7 @@
     </a-scene>
 
     <script>
-        // Lógica do Ticker Financeiro (Mudança a cada 15 segundos)
+        // Sistema de rotação do Ticker (15 segundos)
         const eventosLiteracia = [
             "Dica: Criar um fundo de emergencia reduz o teu risco no jogo!",
             "Atencao: A inflacao subiu, o teu dinheiro parado rende menos!",
