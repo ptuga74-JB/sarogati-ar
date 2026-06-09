@@ -12,12 +12,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
+        /* CONFIGURAÇÃO BASE DO LAYOUT PARA HORIZONTAL */
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Plus Jakarta Sans', sans-serif; }
         html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #f8fafc; color: #1e293b; }
 
+        /* GESTÃO DE ABAS VIRTUAIS */
         .app-view { position: absolute; top: 0; left: 0; width: 100%; height: calc(100% - 80px); display: none; overflow-y: auto; z-index: 1; padding: 25px; }
         .app-view.active { display: block; }
 
+        /* CABEÇALHO DA APLICAÇÃO */
         .app-header { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 20px; }
         .brand-logo-img { height: 35px; width: auto; object-fit: contain; }
         .user-profile-zone { display: flex; align-items: center; gap: 12px; }
@@ -26,27 +29,33 @@
         .user-info-text .rank { font-size: 11px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
         .user-avatar { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid #ff007f; box-shadow: 0 4px 10px rgba(255, 0, 127, 0.15); }
 
+        /* ECRÃ INICIAL */
         #view-welcome { padding: 0; background-image: url('entrada.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; width: 100%; height: calc(100% - 80px); }
 
+        /* GRILLA INTERFACE PRINCIPAL */
         .tablet-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
         .column-left, .column-right { display: flex; flex-direction: column; gap: 20px; }
 
+        /* COMPONENTES DE DESIGN EM CARTÃO */
         .card-white { background: white; border-radius: 20px; padding: 22px; box-shadow: 0 10px 30px rgba(15, 23, 42, 0.01); border: 1px solid rgba(241, 245, 249, 0.9); }
         .card-title-pro { font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
         .card-title-pro span { font-size: 11px; color: #64748b; font-weight: 500; }
 
+        /* BANNER LIQUIDEZ GRADIENTE */
         .gradient-banner { background: linear-gradient(135deg, #ff007f 0%, #7928ca 50%, #00dfd8 100%); border-radius: 20px; padding: 22px; color: white; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 30px rgba(121, 40, 202, 0.12); }
         .gb-left .title { font-size: 10px; text-transform: uppercase; opacity: 0.85; letter-spacing: 1px; font-weight: 600; }
         .gb-left .val { font-size: 28px; font-weight: 800; margin: 2px 0; }
         .gb-left .sub { font-size: 11px; opacity: 0.9; }
         .gb-right .lvl { font-size: 12px; font-weight: 800; text-transform: uppercase; background: rgba(255,255,255,0.25); padding: 6px 14px; border-radius: 50px; }
 
+        /* BARRAS DE PROGRESSO */
         .progress-metric { margin-bottom: 12px; }
         .pm-info { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 6px; }
         .pm-info span.val { color: #0f172a; font-weight: 800; }
         .pm-bar-bg { width: 100%; height: 6px; background: #f1f5f9; border-radius: 10px; overflow: hidden; }
         .pm-bar-fill { height: 100%; background: linear-gradient(90deg, #ff007f, #7928ca); border-radius: 10px; width: 0; transition: width 1.5s ease-out; }
 
+        /* TABELAS DO DASHBOARD */
         .decision-table { width: 100%; border-collapse: collapse; text-align: left; }
         .decision-table th { font-size: 11px; text-transform: uppercase; color: #64748b; padding: 10px 8px; font-weight: 700; border-bottom: 1px solid #f1f5f9; }
         .decision-table td { font-size: 13px; padding: 12px 8px; border-bottom: 1px solid #f8fafc; color: #334155; }
@@ -56,6 +65,7 @@
         .row-highlight-user { background-color: rgba(255, 0, 127, 0.04) !important; }
         .row-highlight-user td { color: #ff007f !important; }
 
+        /* COMPONENTE CHAT: EXPLICADOR IA */
         .ai-chat-card { display: flex; flex-direction: column; height: 185px; background: white; border-radius: 20px; padding: 18px; border: 1px solid rgba(241, 245, 249, 0.9); }
         .ai-chat-header { display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; margin-bottom: 10px; }
         .ai-chat-header i { color: #7928ca; font-size: 16px; }
@@ -69,6 +79,7 @@
         .chat-input-row input:focus { border-color: #7928ca; background: white; }
         .chat-input-row button { background: #0f172a; color: white; border: none; width: 38px; height: 38px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 13px; }
 
+        /* LINEA TEMPORAL E GRÁFICOS MOCKUP */
         .timeline-pro { position: relative; width: 100%; height: 6px; background: #e2e8f0; border-radius: 10px; margin: 30px 0 15px 0; }
         .timeline-progress-bar { position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: linear-gradient(90deg, #f97316, #ff007f); border-radius: 10px; transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1); }
         .timeline-node { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 24px; height: 24px; border-radius: 50%; background: #0f172a; border: 3px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; color: white; font-size: 9px; }
@@ -86,17 +97,7 @@
         .ticker-container-2d { background: #fff3cd; border: 1px solid #ffeeba; border-radius: 16px; padding: 12px; display: flex; gap: 10px; align-items: center; }
         #ticker-2d-text { font-size: 12px; font-weight: 600; color: #856404; line-height: 1.4; }
 
-        .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 80px; background: white; border-top: 1px solid #f1f5f9; display: flex; justify-content: center; align-items: center; gap: 60px; z-index: 100; box-shadow: 0 -8px 40px rgba(15, 23, 42, 0.02); }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: #94a3b8; font-size: 11px; font-weight: 700; cursor: pointer; text-decoration: none; min-width: 75px; }
-        .nav-item i { font-size: 22px; margin-bottom: 6px; transition: transform 0.2s; }
-        .nav-item.active { color: #ff007f; }
-        .nav-item.active i { transform: translateY(-3px); color: #ff007f; }
-
-        /* AJUSTE DO VIEWPORT DE CÂMARA EM MULTIPLOS DISPOSITIVOS */
-        #view-ar { width: 100%; height: calc(100% - 80px); background: transparent !important; position: absolute; top: 0; left: 0; padding: 0; }
-        video { position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; object-fit: cover !important; z-index: -10 !important; }
-        .a-canvas { width: 100% !important; height: 100% !important; position: absolute; top: 0; left: 0; z-index: 5 !important; }
-
+        /* PAINEL INTERATIVO DA WIKI */
         .edu-tablet-frame { display: grid; grid-template-columns: 280px 1fr; gap: 25px; height: calc(100vh - 170px); }
         .edu-sidebar-menu { display: flex; flex-direction: column; gap: 8px; background: white; padding: 15px; border-radius: 20px; border: 1px solid #e2e8f0; overflow-y: auto; }
         .edu-menu-btn { display: flex; flex-direction: column; align-items: flex-start; padding: 14px 18px; border-radius: 14px; border: 1px solid transparent; background: #f8fafc; cursor: pointer; text-align: left; transition: all 0.2s ease; }
@@ -118,6 +119,7 @@
         .game-idea-tag div { font-size: 12px; font-weight: 600; color: #1e1b4b; line-height: 1.5; }
         .game-idea-tag strong { color: #6366f1; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; display: block; margin-bottom: 2px; }
 
+        /* PERFIL CONFIGURAÇÕES */
         .profile-container { max-width: 600px; margin: 0 auto; background: white; border-radius: 24px; padding: 30px; border: 1px solid #edf2f7; }
         .profile-hero { display: flex; flex-direction: column; align-items: center; text-align: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 25px; margin-bottom: 25px; }
         .profile-hero .user-avatar-lg { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #ff007f; margin-bottom: 15px; }
@@ -127,6 +129,24 @@
         .profile-menu-item { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: #f8fafc; border-radius: 16px; text-decoration: none; color: #334155; font-size: 14px; font-weight: 600; border: 1px solid #f1f5f9; }
         .pmi-left { display: flex; align-items: center; gap: 15px; }
         .pmi-left i { font-size: 18px; width: 24px; color: #64748b; }
+
+        /* MENU INFERIOR DE ABAS */
+        .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 80px; background: white; border-top: 1px solid #f1f5f9; display: flex; justify-content: center; align-items: center; gap: 60px; z-index: 100; box-shadow: 0 -8px 40px rgba(15, 23, 42, 0.02); }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #94a3b8; font-size: 11px; font-weight: 700; cursor: pointer; text-decoration: none; min-width: 75px; }
+        .nav-item i { font-size: 22px; margin-bottom: 6px; transition: transform 0.2s; }
+        .nav-item.active { color: #ff007f; }
+        .nav-item.active i { transform: translateY(-3px); color: #ff007f; }
+
+        /* =========================================================================
+           CORREÇÃO CRÍTICA DO BLOQUEIO: CONTROLO DE PONTEIRO E CAPTURA DE TOUCH/CLICK
+           ========================================================================= */
+        #view-ar { position: absolute; top: 0; left: 0; width: 100%; height: calc(100% - 80px); display: none; background: transparent !important; padding: 0; }
+        /* Quando a aba RA está inativa, o pointer-events fica 'none' para não tapar o menu */
+        #view-ar:not(.active) { pointer-events: none !important; }
+        #view-ar.active { display: block; pointer-events: auto !important; }
+        
+        video { position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; object-fit: cover !important; z-index: -10 !important; }
+        .a-canvas { width: 100% !important; height: 100% !important; position: absolute; top: 0; left: 0; z-index: 5 !important; }
     </style>
 </head>
 <body>
@@ -214,179 +234,4 @@
                         <div class="v-bar-wrapper"><div class="v-bar-graphic" id="m4" style="--vh: 65px;"></div><div class="lbl-month">Mai</div></div>
                         <div class="v-bar-wrapper"><div class="v-bar-graphic" id="m5" style="--vh: 75px;"></div><div class="lbl-month">Jun</div></div>
                         <div class="v-bar-wrapper"><div class="v-bar-graphic" id="m6" style="--vh: 95px;"></div><div class="lbl-month">Ago</div></div>
-                        <div class="v-bar-wrapper"><div class="v-bar-graphic" id="m7" style="--vh: 100px;"></div><div class="lbl-month">Set</div></div>
-                    </div>
-
-                    <div class="card-title-pro" style="margin-top: 15px;">Ranking Global <span>Comunidade</span></div>
-                    <table class="decision-table">
-                        <thead><tr><th>Posição</th><th>Nome do Jogador</th><th>Índice</th></tr></thead>
-                        <tbody id="ranking-body"></tbody>
-                    </table>
-                </div>
-
-                <div class="mini-cards-row">
-                    <div class="mini-card" style="border-bottom: 3px solid #ff007f;"><div class="val">4.0%</div><div class="lbl">Inflação</div></div>
-                    <div class="mini-card" style="border-bottom: 3px solid #00dfd8;"><div class="val">2.5%</div><div class="lbl">Taxa Juro</div></div>
-                    <div class="ticker-container-2d" style="flex:2;"><div id="ticker-2d-text">A ler mercados...</div></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="view-ar" class="app-view">
-        <a-scene id="ar-scene" mindar-image="imageTargetSrc: ./targets.mind; autoStart: false;" embedded vr-mode-ui="enabled: false">
-            
-            <a-assets>
-                <a-asset-item id="logo-jogo" src="./sarogati.glb"></a-asset-item>
-                <img id="logo-png-asset" src="logo.png">
-            </a-assets>
-
-            <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-            
-            <a-entity mindar-image-target="targetIndex: 0">
-                <a-box position="-0.2 0 0.05" scale="0.12 0.12 0.12" color="#00dfd8"></a-box>
-                
-                <a-entity rotation="90 180 0" position="0 0 0">
-                    <a-entity gltf-model="#logo-jogo" scale="0.02 0.02 0.02" position="0 0 0.05"></a-entity>
-                </a-entity>
-            </a-entity>
-
-            <a-entity mindar-image-target="targetIndex: 1">
-                <a-plane position="0 0 0.05" rotation="-70 0 0" width="1.6" height="1.2" color="#0a192f" material="opacity: 0.88; transparent: true; side: double;">
-                    <a-rect width="1.56" height="1.16" fill="none" stroke="#00b894" stroke-width="1"></a-rect>
-                    <a-image src="#logo-png-asset" position="0 0.45 0.02" width="0.7" height="0.18" material="transparent: true; alphaTest: 0.5;"></a-image>
-                    <a-entity position="-0.48 0.1 0.02">
-                        <a-text value="ECONOMIA" color="#00a8ff" align="left" width="1.1" font="mozillavr"></a-text>
-                        <a-text value="Inflacao: 4%" color="#ffffff" align="left" width="0.85" position="0 -0.15 0"></a-text>
-                        <a-text value="Taxas Juro: 2.5%" color="#ffffff" align="left" width="0.85" position="0 -0.28 0"></a-text>
-                    </a-entity>
-                    <a-entity position="0 0.1 0.02">
-                        <a-text value="NOTICIAS DO BANQUEIRO" color="#e17055" align="center" width="1.1" font="mozillavr"></a-text>
-                        <a-plane color="#0f2342" width="0.52" height="0.45" position="0 -0.26 0.01" material="opacity: 0.9">
-                            <a-text id="ticker-3d-text" value="A aceder aos mercados..." color="#fbc531" align="center" width="0.58" wrap-count="17" position="0 0 0.01"></a-text>
-                        </a-plane>
-                    </a-entity>
-                    <a-entity position="0.48 0.1 0.02">
-                        <a-text value="RESERVAS" color="#00a8ff" align="right" width="1.1" font="mozillavr"></a-text>
-                        <a-text value="Liquidez do Banco:" color="#ffffff" align="right" width="0.85" position="0 -0.15 0"></a-text>
-                        <a-text value="50.000 EUR" color="#00b894" align="right" width="1.0" font="mozillavr" position="0 -0.28 0"></a-text>
-                    </a-entity>
-                </a-plane>
-            </a-entity>
-        </a-scene>
-    </div>
-
-    <div id="view-education" class="app-view">
-        <div class="app-header">
-            <div class="brand-logo"><img src="logo.png" class="brand-logo-img" alt="Sarogati Logo"></div>
-            <div class="user-profile-zone">
-                <div class="user-info-text">
-                    <div class="name">Centro de Conhecimento</div>
-                    <div class="rank" style="color:#ff007f;">Módulos de Aprendizagem</div>
-                </div>
-            </div>
-        </div>
-        <div class="edu-tablet-frame">
-            <div class="edu-sidebar-menu">
-                <div class="edu-menu-btn active" id="btn-n1" onclick="mudarNucleo(1)"><div class="title-row"><i class="fa-solid fa-brain"></i> Núcleo 1: Fundamentos</div><div class="level-tag">Nível Iniciante</div></div>
-                <div class="edu-menu-btn" id="btn-n2" onclick="mudarNucleo(2)"><div class="title-row"><i class="fa-solid fa-wallet"></i> Núcleo 2: Gestão Pessoal</div><div class="level-tag">Nível Intermédio</div></div>
-                <div class="edu-menu-btn" id="btn-n3" onclick="mudarNucleo(3)"><div class="title-row"><i class="fa-solid fa-gavel"></i> Núcleo 3: Decisão</div><div class="level-tag">Nível Avançado</div></div>
-                <div class="edu-menu-btn" id="btn-n4" onclick="mudarNucleo(4)"><div class="title-row"><i class="fa-solid fa-globe"></i> Núcleo 4: Macroeconomia</div><div class="level-tag">Nível Especialista</div></div>
-                <div class="edu-menu-btn" id="btn-n5" onclick="mudarNucleo(5)"><div class="title-row"><i class="fa-solid fa-users"></i> Núcleo 5: Comportamental</div><div class="level-tag">Transversal</div></div>
-                <div class="edu-menu-btn" id="btn-n6" onclick="mudarNucleo(6)"><div class="title-row"><i class="fa-solid fa-trophy"></i> Núcleo 6: Meta-Jogo</div><div class="level-tag">Aprendizagem Aplicada</div></div>
-            </div>
-            <div class="edu-content-pane" id="edu-pane"></div>
-        </div>
-    </div>
-
-    <div id="view-profile" class="app-view">
-        <div class="profile-container">
-            <div class="profile-hero">
-                <img src="user.jpg" class="user-avatar-lg" alt="User Big Avatar">
-                <h2>Esteves da Silva</h2>
-                <p>Membro Fundador • ID #24M06</p>
-            </div>
-            <div class="profile-menu-list">
-                <a href="#" class="profile-menu-item"><div class="pmi-left"><i class="fa-solid fa-gear"></i> Definições de Conta</div><i class="fa-solid fa-chevron-right" style="color:#cbd5e1;"></i></a>
-                <a href="#" class="profile-menu-item"><div class="pmi-left"><i class="fa-solid fa-credit-card"></i> Estado da Subscrição</div><i class="fa-solid fa-chevron-right" style="color:#cbd5e1;"></i></a>
-                <a href="#" class="profile-menu-item" style="color: #10b981;"><div class="pmi-left"><i class="fa-solid fa-wallet" style="color:#10b981;"></i> Conectar Carteira Digital</div><i class="fa-solid fa-chevron-right" style="color:#cbd5e1;"></i></a>
-                <a href="#" class="profile-menu-item" style="color: #ef4444; margin-top: 15px;"><div class="pmi-left"><i class="fa-solid fa-arrow-right-from-bracket" style="color:#ef4444;"></i> Terminar Sessão</div><i class="fa-solid fa-chevron-right" style="color:#cbd5e1;"></i></a>
-            </div>
-        </div>
-    </div>
-
-    <nav class="bottom-nav">
-        <div class="nav-item active" id="btn-welcome" onclick="mudarAba('welcome')"><i class="fa-solid fa-house"></i>Início</div>
-        <div class="nav-item" id="btn-dashboard" onclick="mudarAba('dashboard')"><i class="fa-solid fa-chart-line"></i>Análises</div>
-        <div class="nav-item" id="btn-ar" onclick="mudarAba('ar')"><i class="fa-solid fa-star"></i>Desafios</div>
-        <div class="nav-item" id="btn-education" onclick="mudarAba('education')"><i class="fa-solid fa-book-open"></i>Educação</div>
-        <div class="nav-item" id="btn-profile" onclick="mudarAba('profile')"><i class="fa-solid fa-user"></i>Perfil</div>
-    </nav>
-
-    <script>
-        const alertas = [
-            "Dica: Criar um fundo de emergencia reduz o teu risco no jogo!",
-            "Atencao: A inflacao subiu, o teu dinheiro parado rende menos!",
-            "Oportunidade: Taxas de juro baixas favorecem o credito habitacao.",
-            "Sabias? Diversificar os teus investimentos protege o teu patrimonio."
-        ];
-        let ponteiro = 0;
-
-        function rodarEventos() {
-            const txt2d = document.getElementById('ticker-2d-text');
-            const txt3d = document.getElementById('ticker-3d-text');
-            if(txt2d) txt2d.innerText = alertas[ponteiro];
-            if(txt3d) txt3d.setAttribute('value', alertas[ponteiro]);
-            ponteiro = (ponteiro + 1) % alertas.length;
-        }
-        setInterval(rodarEventos, 15000);
-
-        let jogadoresComunidade = [
-            { nome: "Ana Rodrigues", score: 84 },
-            { nome: "Esteves da Silva", score: 78, isUser: true },
-            { nome: "Carlos Mendes", score: 75 },
-            { nome: "Mariana Costa", score: 69 }
-        ];
-
-        function atualizarTabelaRanking() {
-            const tbody = document.getElementById('ranking-body');
-            if(!tbody) return;
-            tbody.innerHTML = "";
-            jogadoresComunidade.forEach(j => {
-                const variacao = Math.floor(Math.random() * 6) - 2;
-                j.score = Math.max(10, Math.min(100, j.score + (j.isUser ? 0 : variacao))); 
-            });
-            jogadoresComunidade.sort((a, b) => b.score - a.score);
-            jogadoresComunidade.forEach((j, index) => {
-                const tr = document.createElement('tr');
-                if(j.isUser) tr.className = "row-highlight-user";
-                tr.innerHTML = `<td><strong>#${index + 1}</strong></td><td>${j.nome}</td><td><strong>${j.score}/100</strong></td>`;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function verificarTecla(e) { if (e.key === 'Enter') enviarMensagemIA(); }
-
-        function enviarMensagemIA() {
-            const input = document.getElementById('chat-input');
-            const box = document.getElementById('chat-box');
-            if (!input || !box || input.value.trim() === "") return;
-
-            const userText = input.value.trim();
-            const userBubble = document.createElement('div');
-            userBubble.className = "chat-bubble user";
-            userBubble.innerText = userText;
-            box.appendChild(userBubble);
-            box.scrollTop = box.scrollHeight;
-            input.value = "";
-
-            setTimeout(() => {
-                const aiBubble = document.createElement('div');
-                aiBubble.className = "chat-bubble ai";
-                aiBubble.innerText = processarRespostaIA(userText);
-                box.appendChild(aiBubble);
-                box.scrollTop = box.scrollHeight;
-            }, 750);
-        }
-
-        function processarResposta
+                        <div class="v
