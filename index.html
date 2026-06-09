@@ -234,4 +234,263 @@
                         <div class="v-bar-wrapper"><div class="v-bar-graphic" id="m4" style="--vh: 65px;"></div><div class="lbl-month">Mai</div></div>
                         <div class="v-bar-wrapper"><div class="v-bar-graphic" id="m5" style="--vh: 75px;"></div><div class="lbl-month">Jun</div></div>
                         <div class="v-bar-wrapper"><div class="v-bar-graphic" id="m6" style="--vh: 95px;"></div><div class="lbl-month">Ago</div></div>
-                        <div class="v
+                        <div class="v-bar-wrapper"><div class="v-bar-graphic" id="m7" style="--vh: 100px;"></div><div class="lbl-month">Set</div></div>
+                    </div>
+
+                    <div class="card-title-pro" style="margin-top: 15px;">Ranking Global <span>Comunidade</span></div>
+                    <table class="decision-table">
+                        <thead><tr><th>Posição</th><th>Nome do Jogador</th><th>Índice</th></tr></thead>
+                        <tbody id="ranking-body"></tbody>
+                    </table>
+                </div>
+
+                <div class="mini-cards-row">
+                    <div class="mini-card" style="border-bottom: 3px solid #ff007f;"><div class="val">4.0%</div><div class="lbl">Inflação</div></div>
+                    <div class="mini-card" style="border-bottom: 3px solid #00dfd8;"><div class="val">2.5%</div><div class="lbl">Taxa Juro</div></div>
+                    <div class="ticker-container-2d" style="flex:2;"><div id="ticker-2d-text">A ler mercados...</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="view-ar" class="app-view">
+        <a-scene id="ar-scene" mindar-image="imageTargetSrc: ./targets.mind; autoStart: false;" embedded vr-mode-ui="enabled: false">
+            <a-assets>
+                <a-asset-item id="logo-jogo" src="./sarogati.glb"></a-asset-item>
+                <img id="logo-png-asset" src="logo.png">
+            </a-assets>
+
+            <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+            
+            <a-entity mindar-image-target="targetIndex: 0">
+                <a-box position="-0.2 0 0.05" scale="0.12 0.12 0.12" color="#00dfd8"></a-box>
+                
+                <a-entity rotation="90 180 0" position="0 0 0">
+                    <a-entity gltf-model="#logo-jogo" scale="0.1 0.1 0.1" position="0 0 0.05"></a-entity>
+                </a-entity>
+            </a-entity>
+
+            <a-entity mindar-image-target="targetIndex: 1">
+                <a-plane position="0 0 0.05" rotation="-70 0 0" width="1.6" height="1.2" color="#0a192f" material="opacity: 0.88; transparent: true; side: double;">
+                    <a-rect width="1.56" height="1.16" fill="none" stroke="#00b894" stroke-width="1"></a-rect>
+                    <a-image src="#logo-png-asset" position="0 0.45 0.02" width="0.7" height="0.18" material="transparent: true; alphaTest: 0.5;"></a-image>
+                    <a-entity position="-0.48 0.1 0.02">
+                        <a-text value="ECONOMIA" color="#00a8ff" align="left" width="1.1" font="mozillavr"></a-text>
+                        <a-text value="Inflacao: 4%" color="#ffffff" align="left" width="0.85" position="0 -0.15 0"></a-text>
+                        <a-text value="Taxas Juro: 2.5%" color="#ffffff" align="left" width="0.85" position="0 -0.28 0"></a-text>
+                    </a-entity>
+                    <a-entity position="0 0.1 0.02">
+                        <a-text value="NOTICIAS DO BANQUEIRO" color="#e17055" align="center" width="1.1" font="mozillavr"></a-text>
+                        <a-plane color="#0f2342" width="0.52" height="0.45" position="0 -0.26 0.01" material="opacity: 0.9">
+                            <a-text id="ticker-3d-text" value="A aceder aos mercados..." color="#fbc531" align="center" width="0.58" wrap-count="17" position="0 0 0.01"></a-text>
+                        </a-plane>
+                    </a-entity>
+                    <a-entity position="0.48 0.1 0.02">
+                        <a-text value="RESERVAS" color="#00a8ff" align="right" width="1.1" font="mozillavr"></a-text>
+                        <a-text value="Liquidez do Banco:" color="#ffffff" align="right" width="0.85" position="0 -0.15 0"></a-text>
+                        <a-text value="50.000 EUR" color="#00b894" align="right" width="1.0" font="mozillavr" position="0 -0.28 0"></a-text>
+                    </a-entity>
+                </a-plane>
+            </a-entity>
+        </a-scene>
+    </div>
+
+    <div id="view-education" class="app-view">
+        <div class="app-header">
+            <div class="brand-logo"><img src="logo.png" class="brand-logo-img" alt="Sarogati Logo"></div>
+            <div class="user-profile-zone">
+                <div class="user-info-text">
+                    <div class="name">Centro de Conhecimento</div>
+                    <div class="rank" style="color:#ff007f;">Módulos de Aprendizagem</div>
+                </div>
+            </div>
+        </div>
+        <div class="edu-tablet-frame">
+            <div class="edu-sidebar-menu">
+                <div class="edu-menu-btn active" id="btn-n1" onclick="mudarNucleo(1)"><div class="title-row"><i class="fa-solid fa-brain"></i> Núcleo 1: Fundamentos</div><div class="level-tag">Nível Iniciante</div></div>
+                <div class="edu-menu-btn" id="btn-n2" onclick="mudarNucleo(2)"><div class="title-row"><i class="fa-solid fa-wallet"></i> Núcleo 2: Gestão Pessoal</div><div class="level-tag">Nível Intermédio</div></div>
+                <div class="edu-menu-btn" id="btn-n3" onclick="mudarNucleo(3)"><div class="title-row"><i class="fa-solid fa-gavel"></i> Núcleo 3: Decisão</div><div class="level-tag">Nível Avançado</div></div>
+                <div class="edu-menu-btn" id="btn-n4" onclick="mudarNucleo(4)"><div class="title-row"><i class="fa-solid fa-globe"></i> Núcleo 4: Macroeconomia</div><div class="level-tag">Nível Especialista</div></div>
+                <div class="edu-menu-btn" id="btn-n5" onclick="mudarNucleo(5)"><div class="title-row"><i class="fa-solid fa-users"></i> Núcleo 5: Comportamental</div><div class="level-tag">Transversal</div></div>
+                <div class="edu-menu-btn" id="btn-n6" onclick="mudarNucleo(6)"><div class="title-row"><i class="fa-solid fa-trophy"></i> Núcleo 6: Meta-Jogo</div><div class="level-tag">Aprendizagem Aplicada</div></div>
+            </div>
+            <div class="edu-content-pane" id="edu-pane"></div>
+        </div>
+    </div>
+
+    <div id="view-profile" class="app-view">
+        <div class="profile-container">
+            <div class="profile-hero">
+                <img src="user.jpg" class="user-avatar-lg" alt="User Big Avatar">
+                <h2>Esteves da Silva</h2>
+                <p>Membro Fundador • ID #24M06</p>
+            </div>
+            <div class="profile-menu-list">
+                <a href="#" class="profile-menu-item"><div class="pmi-left"><i class="fa-solid fa-gear"></i> Definições de Conta</div><i class="fa-solid fa-chevron-right" style="color:#cbd5e1;"></i></a>
+                <a href="#" class="profile-menu-item"><div class="pmi-left"><i class="fa-solid fa-credit-card"></i> Estado da Subscrição</div><i class="fa-solid fa-chevron-right" style="color:#cbd5e1;"></i></a>
+                <a href="#" class="profile-menu-item" style="color: #10b981;"><div class="pmi-left"><i class="fa-solid fa-wallet" style="color:#10b981;"></i> Conectar Carteira Digital</div><i class="fa-solid fa-chevron-right" style="color:#cbd5e1;"></i></a>
+                <a href="#" class="profile-menu-item" style="color: #ef4444; margin-top: 15px;"><div class="pmi-left"><i class="fa-solid fa-arrow-right-from-bracket" style="color:#ef4444;"></i> Terminar Sessão</div><i class="fa-solid fa-chevron-right" style="color:#cbd5e1;"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <div class="nav-item active" id="btn-welcome" onclick="mudarAba('welcome')"><i class="fa-solid fa-house"></i>Início</div>
+        <div class="nav-item" id="btn-dashboard" onclick="mudarAba('dashboard')"><i class="fa-solid fa-chart-line"></i>Análises</div>
+        <div class="nav-item" id="btn-ar" onclick="mudarAba('ar')"><i class="fa-solid fa-star"></i>Desafios</div>
+        <div class="nav-item" id="btn-education" onclick="mudarAba('education')"><i class="fa-solid fa-book-open"></i>Educação</div>
+        <div class="nav-item" id="btn-profile" onclick="mudarAba('profile')"><i class="fa-solid fa-user"></i>Perfil</div>
+    </nav>
+
+    <script>
+        const alertas = [
+            "Dica: Criar um fundo de emergencia reduz o teu risco no jogo!",
+            "Atencao: A inflacao subiu, o teu dinheiro parado rende menos!",
+            "Oportunidade: Taxas de juro baixas favorecem o credito habitacao.",
+            "Sabias? Diversificar os teus investimentos protege o teu patrimonio."
+        ];
+        let ponteiro = 0;
+
+        function rodarEventos() {
+            const txt2d = document.getElementById('ticker-2d-text');
+            const txt3d = document.getElementById('ticker-3d-text');
+            if(txt2d) txt2d.innerText = alertas[ponteiro];
+            if(txt3d) txt3d.setAttribute('value', alertas[ponteiro]);
+            ponteiro = (ponteiro + 1) % alertas.length;
+        }
+        setInterval(rodarEventos, 15000);
+
+        let jogadoresComunidade = [
+            { nome: "Ana Rodrigues", score: 84 },
+            { nome: "Esteves da Silva", score: 78, isUser: true },
+            { nome: "Carlos Mendes", score: 75 },
+            { nome: "Mariana Costa", score: 69 }
+        ];
+
+        function atualizarTabelaRanking() {
+            const tbody = document.getElementById('ranking-body');
+            if(!tbody) return;
+            tbody.innerHTML = "";
+            jogadoresComunidade.forEach(j => {
+                const variacao = Math.floor(Math.random() * 6) - 2;
+                j.score = Math.max(10, Math.min(100, j.score + (j.isUser ? 0 : variacao))); 
+            });
+            jogadoresComunidade.sort((a, b) => b.score - a.score);
+            jogadoresComunidade.forEach((j, index) => {
+                const tr = document.createElement('tr');
+                if(j.isUser) tr.className = "row-highlight-user";
+                tr.innerHTML = `<td><strong>#${index + 1}</strong></td><td>${j.nome}</td><td><strong>${j.score}/100</strong></td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function verificarTecla(e) { if (e.key === 'Enter') enviarMensagemIA(); }
+
+        function enviarMensagemIA() {
+            const input = document.getElementById('chat-input');
+            const box = document.getElementById('chat-box');
+            if (!input || !box || input.value.trim() === "") return;
+
+            const userText = input.value.trim();
+            const userBubble = document.createElement('div');
+            userBubble.className = "chat-bubble user";
+            userBubble.innerText = userText;
+            box.appendChild(userBubble);
+            box.scrollTop = box.scrollHeight;
+            input.value = "";
+
+            setTimeout(() => {
+                const aiBubble = document.createElement('div');
+                aiBubble.className = "chat-bubble ai";
+                aiBubble.innerText = processarRespostaIA(userText);
+                box.appendChild(aiBubble);
+                box.scrollTop = box.scrollHeight;
+            }, 750);
+        }
+
+        function processarRespostaIA(pergunta) {
+            const p = pergunta.toLowerCase();
+            if (p.includes('inflação') || p.includes('inflacao')) return "A inflação de 4% indica que o custo de vida está a subir. Evita acumular capital parado no banco; podes alocar em ativos reais no teu turno para te protegeres!";
+            if (p.includes('juro') || p.includes('taxa')) return "Com a taxa do BCE fixa em 2.5%, o custo do crédito está controlado. Analisa o teu fluxo antes de contraíres empréstimos estruturais.";
+            if (p.includes('emergência') || p.includes('fundo')) return "O teu Fundo de Poupança Coletivo está excelente (78%). Ele vai proteger-te de crises inesperadas ou rodadas de penalização no tabuleiro!";
+            return "Excelente questão, Esteves! Essa decisão depende diretamente do ciclo de expansão em que nos encontramos no tabuleiro do Banqueiro Central. Queres analisar o impacto na tua liquidez?";
+        }
+
+        const nucleosEducacao = {
+            1: { titulo: "🧠 Núcleo 1: Fundamentos", subtitulo: "Nível Iniciante. Essenciais para todos os jogadores começarem.", topicos: [{ t: "💰 Dinheiro e valor", d: "O que é o dinheiro (funções: meio de troca, reserva de valor, unidade de conta), inflação e poder de compra, e a diferença entre necessidades e desejos.", g: "Missão de sobrevivência com orçamento limitado no tabuleiro." }, { t: "📊 Orçamento pessoal", d: "Como fazer um orçamento (receita vs despesas), despesas fixas vs variáveis e a famosa Regra 50-30-20.", g: "Jogo tipo 'simulador de mês' com eventos inesperados." }, { t: "🏦 Sistema financeiro básico", d: "O que são bancos e como funcionam, tipos de contas (ordem, poupça) e a mecânica de juros simples vs compostos.", g: "Desbloquear 'níveis de banco' com diferentes vantagens." }] },
+            2: { titulo: "💡 Núcleo 2: Gestão Financeira Pessoal", subtitulo: "Nível Intermédio. Estratégias e mitigação de crises no tabuleiro.", topicos: [{ t: "💳 Crédito e dívida", d: "Tipos de crédito (habitação, pessoal, cartão), conceitos de TAEG, spread, juros e os riscos reais do sobre-endividamento.", g: "Desafios rápidos de decisão: 'Aceitar ou recusar crédito?'" }, { t: "🛟 Poupança e fundo de emergência", d: "Importância crítica da poupança, estabelecimento de objetivos financeiros e a gestão de liquidez vs rentabilidade.", g: "'Modo Crise' extremo onde só sobrevive quem poupou." }, { t: "📈 Introdução ao investimento", d: "Mapeamento de risco vs retorno, diversificação de portefólio e tipos de ativos (ações, obrigações, ETFs).", g: "Carteira virtual com evolução ao longo do jogo." }] },
+            3: { titulo: "🚀 Núcleo 3: Tomada de Decisão", subtitulo: "Nível Avançado. Planeamento de metas complexas a longo prazo.", topicos: [{ t: "🧮 Planeamento financeiro", d: "Estratégias para curto, médio e longo prazo. Planeamento para grandes objetivos (casa, educação) e aposentação.", g: "Linha temporal onde decisões passadas afetam o futuro." }, { t: "📉 Literacia de risco", d: "A psicologia do risco (medo vs ganância), volatilidade e como evitar erros comuns como o timing de mercado.", g: "Eventos de crash de mercado simulados durante as rodadas." }, { t: "⚖️ Fiscalidade básica", d: "Impostos sobre rendimento, tributação de investimentos e aproveitamento de benefícios fiscais legítimos.", g: "Otimização fiscal para maximizar a pontuação líquida." }] },
+            4: { titulo: "🌍 Núcleo 4: Contexto Económico", subtitulo: "Nível Especialista. As forças do mercado em escala global.", topicos: [{ t: "🌐 Economia real", d: "Análise do PIB, desemprego, inflação, políticas monetárias do BCE e leitura dos ciclos económicos.", g: "'Modo Governante' onde as tuas decisões impactam toda a economia do jogo." }, { t: "🏢 Empresas e mercados", d: "Como funcionam as empresas, bolsas de valores mundiais, IPOs e métodos de avaliação corporativa.", g: "Gerir uma empresa virtual concorrente." }, { t: "🌱 Finanças sustentáveis", d: "Princípios ESG (ambiental, social, governance), investimento responsável e o impacto social das finanças.", g: "Ganhar pontos bónus por decisões éticas e sustentáveis." }] },
+            5: { titulo: "🧑‍🤝‍🧑 Núcleo 5: Competências Comportamentais", subtitulo: "Módulo Transversal. Fatores psicológicos cruciais.", topicos: [{ t: "🧠 Psicologia financeira", d: "Identificação de vieses cognitivos (como o excesso de confiança), controlo do consumo impulsivo e influência social.", g: "Eventos surpresa que testam a tua resiliência mental a impulsos." }, { t: "🎯 Literacia digital e fraude", d: "Deteção de phishing e scams financeiros, segurança online e análise de criptomoedas (risco vs hype).", g: "Detetar fraudes e esquemas em tempo limitado." }] },
+            6: { titulo: "🏆 Núcleo 6: Aprendizagem Aplicada", subtitulo: "Meta-Jogo. A simulação da vida real consolidada.", topicos: [{ t: "📚 Missões e desafios", d: "Simulação de uma vida financeira completa. Cenários dinâmicos: estudante, família ou empresário.", g: "Tomar decisões com impacto cumulativo no resultado final." }] }
+        };
+
+        function mudarNucleo(num) {
+            document.querySelectorAll('.edu-menu-btn').forEach(b => b.classList.remove('active'));
+            if(document.getElementById('btn-n' + num)) document.getElementById('btn-n' + num).classList.add('active');
+            const dados = nucleosEducacao[num];
+            const pane = document.getElementById('edu-pane');
+            if(!pane || !dados) return;
+            let html = `<div class="pane-header"><h2>${dados.titulo}</h2><p>${dados.subtitulo}</p></div>`;
+            dados.topicos.forEach(t => {
+                html += `<div class="topic-box"><h3><i class="fa-solid fa-book"></i> ${t.t}</h3><p>${t.d}</p><div class="game-idea-tag"><i class="fa-solid fa-gamepad"></i><div><strong>Ideia de Jogo</strong>${t.g}</div></div></div>`;
+            });
+            pane.innerHTML = html;
+        }
+
+        function mudarAba(destino) {
+            document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+            document.getElementById('view-' + destino).classList.add('active');
+            document.getElementById('btn-' + destino).classList.add('active');
+            
+            if (destino === 'dashboard') {
+                atualizarTabelaRanking();
+                setTimeout(() => {
+                    document.getElementById('bar-save').style.width = "78%";
+                    document.getElementById('bar-inv').style.width = "64%";
+                    document.getElementById('timeline-fill').style.width = "78%";
+                    document.getElementById('live-node').style.left = "78%";
+                    for(let i=1; i<=7; i++) {
+                        const h = [35, 48, 25, 65, 75, 95, 100][i-1];
+                        document.getElementById('m' + i).style.height = h + "px";
+                    }
+                }, 100);
+            }
+            if (destino === 'education') mudarNucleo(1);
+
+            const cena = document.querySelector('a-scene');
+            if (cena) {
+                if (destino === 'ar') {
+                    setTimeout(() => {
+                        cena.resize();
+                        if (cena.hasLoaded) {
+                            arrancarMotorRA(cena);
+                        } else {
+                            cena.addEventListener('loaded', () => arrancarMotorRA(cena));
+                        }
+                    }, 150);
+                } else {
+                    if (cena.systems["mindar-image-system"]) {
+                        cena.systems["mindar-image-system"].stop();
+                    }
+                }
+            }
+        }
+
+        function arrancarMotorRA(cena) {
+            try {
+                if (cena.systems["mindar-image-system"]) {
+                    cena.systems["mindar-image-system"].start();
+                    setTimeout(() => {
+                        const activeScene = document.querySelector('a-scene');
+                        if (activeScene) activeScene.resize();
+                    }, 100);
+                }
+            } catch (err) {
+                console.error("Erro ao iniciar o MindAR: ", err);
+            }
+        }
+    </script>
+</body>
+</html>
