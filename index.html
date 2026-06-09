@@ -3,137 +3,503 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <title>Sarogati - O Banqueiro AR</title>
+    <title>Sarogati - Hub Pro</title>
     
+    <!-- Bibliotecas de Produção: MindAR + A-Frame Puro -->
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
     
+    <!-- Font Awesome e Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
-        html, body { 
-            margin: 0; 
-            padding: 0; 
-            width: 100%; 
-            height: 100%; 
-            overflow: hidden; 
-            background-color: transparent !important;
-        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Plus Jakarta Sans', sans-serif; }
+        html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #f8fafc; color: #1e293b; }
 
-        /* Garante o feed da câmara em ecrã inteiro no fundo */
-        video {
-            position: absolute !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
-            object-fit: cover !important;
-            z-index: -2 !important;
-            display: block !important;
-            opacity: 1 !important;
-        }
+        .app-view { position: absolute; top: 0; left: 0; width: 100%; height: calc(100% - 80px); display: none; overflow-y: auto; z-index: 10; padding: 25px; background: #f8fafc; }
+        .app-view.active { display: block; }
 
-        /* Camada gráfica do A-Frame transparente */
-        .a-canvas {
-            width: 100% !important;
-            height: 100% !important;
-            top: 0;
-            left: 0;
-            position: absolute;
-            background-color: transparent !important;
-        }
+        .app-header { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 20px; }
+        .brand-logo-img { height: 35px; width: auto; object-fit: contain; }
+        .user-profile-zone { display: flex; align-items: center; gap: 12px; }
+        .user-info-text { text-align: right; }
+        .user-info-text .name { font-size: 14px; font-weight: 700; color: #0f172a; margin: 0; }
+        .user-info-text .rank { font-size: 11px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .user-avatar { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid #ff007f; box-shadow: 0 4px 10px rgba(255, 0, 127, 0.15); }
 
-        /* Desativa overlays de loading nativos */
-        .mindar-ui-loading { display: none !important; }
-        .mindar-ui-scanning { background: transparent !important; }
+        #view-welcome { padding: 0; background-image: url('entrada.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; width: 100%; height: calc(100% - 80px); }
+
+        .tablet-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+        .column-left, .column-right { display: flex; flex-direction: column; gap: 20px; }
+
+        .card-white { background: white; border-radius: 20px; padding: 22px; box-shadow: 0 10px 30px rgba(15, 23, 42, 0.01); border: 1px solid rgba(241, 245, 249, 0.9); }
+        .card-title-pro { font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .card-title-pro span { font-size: 11px; color: #64748b; font-weight: 500; }
+
+        .gradient-banner { background: linear-gradient(135deg, #ff007f 0%, #7928ca 50%, #00dfd8 100%); border-radius: 20px; padding: 22px; color: white; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 30px rgba(121, 40, 202, 0.12); }
+        .gb-left .title { font-size: 10px; text-transform: uppercase; opacity: 0.85; letter-spacing: 1px; font-weight: 600; }
+        .gb-left .val { font-size: 28px; font-weight: 800; margin: 2px 0; }
+        .gb-left .sub { font-size: 11px; opacity: 0.9; }
+        .gb-right .lvl { font-size: 12px; font-weight: 800; text-transform: uppercase; background: rgba(255,255,255,0.25); padding: 6px 14px; border-radius: 50px; }
+
+        .progress-metric { margin-bottom: 12px; }
+        .pm-info { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 6px; }
+        .pm-info span.val { color: #0f172a; font-weight: 800; }
+        .pm-bar-bg { width: 100%; height: 6px; background: #f1f5f9; border-radius: 10px; overflow: hidden; }
+        .pm-bar-fill { height: 100%; background: linear-gradient(90deg, #ff007f, #7928ca); border-radius: 10px; width: 0; transition: width 1.5s ease-out; }
+
+        .decision-table { width: 100%; border-collapse: collapse; text-align: left; }
+        .decision-table th { font-size: 11px; text-transform: uppercase; color: #64748b; padding: 10px 8px; font-weight: 700; border-bottom: 1px solid #f1f5f9; }
+        .decision-table td { font-size: 13px; padding: 12px 8px; border-bottom: 1px solid #f8fafc; color: #334155; }
+        .badge-td { padding: 4px 10px; border-radius: 50px; font-size: 11px; font-weight: 700; }
+        .badge-td.green { background: #ecfdf5; color: #10b981; }
+        .badge-td.orange { background: #fff7ed; color: #f97316; }
+        .row-highlight-user { background-color: rgba(255, 0, 127, 0.04) !important; }
+        .row-highlight-user td { color: #ff007f !important; }
+
+        .ai-chat-card { display: flex; flex-direction: column; height: 185px; background: white; border-radius: 20px; padding: 18px; border: 1px solid rgba(241, 245, 249, 0.9); }
+        .ai-chat-header { display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; margin-bottom: 10px; }
+        .ai-chat-header i { color: #7928ca; font-size: 16px; }
+        .ai-chat-header span { font-weight: 700; font-size: 13px; color: #0f172a; }
+        .ai-messages-box { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; padding-right: 4px; margin-bottom: 8px; }
+        .chat-bubble { max-width: 85%; padding: 8px 12px; border-radius: 14px; font-size: 12px; line-height: 1.4; }
+        .chat-bubble.ai { background: #f1f5f9; color: #1e293b; align-self: flex-start; border-top-left-radius: 4px; }
+        .chat-bubble.user { background: linear-gradient(135deg, #7928ca, #ff007f); color: white; align-self: flex-end; border-top-right-radius: 4px; }
+        .chat-input-row { display: flex; gap: 8px; }
+        .chat-input-row input { flex: 1; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 14px; font-size: 13px; outline: none; background: #f8fafc; }
+        .chat-input-row input:focus { border-color: #7928ca; background: white; }
+        .chat-input-row button { background: #0f172a; color: white; border: none; width: 38px; height: 38px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 13px; }
+
+        .timeline-pro { position: relative; width: 100%; height: 6px; background: #e2e8f0; border-radius: 10px; margin: 30px 0 15px 0; }
+        .timeline-progress-bar { position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: linear-gradient(90deg, #f97316, #ff007f); border-radius: 10px; transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .timeline-node { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 24px; height: 24px; border-radius: 50%; background: #0f172a; border: 3px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; color: white; font-size: 9px; }
+        .timeline-node .node-lbl { position: absolute; top: -20px; font-size: 10px; font-weight: 800; color: #64748b; }
+        
+        .bar-chart-vertical { display: flex; justify-content: space-between; align-items: flex-end; height: 95px; padding-top: 10px; border-bottom: 1px solid #f1f5f9; }
+        .v-bar-wrapper { display: flex; flex-direction: column; align-items: center; flex: 1; }
+        .v-bar-graphic { width: 9px; background: linear-gradient(to top, #00dfd8 0%, #7928ca 100%); border-radius: 6px 6px 0 0; height: 0; transition: height 1.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .v-bar-wrapper .lbl-month { font-size: 9px; color: #94a3b8; margin-top: 6px; font-weight: 700; text-transform: uppercase; }
+
+        .mini-cards-row { display: flex; gap: 10px; }
+        .mini-card { flex: 1; background: white; border-radius: 16px; padding: 12px; text-align: center; border: 1px solid #f1f5f9; }
+        .mini-card .val { font-size: 16px; font-weight: 800; color: #0f172a; }
+        .mini-card .lbl { font-size: 10px; color: #64748b; font-weight: 600; }
+        .ticker-container-2d { background: #fff3cd; border: 1px solid #ffeeba; border-radius: 16px; padding: 12px; display: flex; gap: 10px; align-items: center; }
+        #ticker-2d-text { font-size: 12px; font-weight: 600; color: #856404; line-height: 1.4; }
+
+        .edu-tablet-frame { display: grid; grid-template-columns: 280px 1fr; gap: 25px; height: calc(100vh - 170px); }
+        .edu-sidebar-menu { display: flex; flex-direction: column; gap: 8px; background: white; padding: 15px; border-radius: 20px; border: 1px solid #e2e8f0; overflow-y: auto; }
+        .edu-menu-btn { display: flex; flex-direction: column; align-items: flex-start; padding: 14px 18px; border-radius: 14px; border: 1px solid transparent; background: #f8fafc; cursor: pointer; text-align: left; transition: all 0.2s ease; }
+        .edu-menu-btn .title-row { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 13px; color: #1e293b; }
+        .edu-menu-btn .level-tag { font-size: 10px; font-weight: 700; text-transform: uppercase; color: #64748b; margin-top: 4px; padding-left: 24px; }
+        .edu-menu-btn.active { background: linear-gradient(135deg, rgba(255, 0, 127, 0.06), rgba(121, 40, 202, 0.06)); border-color: rgba(255, 0, 127, 0.2); }
+        .edu-menu-btn.active .title-row { color: #ff007f; }
+        .edu-menu-btn.active .level-tag { color: #7928ca; }
+        .edu-content-pane { background: white; border-radius: 20px; border: 1px solid #e2e8f0; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
+        .pane-header h2 { margin: 0; font-size: 22px; font-weight: 800; color: #0f172a; }
+        .pane-header p { margin: 6px 0 0 0; font-size: 13px; color: #64748b; font-weight: 500; }
+        .topic-box { border-bottom: 1px solid #f1f5f9; padding-bottom: 20px; }
+        .topic-box:last-child { border-bottom: none; }
+        .topic-box h3 { margin: 0 0 8px 0; font-size: 16px; font-weight: 700; color: #0f172a; display: flex; align-items: center; gap: 10px; }
+        .topic-box h3 i { color: #ff007f; font-size: 14px; }
+        .topic-box p { margin: 0 0 12px 0; font-size: 13px; color: #475569; line-height: 1.6; }
+        .game-idea-tag { display: flex; align-items: flex-start; gap: 12px; background: linear-gradient(135deg, rgba(0, 223, 216, 0.08) 0%, rgba(99, 102, 241, 0.08) 100%); border-radius: 12px; padding: 12px 16px; border-left: 4px solid #00dfd8; }
+        .game-idea-tag i { color: #00dfd8; font-size: 14px; margin-top: 2px; }
+        .game-idea-tag div { font-size: 12px; font-weight: 600; color: #1e1b4b; line-height: 1.5; }
+        .game-idea-tag strong { color: #6366f1; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; display: block; margin-bottom: 2px; }
+
+        .profile-container { max-width: 600px; margin: 0 auto; background: white; border-radius: 24px; padding: 30px; border: 1px solid #edf2f7; }
+        .profile-hero { display: flex; flex-direction: column; align-items: center; text-align: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 25px; margin-bottom: 25px; }
+        .profile-hero .user-avatar-lg { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #ff007f; margin-bottom: 15px; }
+        .profile-hero h2 { margin: 0; font-size: 22px; color: #0f172a; font-weight: 800; }
+        .profile-hero p { margin: 4px 0 0 0; font-size: 13px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .profile-menu-list { display: flex; flex-direction: column; gap: 8px; }
+        .profile-menu-item { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: #f8fafc; border-radius: 16px; text-decoration: none; color: #334155; font-size: 14px; font-weight: 600; border: 1px solid #f1f5f9; }
+        .pmi-left { display: flex; align-items: center; gap: 15px; }
+        .pmi-left i { font-size: 18px; width: 24px; color: #64748b; }
+
+        .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 80px; background: white; border-top: 1px solid #f1f5f9; display: flex; justify-content: center; align-items: center; gap: 60px; z-index: 1000; box-shadow: 0 -8px 40px rgba(15, 23, 42, 0.02); }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #94a3b8; font-size: 11px; font-weight: 700; cursor: pointer; text-decoration: none; min-width: 75px; }
+        .nav-item i { font-size: 22px; margin-bottom: 6px; transition: transform 0.2s; }
+        .nav-item.active { color: #ff007f; }
+        .nav-item.active i { transform: translateY(-3px); color: #ff007f; }
+
+        /* AR VIEWPORT ISOLADO DINAMICAMENTE */
+        #view-ar { position: absolute; top: 0; left: 0; width: 100%; height: calc(100% - 80px); display: none; background: transparent !important; padding: 0; z-index: 5; }
+        #view-ar.active { display: block; }
+        
+        /* Força o feed de vídeo a submeter-se à hierarquia correta */
+        video { position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; object-fit: cover !important; z-index: -100 !important; }
+        .a-canvas { width: 100% !important; height: 100% !important; position: absolute; top: 0; left: 0; z-index: 1 !important; background: transparent !important; }
     </style>
 </head>
 <body>
 
-    <a-scene mindar-image="imageTargetSrc: ./targets.mind; filterMinCF:0.001; filterBeta: 0.01; uiLoading: no; uiScanning: yes;" 
-             embedded 
-             color-space="sRGB" 
-             renderer="colorManagement: true, physicallyCorrectLights: true, antialias: true, alpha: true" 
-             vr-mode-ui="enabled: false" 
-             device-orientation-permission-ui="enabled: false">
-        
-        <a-assets>
-            <a-asset-item id="logo-jogo" src="./sarogati.glb"></a-asset-item>
-        </a-assets>
+    <!-- ================= 1) INÍCIO ================= -->
+    <div id="view-welcome" class="app-view active"></div>
 
-        <a-light type="ambient" color="#ffffff" intensity="1.4"></a-light>
-        <a-light type="directional" color="#ffffff" intensity="0.8" position="1 2 1"></a-light>
+    <!-- ================= 2) ANÁLISES ================= -->
+    <div id="view-dashboard" class="app-view">
+        <div class="app-header">
+            <div class="brand-logo"><img src="logo.png" class="brand-logo-img" alt="Sarogati Logo"></div>
+            <div class="user-profile-zone">
+                <div class="user-info-text">
+                    <div class="name">Esteves da Silva</div>
+                    <div class="rank">Nível Avançado</div>
+                </div>
+                <img src="user.jpg" class="user-avatar" alt="User Profile">
+            </div>
+        </div>
 
-        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+        <div class="tablet-layout">
+            <div class="column-left">
+                <div class="card-white" style="padding: 15px 20px;">
+                    <div class="card-title-pro" style="margin-bottom: 8px;">Distribuição de Ativos do Jogo <span>Balanço</span></div>
+                    <div class="progress-metric">
+                        <div class="pm-info" style="font-size:11px;"><span>Fundo Poupança</span><span class="val">78%</span></div>
+                        <div class="pm-bar-bg"><div class="pm-bar-fill" id="bar-save" style="--w: 78%;"></div></div>
+                    </div>
+                    <div class="progress-metric" style="margin-top: 8px;">
+                        <div class="pm-info" style="font-size:11px;"><span>Alocação Investimentos</span><span class="val">64%</span></div>
+                        <div class="pm-bar-bg"><div class="pm-bar-fill" id="bar-inv" style="--w: 64%; background: linear-gradient(90deg, #00dfd8, #6366f1);"></div></div>
+                    </div>
+                </div>
 
-        <a-entity mindar-image-target="targetIndex: 0">
-            <a-entity id="contentores-logo" position="0 0 0"
-                      animation="property: rotation; to: 0 360 0; loop: true; dur: 9000; easing: linear"
-                      animation__float="property: position; to: 0 0.1 0; dir: alternate; loop: true; dur: 2500; easing: easeInOutQuad">
-                
-                <a-entity gltf-model="#logo-jogo" scale="0.02 0.02 0.02" position="0 0 0"></a-entity>
-                
-            </a-entity>
-        </a-entity>
+                <div class="card-white" style="padding: 15px 20px;">
+                    <div class="card-title-pro" style="margin-bottom: 8px;">Ação Tabuleiro <span>Histórico do Turno</span></div>
+                    <table class="decision-table">
+                        <thead>
+                            <tr><th>Ação Tabuleiro</th><th>Impacto</th><th>Estado</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Reforço de Fundo de Emergência</td><td>+1.500 € Liquidez</td><td><span class="badge-td green">Sucesso</span></td></tr>
+                            <tr><td>Subida de Juros (BCE)</td><td>Crédito Mais Caro</td><td><span class="badge-td orange">Alerta</span></td></tr>
+                            <tr><td>Aquisição de Obrigações do Tesouro</td><td>+450 € Rendimento</td><td><span class="badge-td green">Sucesso</span></td></tr>
+                            <tr><td>Liquidação de Imposto de Selo</td><td>-120 € Caixa</td><td><span class="badge-td orange">Alerta</span></td></tr>
+                            <tr><td>Ativação de Seguro de Ativos</td><td>Risco Mitigado</td><td><span class="badge-td green">Sucesso</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
 
+                <div class="ai-chat-card">
+                    <div class="ai-chat-header"><i class="fa-solid fa-brain"></i><span>Explicador Sarogati IA</span></div>
+                    <div class="ai-messages-box" id="chat-box">
+                        <div class="chat-bubble ai">Olá Esteves! Sou o teu consultor de IA. Tens alguma dúvida sobre os 6 núcleos do teu Centro de Conhecimento ou sobre a tua rodada atual?</div>
+                    </div>
+                    <div class="chat-input-row">
+                        <input type="text" id="chat-input" placeholder="Pergunta-me sobre inflação, juros..." onkeypress="verificarTecla(event)">
+                        <button onclick="enviarMensagemIA()"><i class="fa-solid fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
 
-        <a-entity mindar-image-target="targetIndex: 1">
-            
-            <a-plane position="0 0 0.02" rotation="0 0 0" width="1.6" height="1.0" color="#0a192f" material="opacity: 0.88; transparent: true; side: double;">
-                
-                <a-rect width="1.56" height="0.96" fill="none" stroke="#00b894" stroke-width="1"></a-rect>
+            <div class="column-right">
+                <div class="gradient-banner">
+                    <div class="gb-left">
+                        <div class="title">Liquidez do Jogo</div>
+                        <div class="val">50.000 €</div>
+                        <div class="sub">Reservas do Banqueiro Central</div>
+                    </div>
+                    <div class="gb-right"><div class="lvl">Avançado</div></div>
+                </div>
 
-                <a-entity position="-0.48 0.25 0.02">
-                    <a-text value="ECONOMIA" color="#00a8ff" align="left" width="1.1" font="mozillavr"></a-text>
-                    <a-text value="Inflacao: 4%" color="#ffffff" align="left" width="0.85" position="0 -0.15 0"></a-text>
-                    <a-text value="Taxas Juro: 2.5%" color="#ffffff" align="left" width="0.85" position="0 -0.28 0"></a-text>
-                    
-                    <a-entity position="0 -0.42 0">
-                        <a-sphere radius="0.025" color="#00b894" animation="property: material.opacity; from: 1; to: 0.2; dir: alternate; loop: true; dur: 800"></a-sphere>
-                        <a-text value="Expansao" color="#00b894" align="left" width="0.8" position="0.07 0 0"></a-text>
-                    </a-entity>
-                </a-entity>
+                <div class="card-white">
+                    <div class="card-title-pro">Visão rápida <span>Pontuação de Literacia</span></div>
+                    <div class="timeline-pro">
+                        <div class="timeline-progress-bar" id="timeline-fill"></div>
+                        <div class="timeline-node" style="left: 0%;"><span class="node-lbl">0</span></div>
+                        <div class="timeline-node" style="left: 33%; background: #ff007f;"><i class="fa-solid fa-building-columns"></i><span class="node-lbl">303</span></div>
+                        <div class="timeline-node" style="left: 66%; background: #00dfd8;"><i class="fa-solid fa-coins"></i><span class="node-lbl">608</span></div>
+                        <div class="timeline-node" id="live-node" style="left: 0%; background: #7928ca;"><i class="fa-solid fa-trophy"></i></div>
+                    </div>
 
-                <a-entity position="0 0.25 0.02">
-                    <a-text value="NOTICIAS DO BANQUEIRO" color="#e17055" align="center" width="1.1" font="mozillavr"></a-text>
-                    
-                    <a-plane color="#0f2342" width="0.52" height="0.45" position="0 -0.26 0.01" material="opacity: 0.9">
-                        <a-text id="ticker-financeiro" value="A aceder aos mercados do Banco..." color="#fbc531" align="center" width="0.58" wrap-count="17" position="0 0 0.01"></a-text>
-                    </a-plane>
-                </a-entity>
+                    <div class="bar-chart-vertical">
+                        <div class="v-bar-wrapper"><div class="v-bar-graphic" id="m1" style="--vh: 35px;"></div><div class="lbl-month">Jan</div></div>
+                        <div class="v-bar-wrapper"><div class="v-bar-graphic" id="m2" style="--vh: 48px;"></div><div class="lbl-month">Fev</div></div>
+                        <div class="v-bar-wrapper"><div class="v-bar-graphic" id="m3" style="--vh: 25px;"></div><div class="lbl-month">Mar</div></div>
+                        <div class="v-bar-wrapper"><div class="v-bar-graphic" id="m4" style="--vh: 65px;"></div><div class="lbl-month">Mai</div></div>
+                        <div class="v-bar-wrapper"><div class="v-bar-graphic" id="m5" style="--vh: 75px;"></div><div class="lbl-month">Jun</div></div>
+                        <div class="v-bar-wrapper"><div class="v-bar-graphic" id="m6" style="--vh: 95px;"></div><div class="lbl-month">Ago</div></div>
+                        <div class="v-bar-wrapper"><div class="v-bar-graphic" id="m7" style="--vh: 100px;"></div><div class="lbl-month">Set</div></div>
+                    </div>
 
-                <a-entity position="0.48 0.25 0.02">
-                    <a-text value="RESERVAS" color="#00a8ff" align="right" width="1.1" font="mozillavr"></a-text>
-                    <a-text value="Liquidez do Banco:" color="#ffffff" align="right" width="0.85" position="0 -0.15 0"></a-text>
-                    <a-text value="50.000 EUR" color="#00b894" align="right" width="1.0" font="mozillavr" position="0 -0.28 0"></a-text>
-                </a-entity>
+                    <div class="card-title-pro" style="margin-top: 15px;">Ranking Global <span>Comunidade</span></div>
+                    <table class="decision-table">
+                        <thead><tr><th>Posição</th><th>Nome do Jogador</th><th>Índice</th></tr></thead>
+                        <tbody id="ranking-body"></tbody>
+                    </table>
+                </div>
 
-            </a-plane>
-        </a-marker>
+                <div class="mini-cards-row">
+                    <div class="mini-card" style="border-bottom: 3px solid #ff007f;"><div class="val">4.0%</div><div class="lbl">Inflação</div></div>
+                    <div class="mini-card" style="border-bottom: 3px solid #00dfd8;"><div class="val">2.5%</div><div class="lbl">Taxa Juro</div></div>
+                    <div class="ticker-container-2d" style="flex:2;"><div id="ticker-2d-text">A ler mercados...</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    </a-scene>
+    <!-- ================= 3) DESAFIOS (RA ISOLADA INJETADA VIA SCRIPT) ================= -->
+    <div id="view-ar" class="app-view">
+        <!-- O contentor da cena tridimensional é gerido de forma limpa pelo JavaScript -->
+        <div id="ar-container" style="width:100%; height:100%;"></div>
+    </div>
+
+    <!-- ================= 4) EDUCAÇÃO ================= -->
+    <div id="view-education" class="app-view">
+        <div class="app-header">
+            <div class="brand-logo"><img src="logo.png" class="brand-logo-img" alt="Sarogati Logo"></div>
+            <div class="user-profile-zone">
+                <div class="user-info-text">
+                    <div class="name">Centro de Conhecimento</div>
+                    <div class="rank" style="color:#ff007f;">Módulos de Aprendizagem</div>
+                </div>
+            </div>
+        </div>
+        <div class="edu-tablet-frame">
+            <div class="edu-sidebar-menu">
+                <div class="edu-menu-btn active" id="btn-n1" onclick="mudarNucleo(1)"><div class="title-row"><i class="fa-solid fa-brain"></i> Núcleo 1: Fundamentos</div><div class="level-tag">Nível Iniciante</div></div>
+                <div class="edu-menu-btn" id="btn-n2" onclick="mudarNucleo(2)"><div class="title-row"><i class="fa-solid fa-wallet"></i> Núcleo 2: Gestão Pessoal</div><div class="level-tag">Nível Intermédio</div></div>
+                <div class="edu-menu-btn" id="btn-n3" onclick="mudarNucleo(3)"><div class="title-row"><i class="fa-solid fa-gavel"></i> Núcleo 3: Decisão</div><div class="level-tag">Nível Avançado</div></div>
+                <div class="edu-menu-btn" id="btn-n4" onclick="mudarNucleo(4)"><div class="title-row"><i class="fa-solid fa-globe"></i> Núcleo 4: Macroeconomia</div><div class="level-tag">Nível Especialista</div></div>
+                <div class="edu-menu-btn" id="btn-n5" onclick="mudarNucleo(5)"><div class="title-row"><i class="fa-solid fa-users"></i> Núcleo 5: Comportamental</div><div class="level-tag">Transversal</div></div>
+                <div class="edu-menu-btn" id="btn-n6" onclick="mudarNucleo(6)"><div class="title-row"><i class="fa-solid fa-trophy"></i> Núcleo 6: Meta-Jogo</div><div class="level-tag">Aprendizagem Aplicada</div></div>
+            </div>
+            <div class="edu-content-pane" id="edu-pane"></div>
+        </div>
+    </div>
+
+    <!-- ================= 5) PERFIL ================= -->
+    <div id="view-profile" class="app-view">
+        <div class="profile-container">
+            <div class="profile-hero">
+                <img src="user.jpg" class="user-avatar-lg" alt="User Big Avatar">
+                <h2>Esteves da Silva</h2>
+                <p>Membro Fundador • ID #24M06</p>
+            </div>
+            <div class="profile-menu-list">
+                <a href="#" class="profile-menu-item"><div class="pmi-left"><i class="fa-solid fa-gear"></i> Definições de Conta</div><i class="fa-solid fa-chevron-right" style="color:#cbd5e1;"></i></a>
+                <a href="#" class="profile-menu-item"><div class="pmi-left"><i class="fa-solid fa-credit-card"></i> Estado da Subscrição</div><i class="fa-solid fa-chevron-right" style="color:#cbd5e1;"></i></a>
+                <a href="#" class="profile-menu-item" style="color: #10b981;"><div class="pmi-left"><i class="fa-solid fa-wallet" style="color:#10b981;"></i> Conectar Carteira Digital</div><i class="fa-solid fa-chevron-right" style="color:#cbd5e1;"></i></a>
+                <a href="#" class="profile-menu-item" style="color: #ef4444; margin-top: 15px;"><div class="pmi-left"><i class="fa-solid fa-arrow-right-from-bracket" style="color:#ef4444;"></i> Terminar Sessão</div><i class="fa-solid fa-chevron-right" style="color:#cbd5e1;"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= NAVEGAÇÃO INFERIOR ================= -->
+    <nav class="bottom-nav">
+        <div class="nav-item active" id="btn-welcome" onclick="mudarAba('welcome')"><i class="fa-solid fa-house"></i>Início</div>
+        <div class="nav-item" id="btn-dashboard" onclick="mudarAba('dashboard')"><i class="fa-solid fa-chart-line"></i>Análises</div>
+        <div class="nav-item" id="btn-ar" onclick="mudarAba('ar')"><i class="fa-solid fa-star"></i>Desafios</div>
+        <div class="nav-item" id="btn-education" onclick="mudarAba('education')"><i class="fa-solid fa-book-open"></i>Educação</div>
+        <div class="nav-item" id="btn-profile" onclick="mudarAba('profile')"><i class="fa-solid fa-user"></i>Perfil</div>
+    </nav>
 
     <script>
-        const eventosLiteracia = [
+        const alertas = [
             "Dica: Criar um fundo de emergencia reduz o teu risco no jogo!",
             "Atencao: A inflacao subiu, o teu dinheiro parado rende menos!",
             "Oportunidade: Taxas de juro baixas favorecem o credito habitacao.",
-            "Sabias? Diversificar os teus investimentos protege o teu patrimonio.",
-            "Regra de Ouro: Paga-te a ti proprio primeiro antes de gastares!"
+            "Sabias? Diversificar os teus investimentos protege o teu patrimonio."
+        ];
+        let ponteiro = 0;
+
+        function rodarEventos() {
+            const txt2d = document.getElementById('ticker-2d-text');
+            if(txt2d) txt2d.innerText = alertas[ponteiro];
+            ponteiro = (ponteiro + 1) % alertas.length;
+        }
+        setInterval(rodarEventos, 15000);
+
+        let jogadoresComunidade = [
+            { nome: "Ana Rodrigues", score: 84 },
+            { nome: "Esteves da Silva", score: 78, isUser: true },
+            { nome: "Carlos Mendes", score: 75 },
+            { nome: "Mariana Costa", score: 69 }
         ];
 
-        let ponteiro = 0;
-        const elementoTexto = document.getElementById('ticker-financeiro');
-
-        function atualizarTicker() {
-            if (!elementoTexto) return;
-            elementoTexto.setAttribute('value', "A processar dados...");
-            setTimeout(() => {
-                elementoTexto.setAttribute('value', eventosLiteracia[ponteiro]);
-                ponteiro = (ponteiro + 1) % eventosLiteracia.length;
-            }, 250);
+        function atualizarTabelaRanking() {
+            const tbody = document.getElementById('ranking-body');
+            if(!tbody) return;
+            tbody.innerHTML = "";
+            jogadoresComunidade.forEach(j => {
+                const variacao = Math.floor(Math.random() * 6) - 2;
+                j.score = Math.max(10, Math.min(100, j.score + (j.isUser ? 0 : variacao))); 
+            });
+            jogadoresComunidade.sort((a, b) => b.score - a.score);
+            jogadoresComunidade.forEach((j, index) => {
+                const tr = document.createElement('tr');
+                if(j.isUser) tr.className = "row-highlight-user";
+                tr.innerHTML = `<td><strong>#${index + 1}</strong></td><td>${j.nome}</td><td><strong>${j.score}/100</strong></td>`;
+                tbody.appendChild(tr);
+            });
         }
 
-        setInterval(atualizarTicker, 15000);
-        setTimeout(atualizarTicker, 3000);
+        function verificarTecla(e) { if (e.key === 'Enter') enviarMensagemIA(); }
+
+        function enviarMensagemIA() {
+            const input = document.getElementById('chat-input');
+            const box = document.getElementById('chat-box');
+            if (!input || !box || input.value.trim() === "") return;
+
+            const userText = input.value.trim();
+            const userBubble = document.createElement('div');
+            userBubble.className = "chat-bubble user";
+            userBubble.innerText = userText;
+            box.appendChild(userBubble);
+            box.scrollTop = box.scrollHeight;
+            input.value = "";
+
+            setTimeout(() => {
+                const aiBubble = document.createElement('div');
+                aiBubble.className = "chat-bubble ai";
+                aiBubble.innerText = processarRespostaIA(userText);
+                box.appendChild(aiBubble);
+                box.scrollTop = box.scrollHeight;
+            }, 750);
+        }
+
+        function processarRespostaIA(pergunta) {
+            const p = pergunta.toLowerCase();
+            if (p.includes('inflação') || p.includes('inflacao')) return "A inflação de 4% indica que o custo de vida está a subir. Evita acumular capital parado no banco; podes alocar em ativos reais no teu turno para te protegeres!";
+            if (p.includes('juro') || p.includes('taxa')) return "Com a taxa do BCE fixa em 2.5%, o custo do crédito está controlado. Analisa o teu fluxo antes de contraíres empréstimos estruturais.";
+            if (p.includes('emergência') || p.includes('fundo')) return "O teu Fundo de Poupança Coletivo está excelente (78%). Ele vai proteger-te de crises inesperadas ou rodadas de penalização no tabuleiro!";
+            return "Excelente questão, Esteves! Essa decisão depende diretamente do ciclo de expansão em que nos encontramos no tabuleiro do Banqueiro Central. Queres analisar o impacto na tua liquidez?";
+        }
+
+        const nucleosEducacao = {
+            1: { titulo: "🧠 Núcleo 1: Fundamentos", subtitulo: "Nível Iniciante. Essenciais para todos os jogadores começarem.", topicos: [{ t: "💰 Dinheiro e valor", d: "O que é o dinheiro (funções: meio de troca, reserva de valor, unidade de conta), inflação e poder de compra, e a diferença entre necessidades e desejos.", g: "Missão de sobrevivência com orçamento limitado no tabuleiro." }, { t: "📊 Orçamento pessoal", d: "Como fazer um orçamento (receita vs despesas), despesas fixas vs variáveis e a famosa Regra 50-30-20.", g: "Jogo tipo 'simulador de mês' com eventos inesperados." }, { t: "👑 Sistema financeiro básico", d: "O que são bancos e como funcionam, tipos de contas (ordem, poupança) e a mecânica de juros simples vs compostos.", g: "Desbloquear 'níveis de banco' com diferentes vantagens." }] },
+            2: { titulo: "💡 Núcleo 2: Gestão Financeira Pessoal", subtitulo: "Nível Intermédio. Estratégias e mitigação de crises no tabuleiro.", topicos: [{ t: "💳 Crédito e dívida", d: "Tipos de crédito (habitação, pessoal, cartão), conceitos de TAEG, spread, juros e os riscos reais do sobre-endividamento.", g: "Desafios rápidos de decisão: 'Aceitar ou recusar crédito?'" }, { t: "🛟 Poupança e fundo de emergência", d: "Importância crítica da poupança, estabelecimento de objetivos financeiros e a gestão de liquidez vs rentabilidade.", g: "'Modo Crise' extremo onde só sobrevive quem poupou." }, { t: "📈 Introdução ao investimento", d: "Mapeamento de risco vs retorno, diversificação de portefólio e tipos de ativos (ações, obrigações, ETFs).", g: "Carteira virtual com evolução ao longo do jogo." }] },
+            3: { titulo: "🚀 Núcleo 3: Tomada de Decisão", subtitulo: "Nível Avançado. Planeamento de metas complexas a longo prazo.", topicos: [{ t: "🧮 Planeamento financeiro", d: "Estratégias para curto, médio e longo prazo. Planeamento para grandes objetivos (casa, educação) e aposentação.", g: "Linha temporal onde decisões passadas afetam o futuro." }, { t: "📉 Literacia de risco", d: "A psicologia do risco (medo vs ganância), volatilidade e como evitar erros comuns como o timing de mercado.", g: "Eventos de crash de mercado simulados durante as rodadas." }, { t: "⚖️ Fiscalidade básica", d: "Impostos sobre rendimento, tributação de investimentos e aproveitamento de benefícios fiscais legítimos.", g: "Otimização fiscal para maximizar a pontuação líquida." }] },
+            4: { titulo: "🌍 Núcleo 4: Contexto Económico", subtitulo: "Nível Especialista. As forças do mercado em escala global.", topicos: [{ t: "🌐 Economia real", d: "Análise do PIB, desemprego, inflação, políticas monetárias do BCE e leitura dos ciclos económicos.", g: "'Modo Governante' onde as tuas decisões impactam toda a economia do jogo." }, { t: "🏢 Empresas e mercados", d: "Como funcionam as empresas, bolsas de valores mundiais, IPOs e métodos de avaliação corporativa.", g: "Gerir uma empresa virtual concorrente." }, { t: "🌱 Finanças sustentáveis", d: "Princípios ESG (ambiental, social, governance), investimento responsável e o impacto social das finanças.", g: "Ganhar pontos bónus por decisões éticas e sustentáveis." }] },
+            5: { titulo: "🧑‍🤝‍🧑 Núcleo 5: Competências Comportamentais", subtitulo: "Módulo Transversal. Fatores psicológicos cruciais.", topicos: [{ t: "🧠 Psicologia financeira", d: "Identificação de vieses cognitivos (como o excesso de confiança), controlo do consumo impulsivo e influência social.", g: "Eventos surpresa que testam a tua resiliência mental a impulsos." }, { t: "🎯 Literacia digital e fraude", d: "Deteção de phishing e scams financeiros, segurança online e análise de criptomoedas (risco vs hype).", g: "Detetar fraudes e esquemas em tempo limitado." }] },
+            6: { titulo: "🏆 Núcleo 6: Aprendizagem Aplicada", subtitulo: "Meta-Jogo. A simulação da vida real consolidada.", topicos: [{ t: "📚 Missões e desafios", d: "Simulação de uma vida financeira completa. Cenários dinâmicos: estudante, família ou empresário.", g: "Tomar decisões com impacto cumulativo no resultado final." }] }
+        };
+
+        function mudarNucleo(num) {
+            document.querySelectorAll('.edu-menu-btn').forEach(b => b.classList.remove('active'));
+            if(document.getElementById('btn-n' + num)) document.getElementById('btn-n' + num).classList.add('active');
+            const dados = nucleosEducacao[num];
+            const pane = document.getElementById('edu-pane');
+            if(!pane || !dados) return;
+            let html = `<div class="pane-header"><h2>${dados.titulo}</h2><p>${dados.subtitulo}</p></div>`;
+            dados.topicos.forEach(t => {
+                html += `<div class="topic-box"><h3><i class="fa-solid fa-book"></i> ${t.t}</h3><p>${t.d}</p><div class="game-idea-tag"><i class="fa-solid fa-gamepad"></i><div><strong>Ideia de Jogo</strong>${t.g}</div></div></div>`;
+            });
+            pane.innerHTML = html;
+        }
+
+        // CONTROLADOR DE FLUXO DE COMPONENTES DE REALIDADE AUMENTADA SENSÍVEL AO ECRÃ DO SURFACE
+        function mudarAba(destino) {
+            document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById('view-' + destino).classList.add('active');
+            document.getElementById('btn-' + destino).classList.add('active');
+            
+            if (destino === 'dashboard') {
+                atualizarTabelaRanking();
+                setTimeout(() => {
+                    document.getElementById('bar-save').style.width = "78%";
+                    document.getElementById('bar-inv').style.width = "64%";
+                    document.getElementById('timeline-fill').style.width = "78%";
+                    document.getElementById('live-node').style.left = "78%";
+                    for(let i=1; i<=7; i++) {
+                        const h = [35, 48, 25, 65, 75, 95, 100][i-1];
+                        document.getElementById('m' + i).style.height = h + "px";
+                    }
+                }, 100);
+            }
+            
+            if (destino === 'education') mudarNucleo(1);
+
+            // GESTOR DE CONTEXTO GRÁFICO SEGURO (MINDAR / A-FRAME)
+            const container = document.getElementById('ar-container');
+            if (destino === 'ar') {
+                // Injeta uma estrutura limpa e fresca no DOM para forçar o WebGL a ler as proporções corretas do ecrã
+                container.innerHTML = `
+                    <a-scene id="ar-scene" mindar-image="imageTargetSrc: ./targets.mind; autoStart: true;" embedded vr-mode-ui="enabled: false">
+                        <a-assets>
+                            <a-asset-item id="logo-jogo" src="./sarogati.glb"></a-asset-item>
+                            <img id="logo-png-asset" src="logo.png">
+                        </a-assets>
+
+                        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+                        
+                        <!-- TARGET 0: MARCADOR DA BÚSSOLA (IMAGEM image_7b6cec.jpg) -->
+                        <a-entity mindar-image-target="targetIndex: 0">
+                            <!-- Cubo Rosa de Validação Tridimensional Nítido -->
+                            <a-box position="-0.15 0 0.05" scale="0.1 0.1 0.1" color="#ff007f"></a-box>
+                            
+                            <!-- Modelo GLB do Logótipo Sarogati -->
+                            <a-entity rotation="90 180 0" position="0 0 0">
+                               <!--  <a-entity gltf-model="#logo-jogo" scale="0.05 0.05 0.05" position="0 0 0.02"></a-entity> -->
+                                <a-entity gltf-model="#logo-jogo" scale="0.1 0.1 0.1" position="0 0 0.05" material="color: #00dfd8; shader: flat;"></a-entity>
+                            </a-entity>
+                        </a-entity>
+
+
+
+<!-- AQUI TARGET 0: MARCADOR DA BÚSSOLA (IMAGEM image_7b6cec.jpg)
+<a-entity mindar-image-target="targetIndex: 0">
+    <!-- O nosso cubo rosa de validação que já funciona -->
+    <a-box position="-0.2 0 0.05" scale="0.1 0.1 0.1" color="#ff007f"></a-box>
+    
+    <!-- EMBLEMA DO SAROGATI EM REALIDADE AUMENTADA -->
+    <a-entity rotation="90 180 0" position="0 0 0.05">
+        <!-- Disco Branco de Fundo (Efeito Moeda/Ficha de Jogo) -->
+        <a-cylinder rotation="90 0 0" radius="0.25" height="0.02" color="#ffffff" material="roughness: 0.2"></a-cylinder>
+        
+        <!-- Projeção da Imagem Oficial do Logo com Transparência Ativa -->
+        <a-image src="#logo-png-asset" position="0 0 0.015" width="0.4" height="0.1" material="transparent: true; alphaTest: 0.3;"></a-image>
+        
+        <!-- Anel de Luz Neon Ciano à Volta (Identidade Sarogati) -->
+        <a-ring color="#00dfd8" radius-inner="0.24" radius-outer="0.26" position="0 0 0.016"></a-ring>
+    </a-entity>
+</a-entity>
+--> 
+
+
+                        
+
+                        <!-- TARGET 1: INFOPAINEL EXTRA -->
+                        <a-entity mindar-image-target="targetIndex: 1">
+                            <a-plane position="0 0 0.05" rotation="-70 0 0" width="1.6" height="1.2" color="#0a192f" material="opacity: 0.88; transparent: true; side: double;">
+                                <a-rect width="1.56" height="1.16" fill="none" stroke="#00b894" stroke-width="1"></a-rect>
+                                <a-image src="#logo-png-asset" position="0 0.45 0.02" width="0.7" height="0.18" material="transparent: true; alphaTest: 0.5;"></a-image>
+                                <a-entity position="-0.48 0.1 0.02">
+                                    <a-text value="ECONOMIA" color="#00a8ff" align="left" width="1.1" font="mozillavr"></a-text>
+                                    <a-text value="Inflacao: 4%" color="#ffffff" align="left" width="0.85" position="0 -0.15 0"></a-text>
+                                    <a-text value="Taxas Juro: 2.5%" color="#ffffff" align="left" width="0.85" position="0 -0.28 0"></a-text>
+                                </a-entity>
+                                <a-entity position="0 0.1 0.02">
+                                    <a-text value="NOTICIAS" color="#e17055" align="center" width="1.1" font="mozillavr"></a-text>
+                                    <a-plane color="#0f2342" width="0.52" height="0.45" position="0 -0.26 0.01" material="opacity: 0.9">
+                                        <a-text value="Mercados ativos." color="#fbc531" align="center" width="0.58" wrap-count="17" position="0 0 0.01"></a-text>
+                                    </a-plane>
+                                </a-entity>
+                                <a-entity position="0.48 0.1 0.02">
+                                    <a-text value="RESERVAS" color="#00a8ff" align="right" width="1.1" font="mozillavr"></a-text>
+                                    <a-text value="Liquidez:" color="#ffffff" align="right" width="0.85" position="0 -0.15 0"></a-text>
+                                    <a-text value="50.000 EUR" color="#00b894" align="right" width="1.0" font="mozillavr" position="0 -0.28 0"></a-text>
+                                </a-entity>
+                            </a-plane>
+                        </a-entity>
+                    </a-scene>
+                `;
+                // Garante o alinhamento pós-injeção
+                setTimeout(() => {
+                    const scene = document.querySelector('a-scene');
+                    if(scene) scene.resize();
+                }, 200);
+            } else {
+                // Remove completamente a cena do DOM nas outras abas. Isto liberta a memória da placa gráfica e desliga a câmara de imediato
+                container.innerHTML = '';
+                const videoFeed = document.querySelector('video');
+                if (videoFeed) videoFeed.remove();
+            }
+        }
     </script>
 </body>
 </html>
