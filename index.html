@@ -5,31 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <title>Sarogati - Hub Pro</title>
     
-    <!-- Bibliotecas de Produção: MindAR + A-Frame Puro -->
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
     
-    <!-- Font Awesome e Google Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* CONFIGURAÇÃO PARA TABLET EM ORIENTAÇÃO HORIZONTAL */
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Plus Jakarta Sans', sans-serif; }
-        html, body { 
-            margin: 0; padding: 0; width: 100%; height: 100%; 
-            overflow: hidden; background-color: #f8fafc; color: #1e293b;
-        }
+        html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #f8fafc; color: #1e293b; }
 
-        /* VISTAS DA APP */
-        .app-view {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: calc(100% - 80px);
-            display: none; overflow-y: auto; z-index: 1; padding: 25px;
-        }
+        .app-view { position: absolute; top: 0; left: 0; width: 100%; height: calc(100% - 80px); display: none; overflow-y: auto; z-index: 1; padding: 25px; }
         .app-view.active { display: block; }
 
-        /* HEADERS */
         .app-header { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 20px; }
         .brand-logo-img { height: 35px; width: auto; object-fit: contain; }
         .user-profile-zone { display: flex; align-items: center; gap: 12px; }
@@ -38,33 +26,27 @@
         .user-info-text .rank { font-size: 11px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
         .user-avatar { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid #ff007f; box-shadow: 0 4px 10px rgba(255, 0, 127, 0.15); }
 
-        /* BACKGROUND INÍCIO */
         #view-welcome { padding: 0; background-image: url('entrada.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; width: 100%; height: calc(100% - 80px); }
 
-        /* LAYOUT TABLET HORIZONTAL BALANCED */
         .tablet-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
         .column-left, .column-right { display: flex; flex-direction: column; gap: 20px; }
 
-        /* CARTÕES WHITE */
         .card-white { background: white; border-radius: 20px; padding: 22px; box-shadow: 0 10px 30px rgba(15, 23, 42, 0.01); border: 1px solid rgba(241, 245, 249, 0.9); }
         .card-title-pro { font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
         .card-title-pro span { font-size: 11px; color: #64748b; font-weight: 500; }
 
-        /* BANNER GRADIENTE */
         .gradient-banner { background: linear-gradient(135deg, #ff007f 0%, #7928ca 50%, #00dfd8 100%); border-radius: 20px; padding: 22px; color: white; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 30px rgba(121, 40, 202, 0.12); }
         .gb-left .title { font-size: 10px; text-transform: uppercase; opacity: 0.85; letter-spacing: 1px; font-weight: 600; }
         .gb-left .val { font-size: 28px; font-weight: 800; margin: 2px 0; }
         .gb-left .sub { font-size: 11px; opacity: 0.9; }
         .gb-right .lvl { font-size: 12px; font-weight: 800; text-transform: uppercase; background: rgba(255,255,255,0.25); padding: 6px 14px; border-radius: 50px; }
 
-        /* PROGRESS BARS */
         .progress-metric { margin-bottom: 12px; }
         .pm-info { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 6px; }
         .pm-info span.val { color: #0f172a; font-weight: 800; }
         .pm-bar-bg { width: 100%; height: 6px; background: #f1f5f9; border-radius: 10px; overflow: hidden; }
         .pm-bar-fill { height: 100%; background: linear-gradient(90deg, #ff007f, #7928ca); border-radius: 10px; width: 0; transition: width 1.5s ease-out; }
 
-        /* TABELAS OPTIMIZADAS */
         .decision-table { width: 100%; border-collapse: collapse; text-align: left; }
         .decision-table th { font-size: 11px; text-transform: uppercase; color: #64748b; padding: 10px 8px; font-weight: 700; border-bottom: 1px solid #f1f5f9; }
         .decision-table td { font-size: 13px; padding: 12px 8px; border-bottom: 1px solid #f8fafc; color: #334155; }
@@ -74,7 +56,6 @@
         .row-highlight-user { background-color: rgba(255, 0, 127, 0.04) !important; }
         .row-highlight-user td { color: #ff007f !important; }
 
-        /* EXPLICADOR IA REPOSICIONADO E REESCALADO NO FUNDO DA COLUNA */
         .ai-chat-card { display: flex; flex-direction: column; height: 185px; background: white; border-radius: 20px; padding: 18px; border: 1px solid rgba(241, 245, 249, 0.9); }
         .ai-chat-header { display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; margin-bottom: 10px; }
         .ai-chat-header i { color: #7928ca; font-size: 16px; }
@@ -88,7 +69,6 @@
         .chat-input-row input:focus { border-color: #7928ca; background: white; }
         .chat-input-row button { background: #0f172a; color: white; border: none; width: 38px; height: 38px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 13px; }
 
-        /* TIMELINE E GRÁFICO VERTICAL */
         .timeline-pro { position: relative; width: 100%; height: 6px; background: #e2e8f0; border-radius: 10px; margin: 30px 0 15px 0; }
         .timeline-progress-bar { position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: linear-gradient(90deg, #f97316, #ff007f); border-radius: 10px; transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1); }
         .timeline-node { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 24px; height: 24px; border-radius: 50%; background: #0f172a; border: 3px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; color: white; font-size: 9px; }
@@ -106,37 +86,6 @@
         .ticker-container-2d { background: #fff3cd; border: 1px solid #ffeeba; border-radius: 16px; padding: 12px; display: flex; gap: 10px; align-items: center; }
         #ticker-2d-text { font-size: 12px; font-weight: 600; color: #856404; line-height: 1.4; }
 
-        /* WIKI EDUCAÇÃO */
-        .wiki-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 15px; }
-        .wiki-card { background: white; border-radius: 20px; padding: 25px; border: 1px solid #e2e8f0; }
-        .wiki-icon-frame { width: 50px; height: 50px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 20px; }
-        .wiki-card h3 { margin: 0 0 10px 0; font-size: 18px; color: #0f172a; font-weight: 700; }
-        .wiki-card p { margin: 0; font-size: 13px; color: #64748b; line-height: 1.6; }
-
-        /* PERFIL */
-        .profile-container { max-width: 600px; margin: 0 auto; background: white; border-radius: 24px; padding: 30px; border: 1px solid #edf2f7; }
-        .profile-hero { display: flex; flex-direction: column; align-items: center; text-align: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 25px; margin-bottom: 25px; }
-        .profile-hero .user-avatar-lg { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #ff007f; margin-bottom: 15px; }
-        .profile-hero h2 { margin: 0; font-size: 22px; color: #0f172a; font-weight: 800; }
-        .profile-hero p { margin: 4px 0 0 0; font-size: 13px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
-        .profile-menu-list { display: flex; flex-direction: column; gap: 8px; }
-        .profile-menu-item { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: #f8fafc; border-radius: 16px; text-decoration: none; color: #334155; font-size: 14px; font-weight: 600; border: 1px solid #f1f5f9; }
-        .pmi-left { display: flex; align-items: center; gap: 15px; }
-        .pmi-left i { font-size: 18px; width: 24px; color: #64748b; }
-
-        /* NAV INFERIOR */
-        .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 80px; background: white; border-top: 1px solid #f1f5f9; display: flex; justify-content: center; align-items: center; gap: 60px; z-index: 100; box-shadow: 0 -8px 40px rgba(15, 23, 42, 0.02); }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: #94a3b8; font-size: 11px; font-weight: 700; cursor: pointer; text-decoration: none; min-width: 75px; }
-        .nav-item i { font-size: 22px; margin-bottom: 6px; transition: transform 0.2s; }
-        .nav-item.active { color: #ff007f; }
-        .nav-item.active i { transform: translateY(-3px); color: #ff007f; }
-
-        /* RA */
-        #view-ar { width: 100%; height: calc(100% - 80px); background: transparent; position: absolute; top: 0; left: 0; padding: 0; }
-        video { position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; object-fit: cover !important; z-index: -2 !important; }
-        .a-canvas { width: 100% !important; height: 100% !important; position: absolute; top: 0; left: 0; background-color: transparent !important; }
-
-        /* EDU NÚCLEOS */
         .edu-tablet-frame { display: grid; grid-template-columns: 280px 1fr; gap: 25px; height: calc(100vh - 170px); }
         .edu-sidebar-menu { display: flex; flex-direction: column; gap: 8px; background: white; padding: 15px; border-radius: 20px; border: 1px solid #e2e8f0; overflow-y: auto; }
         .edu-menu-btn { display: flex; flex-direction: column; align-items: flex-start; padding: 14px 18px; border-radius: 14px; border: 1px solid transparent; background: #f8fafc; cursor: pointer; text-align: left; transition: all 0.2s ease; }
@@ -157,14 +106,32 @@
         .game-idea-tag i { color: #00dfd8; font-size: 14px; margin-top: 2px; }
         .game-idea-tag div { font-size: 12px; font-weight: 600; color: #1e1b4b; line-height: 1.5; }
         .game-idea-tag strong { color: #6366f1; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; display: block; margin-bottom: 2px; }
+
+        .profile-container { max-width: 600px; margin: 0 auto; background: white; border-radius: 24px; padding: 30px; border: 1px solid #edf2f7; }
+        .profile-hero { display: flex; flex-direction: column; align-items: center; text-align: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 25px; margin-bottom: 25px; }
+        .profile-hero .user-avatar-lg { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #ff007f; margin-bottom: 15px; }
+        .profile-hero h2 { margin: 0; font-size: 22px; color: #0f172a; font-weight: 800; }
+        .profile-hero p { margin: 4px 0 0 0; font-size: 13px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .profile-menu-list { display: flex; flex-direction: column; gap: 8px; }
+        .profile-menu-item { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: #f8fafc; border-radius: 16px; text-decoration: none; color: #334155; font-size: 14px; font-weight: 600; border: 1px solid #f1f5f9; }
+        .pmi-left { display: flex; align-items: center; gap: 15px; }
+        .pmi-left i { font-size: 18px; width: 24px; color: #64748b; }
+
+        .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 80px; background: white; border-top: 1px solid #f1f5f9; display: flex; justify-content: center; align-items: center; gap: 60px; z-index: 100; box-shadow: 0 -8px 40px rgba(15, 23, 42, 0.02); }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #94a3b8; font-size: 11px; font-weight: 700; cursor: pointer; text-decoration: none; min-width: 75px; }
+        .nav-item i { font-size: 22px; margin-bottom: 6px; transition: transform 0.2s; }
+        .nav-item.active { color: #ff007f; }
+        .nav-item.active i { transform: translateY(-3px); color: #ff007f; }
+
+        #view-ar { width: 100%; height: calc(100% - 80px); background: transparent; position: absolute; top: 0; left: 0; padding: 0; }
+        video { position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; object-fit: cover !important; z-index: -2 !important; }
+        .a-canvas { width: 100% !important; height: 100% !important; position: absolute; top: 0; left: 0; background-color: transparent !important; }
     </style>
 </head>
 <body>
 
-    <!-- ================= 1) INÍCIO ================= -->
     <div id="view-welcome" class="app-view active"></div>
 
-    <!-- ================= 2) ANÁLISES (LAYOUT CORRIGIDO E SEM ESPAÇO MORTO) ================= -->
     <div id="view-dashboard" class="app-view">
         <div class="app-header">
             <div class="brand-logo"><img src="logo.png" class="brand-logo-img" alt="Sarogati Logo"></div>
@@ -178,7 +145,6 @@
         </div>
 
         <div class="tablet-layout">
-            <!-- COLUNA ESQUERDA: Distribuição e Tabela Expandida de Ações -->
             <div class="column-left">
                 <div class="card-white" style="padding: 15px 20px;">
                     <div class="card-title-pro" style="margin-bottom: 8px;">Distribuição de Ativos do Jogo <span>Balanço</span></div>
@@ -192,7 +158,6 @@
                     </div>
                 </div>
 
-                <!-- SOLUÇÃO: EXPANSÃO DE LINHAS DA TABELA PARA PREENCHER O ESPAÇO VERTICAL -->
                 <div class="card-white" style="padding: 15px 20px;">
                     <div class="card-title-pro" style="margin-bottom: 8px;">Ação Tabuleiro <span>Histórico do Turno</span></div>
                     <table class="decision-table">
@@ -209,7 +174,6 @@
                     </table>
                 </div>
 
-                <!-- SOLUÇÃO: CHAT REMODELADO E REPOSICIONADO NO FUNDO DA COLUNA -->
                 <div class="ai-chat-card">
                     <div class="ai-chat-header"><i class="fa-solid fa-brain"></i><span>Explicador Sarogati IA</span></div>
                     <div class="ai-messages-box" id="chat-box">
@@ -222,7 +186,6 @@
                 </div>
             </div>
 
-            <!-- COLUNA DIREITA: Alinhada simetricamente em altura com a esquerda -->
             <div class="column-right">
                 <div class="gradient-banner">
                     <div class="gb-left">
@@ -269,7 +232,6 @@
         </div>
     </div>
 
-    <!-- ================= 3) DESAFIOS (RA) ================= -->
     <div id="view-ar" class="app-view">
         <a-scene mindar-image="imageTargetSrc: ./targets.mind; autoStart: false; filterMinCF:0.001; filterBeta: 0.01;" 
                  embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights: true, antialias: true, alpha: true" 
@@ -281,11 +243,15 @@
             <a-light type="ambient" color="#ffffff" intensity="1.4"></a-light>
             <a-light type="directional" color="#ffffff" intensity="0.8" position="1 2 1"></a-light>
             <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+            
             <a-entity mindar-image-target="targetIndex: 0">
                 <a-entity rotation="90 180 0" position="0 0 0">
-                    <a-entity gltf-model="#logo-jogo" scale="0.02 0.02 0.02" position="0 0 0"></a-entity>
+                    <a-entity id="mesh-centralizer" position="0 0 0.1">
+                        <a-entity gltf-model="#logo-jogo" scale="0.02 0.02 0.02" position="0 0 0"></a-entity>
+                    </a-entity>
                 </a-entity>
             </a-entity>
+
             <a-entity mindar-image-target="targetIndex: 1">
                 <a-plane position="0 0 0.05" rotation="-70 0 0" width="1.6" height="1.2" color="#0a192f" material="opacity: 0.88; transparent: true; side: double;">
                     <a-rect width="1.56" height="1.16" fill="none" stroke="#00b894" stroke-width="1"></a-rect>
@@ -311,7 +277,6 @@
         </a-scene>
     </div>
 
-    <!-- ================= 4) EDUCAÇÃO ================= -->
     <div id="view-education" class="app-view">
         <div class="app-header">
             <div class="brand-logo"><img src="logo.png" class="brand-logo-img" alt="Sarogati Logo"></div>
@@ -335,7 +300,6 @@
         </div>
     </div>
 
-    <!-- ================= 5) PERFIL ================= -->
     <div id="view-profile" class="app-view">
         <div class="profile-container">
             <div class="profile-hero">
@@ -352,7 +316,6 @@
         </div>
     </div>
 
-    <!-- ================= NAVEGAÇÃO INFERIOR ================= -->
     <nav class="bottom-nav">
         <div class="nav-item active" id="btn-welcome" onclick="mudarAba('welcome')"><i class="fa-solid fa-house"></i>Início</div>
         <div class="nav-item" id="btn-dashboard" onclick="mudarAba('dashboard')"><i class="fa-solid fa-chart-line"></i>Análises</div>
@@ -477,10 +440,30 @@
                 }, 100);
             }
             if (destino === 'education') mudarNucleo(1);
+
             const cena = document.querySelector('a-scene');
-            if(cena && cena.systems["mindar-image-system"]) {
-                if(destino === 'ar') cena.systems["mindar-image-system"].start();
-                else cena.systems["mindar-image-system"].stop();
+            if (cena) {
+                if (destino === 'ar') {
+                    if (cena.hasLoaded) {
+                        arrancarMotorRA(cena);
+                    } else {
+                        cena.addEventListener('loaded', () => arrancarMotorRA(cena));
+                    }
+                } else {
+                    if (cena.systems["mindar-image-system"]) {
+                        cena.systems["mindar-image-system"].stop();
+                    }
+                }
+            }
+        }
+
+        function arrancarMotorRA(cena) {
+            try {
+                if (cena.systems["mindar-image-system"]) {
+                    cena.systems["mindar-image-system"].start();
+                }
+            } catch (err) {
+                console.error("Erro ao iniciar o MindAR: ", err);
             }
         }
     </script>
