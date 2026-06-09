@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <title>Sarogati - Hub Pro</title>
     
+    <!-- Bibliotecas de Produção: MindAR + A-Frame Puro -->
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
     
+    <!-- Font Awesome e Google Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
@@ -123,15 +125,18 @@
         .nav-item.active { color: #ff007f; }
         .nav-item.active i { transform: translateY(-3px); color: #ff007f; }
 
-        #view-ar { width: 100%; height: calc(100% - 80px); background: transparent; position: absolute; top: 0; left: 0; padding: 0; }
-        video { position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; object-fit: cover !important; z-index: -2 !important; }
-        .a-canvas { width: 100% !important; height: 100% !important; position: absolute; top: 0; left: 0; background-color: transparent !important; }
+        /* AJUSTE FORÇADO DE VISIBILIDADE PARA RENDERIZAÇÃO WEBGL */
+        #view-ar { width: 100%; height: calc(100% - 80px); background: transparent !important; position: absolute; top: 0; left: 0; padding: 0; }
+        video { position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; object-fit: cover !important; z-index: -10 !important; }
+        .a-canvas { width: 100% !important; height: 100% !important; position: absolute; top: 0; left: 0; z-index: 5 !important; }
     </style>
 </head>
 <body>
 
+    <!-- ================= 1) INÍCIO ================= -->
     <div id="view-welcome" class="app-view active"></div>
 
+    <!-- ================= 2) ANÁLISES ================= -->
     <div id="view-dashboard" class="app-view">
         <div class="app-header">
             <div class="brand-logo"><img src="logo.png" class="brand-logo-img" alt="Sarogati Logo"></div>
@@ -177,7 +182,7 @@
                 <div class="ai-chat-card">
                     <div class="ai-chat-header"><i class="fa-solid fa-brain"></i><span>Explicador Sarogati IA</span></div>
                     <div class="ai-messages-box" id="chat-box">
-                        <div class="chat-bubble ai">Olá Esteves! Sou o teu consultor de IA. Tens alguma dúvida sobre os 6 núcleos do teu Centro de Conhecimento ou sobre a tua rodada atual?</div>
+                        <div class="chat-bubble ai">Olá Esteves! Sou o teu consultor de IA. Tens alguma dúvida sobre os 6 núcleos do teu Centro de Conhecimento ou sobre a tua rodada atual?[cite: 1]</div>
                     </div>
                     <div class="chat-input-row">
                         <input type="text" id="chat-input" placeholder="Pergunta-me sobre inflação, risco, juros..." onkeypress="verificarTecla(event)">
@@ -232,27 +237,37 @@
         </div>
     </div>
 
+    <!-- ================= 3) DESAFIOS (RA COM RECALCULO DE CANVAS) ================= -->
     <div id="view-ar" class="app-view">
-        <a-scene mindar-image="imageTargetSrc: ./targets.mind; autoStart: false; filterMinCF:0.001; filterBeta: 0.01;" 
+        <a-scene id="ar-scene" mindar-image="imageTargetSrc: ./targets.mind; autoStart: false; filterMinCF:0.001; filterBeta: 0.01;" 
                  embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights: true, antialias: true, alpha: true" 
                  vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+            
             <a-assets>
                 <a-asset-item id="logo-jogo" src="./sarogati.glb"></a-asset-item>
                 <img id="logo-png-asset" src="logo.png">
             </a-assets>
+
             <a-light type="ambient" color="#ffffff" intensity="1.4"></a-light>
             <a-light type="directional" color="#ffffff" intensity="0.8" position="1 2 1"></a-light>
             <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
             
+            <!-- TARGET 0: MARCADOR DA BÚSSOLA (IMAGEM image_7b6cec.jpg) -->
             <a-entity mindar-image-target="targetIndex: 0">
                 <a-entity rotation="90 180 0" position="0 0 0">
+                    
+                    <!-- SISTEMA DE DIAGNÓSTICO: Cubo Rosa Nativo colocado à esquerda para teste visual forçado -->
+                    <a-box position="-0.3 0 0.1" scale="0.15 0.15 0.15" color="#ff007f"></a-box>
+                    
+                    <!-- Teu Modelo GLB Real -->
                     <a-entity id="mesh-centralizer" position="0 0 0.1">
-                      <!--  <a-entity gltf-model="#logo-jogo" scale="0.02 0.02 0.02" position="0 0 0"></a-entity> -->
-                        <a-box position="0 0 0" scale="0.2 0.2 0.2" color="#ff007f"></a-box>
+                        <a-entity gltf-model="#logo-jogo" scale="0.02 0.02 0.02" position="0 0 0"></a-entity>
                     </a-entity>
+
                 </a-entity>
             </a-entity>
 
+            <!-- TARGET 1: MARCADOR DE INFOPAINEL -->
             <a-entity mindar-image-target="targetIndex: 1">
                 <a-plane position="0 0 0.05" rotation="-70 0 0" width="1.6" height="1.2" color="#0a192f" material="opacity: 0.88; transparent: true; side: double;">
                     <a-rect width="1.56" height="1.16" fill="none" stroke="#00b894" stroke-width="1"></a-rect>
@@ -278,6 +293,7 @@
         </a-scene>
     </div>
 
+    <!-- ================= 4) EDUCAÇÃO ================= -->
     <div id="view-education" class="app-view">
         <div class="app-header">
             <div class="brand-logo"><img src="logo.png" class="brand-logo-img" alt="Sarogati Logo"></div>
@@ -301,6 +317,7 @@
         </div>
     </div>
 
+    <!-- ================= 5) PERFIL ================= -->
     <div id="view-profile" class="app-view">
         <div class="profile-container">
             <div class="profile-hero">
@@ -317,6 +334,7 @@
         </div>
     </div>
 
+    <!-- ================= NAVEGAÇÃO INFERIOR ================= -->
     <nav class="bottom-nav">
         <div class="nav-item active" id="btn-welcome" onclick="mudarAba('welcome')"><i class="fa-solid fa-house"></i>Início</div>
         <div class="nav-item" id="btn-dashboard" onclick="mudarAba('dashboard')"><i class="fa-solid fa-chart-line"></i>Análises</div>
@@ -445,11 +463,15 @@
             const cena = document.querySelector('a-scene');
             if (cena) {
                 if (destino === 'ar') {
-                    if (cena.hasLoaded) {
-                        arrancarMotorRA(cena);
-                    } else {
-                        cena.addEventListener('loaded', () => arrancarMotorRA(cena));
-                    }
+                    // DISPARADOR CRÍTICO: Força o A-Frame a acordar o motor gráfico e a recalcular o canvas 3D
+                    setTimeout(() => {
+                        cena.resize();
+                        if (cena.hasLoaded) {
+                            arrancarMotorRA(cena);
+                        } else {
+                            cena.addEventListener('loaded', () => arrancarMotorRA(cena));
+                        }
+                    }, 150);
                 } else {
                     if (cena.systems["mindar-image-system"]) {
                         cena.systems["mindar-image-system"].stop();
@@ -462,6 +484,9 @@
             try {
                 if (cena.systems["mindar-image-system"]) {
                     cena.systems["mindar-image-system"].start();
+                    // Garante que o canvas 3D força nova renderização ativa
+                    const carvao = document.querySelector('a-scene');
+                    if(carvao) carvao.resize();
                 }
             } catch (err) {
                 console.error("Erro ao iniciar o MindAR: ", err);
