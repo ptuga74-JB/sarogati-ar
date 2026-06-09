@@ -5,22 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <title>Sarogati - Hub Pro</title>
     
+    <!-- Bibliotecas de Produção: MindAR + A-Frame Puro -->
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
     
+    <!-- Font Awesome e Google Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* CONFIGURAÇÃO BASE DO LAYOUT PARA HORIZONTAL */
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Plus Jakarta Sans', sans-serif; }
         html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #f8fafc; color: #1e293b; }
 
-        /* GESTÃO DE ABAS VIRTUAIS */
-        .app-view { position: absolute; top: 0; left: 0; width: 100%; height: calc(100% - 80px); display: none; overflow-y: auto; z-index: 1; padding: 25px; }
+        .app-view { position: absolute; top: 0; left: 0; width: 100%; height: calc(100% - 80px); display: none; overflow-y: auto; z-index: 10; padding: 25px; background: #f8fafc; }
         .app-view.active { display: block; }
 
-        /* CABEÇALHO DA APLICAÇÃO */
         .app-header { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 20px; }
         .brand-logo-img { height: 35px; width: auto; object-fit: contain; }
         .user-profile-zone { display: flex; align-items: center; gap: 12px; }
@@ -29,33 +28,27 @@
         .user-info-text .rank { font-size: 11px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
         .user-avatar { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid #ff007f; box-shadow: 0 4px 10px rgba(255, 0, 127, 0.15); }
 
-        /* ECRÃ INICIAL */
         #view-welcome { padding: 0; background-image: url('entrada.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; width: 100%; height: calc(100% - 80px); }
 
-        /* GRILLA INTERFACE PRINCIPAL */
         .tablet-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
         .column-left, .column-right { display: flex; flex-direction: column; gap: 20px; }
 
-        /* COMPONENTES DE DESIGN EM CARTÃO */
         .card-white { background: white; border-radius: 20px; padding: 22px; box-shadow: 0 10px 30px rgba(15, 23, 42, 0.01); border: 1px solid rgba(241, 245, 249, 0.9); }
         .card-title-pro { font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
         .card-title-pro span { font-size: 11px; color: #64748b; font-weight: 500; }
 
-        /* BANNER LIQUIDEZ GRADIENTE */
         .gradient-banner { background: linear-gradient(135deg, #ff007f 0%, #7928ca 50%, #00dfd8 100%); border-radius: 20px; padding: 22px; color: white; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 30px rgba(121, 40, 202, 0.12); }
         .gb-left .title { font-size: 10px; text-transform: uppercase; opacity: 0.85; letter-spacing: 1px; font-weight: 600; }
         .gb-left .val { font-size: 28px; font-weight: 800; margin: 2px 0; }
         .gb-left .sub { font-size: 11px; opacity: 0.9; }
         .gb-right .lvl { font-size: 12px; font-weight: 800; text-transform: uppercase; background: rgba(255,255,255,0.25); padding: 6px 14px; border-radius: 50px; }
 
-        /* BARRAS DE PROGRESSO */
         .progress-metric { margin-bottom: 12px; }
         .pm-info { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 6px; }
         .pm-info span.val { color: #0f172a; font-weight: 800; }
         .pm-bar-bg { width: 100%; height: 6px; background: #f1f5f9; border-radius: 10px; overflow: hidden; }
         .pm-bar-fill { height: 100%; background: linear-gradient(90deg, #ff007f, #7928ca); border-radius: 10px; width: 0; transition: width 1.5s ease-out; }
 
-        /* TABELAS DO DASHBOARD */
         .decision-table { width: 100%; border-collapse: collapse; text-align: left; }
         .decision-table th { font-size: 11px; text-transform: uppercase; color: #64748b; padding: 10px 8px; font-weight: 700; border-bottom: 1px solid #f1f5f9; }
         .decision-table td { font-size: 13px; padding: 12px 8px; border-bottom: 1px solid #f8fafc; color: #334155; }
@@ -65,7 +58,6 @@
         .row-highlight-user { background-color: rgba(255, 0, 127, 0.04) !important; }
         .row-highlight-user td { color: #ff007f !important; }
 
-        /* COMPONENTE CHAT: EXPLICADOR IA */
         .ai-chat-card { display: flex; flex-direction: column; height: 185px; background: white; border-radius: 20px; padding: 18px; border: 1px solid rgba(241, 245, 249, 0.9); }
         .ai-chat-header { display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; margin-bottom: 10px; }
         .ai-chat-header i { color: #7928ca; font-size: 16px; }
@@ -79,7 +71,6 @@
         .chat-input-row input:focus { border-color: #7928ca; background: white; }
         .chat-input-row button { background: #0f172a; color: white; border: none; width: 38px; height: 38px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 13px; }
 
-        /* LINEA TEMPORAL E GRÁFICOS MOCKUP */
         .timeline-pro { position: relative; width: 100%; height: 6px; background: #e2e8f0; border-radius: 10px; margin: 30px 0 15px 0; }
         .timeline-progress-bar { position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: linear-gradient(90deg, #f97316, #ff007f); border-radius: 10px; transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1); }
         .timeline-node { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 24px; height: 24px; border-radius: 50%; background: #0f172a; border: 3px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; color: white; font-size: 9px; }
@@ -97,7 +88,6 @@
         .ticker-container-2d { background: #fff3cd; border: 1px solid #ffeeba; border-radius: 16px; padding: 12px; display: flex; gap: 10px; align-items: center; }
         #ticker-2d-text { font-size: 12px; font-weight: 600; color: #856404; line-height: 1.4; }
 
-        /* PAINEL INTERATIVO DA WIKI */
         .edu-tablet-frame { display: grid; grid-template-columns: 280px 1fr; gap: 25px; height: calc(100vh - 170px); }
         .edu-sidebar-menu { display: flex; flex-direction: column; gap: 8px; background: white; padding: 15px; border-radius: 20px; border: 1px solid #e2e8f0; overflow-y: auto; }
         .edu-menu-btn { display: flex; flex-direction: column; align-items: flex-start; padding: 14px 18px; border-radius: 14px; border: 1px solid transparent; background: #f8fafc; cursor: pointer; text-align: left; transition: all 0.2s ease; }
@@ -119,7 +109,6 @@
         .game-idea-tag div { font-size: 12px; font-weight: 600; color: #1e1b4b; line-height: 1.5; }
         .game-idea-tag strong { color: #6366f1; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; display: block; margin-bottom: 2px; }
 
-        /* PERFIL CONFIGURAÇÕES */
         .profile-container { max-width: 600px; margin: 0 auto; background: white; border-radius: 24px; padding: 30px; border: 1px solid #edf2f7; }
         .profile-hero { display: flex; flex-direction: column; align-items: center; text-align: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 25px; margin-bottom: 25px; }
         .profile-hero .user-avatar-lg { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #ff007f; margin-bottom: 15px; }
@@ -130,29 +119,27 @@
         .pmi-left { display: flex; align-items: center; gap: 15px; }
         .pmi-left i { font-size: 18px; width: 24px; color: #64748b; }
 
-        /* MENU INFERIOR DE ABAS */
-        .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 80px; background: white; border-top: 1px solid #f1f5f9; display: flex; justify-content: center; align-items: center; gap: 60px; z-index: 100; box-shadow: 0 -8px 40px rgba(15, 23, 42, 0.02); }
+        .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 80px; background: white; border-top: 1px solid #f1f5f9; display: flex; justify-content: center; align-items: center; gap: 60px; z-index: 1000; box-shadow: 0 -8px 40px rgba(15, 23, 42, 0.02); }
         .nav-item { display: flex; flex-direction: column; align-items: center; color: #94a3b8; font-size: 11px; font-weight: 700; cursor: pointer; text-decoration: none; min-width: 75px; }
         .nav-item i { font-size: 22px; margin-bottom: 6px; transition: transform 0.2s; }
         .nav-item.active { color: #ff007f; }
         .nav-item.active i { transform: translateY(-3px); color: #ff007f; }
 
-        /* =========================================================================
-           CORREÇÃO CRÍTICA DO BLOQUEIO: CONTROLO DE PONTEIRO E CAPTURA DE TOUCH/CLICK
-           ========================================================================= */
-        #view-ar { position: absolute; top: 0; left: 0; width: 100%; height: calc(100% - 80px); display: none; background: transparent !important; padding: 0; }
-        /* Quando a aba RA está inativa, o pointer-events fica 'none' para não tapar o menu */
-        #view-ar:not(.active) { pointer-events: none !important; }
-        #view-ar.active { display: block; pointer-events: auto !important; }
+        /* AR VIEWPORT ISOLADO DINAMICAMENTE */
+        #view-ar { position: absolute; top: 0; left: 0; width: 100%; height: calc(100% - 80px); display: none; background: transparent !important; padding: 0; z-index: 5; }
+        #view-ar.active { display: block; }
         
-        video { position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; object-fit: cover !important; z-index: -10 !important; }
-        .a-canvas { width: 100% !important; height: 100% !important; position: absolute; top: 0; left: 0; z-index: 5 !important; }
+        /* Força o feed de vídeo a submeter-se à hierarquia correta */
+        video { position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; object-fit: cover !important; z-index: -100 !important; }
+        .a-canvas { width: 100% !important; height: 100% !important; position: absolute; top: 0; left: 0; z-index: 1 !important; background: transparent !important; }
     </style>
 </head>
 <body>
 
+    <!-- ================= 1) INÍCIO ================= -->
     <div id="view-welcome" class="app-view active"></div>
 
+    <!-- ================= 2) ANÁLISES ================= -->
     <div id="view-dashboard" class="app-view">
         <div class="app-header">
             <div class="brand-logo"><img src="logo.png" class="brand-logo-img" alt="Sarogati Logo"></div>
@@ -253,48 +240,13 @@
         </div>
     </div>
 
+    <!-- ================= 3) DESAFIOS (RA ISOLADA INJETADA VIA SCRIPT) ================= -->
     <div id="view-ar" class="app-view">
-        <a-scene id="ar-scene" mindar-image="imageTargetSrc: ./targets.mind; autoStart: false;" embedded vr-mode-ui="enabled: false">
-            <a-assets>
-                <a-asset-item id="logo-jogo" src="./sarogati.glb"></a-asset-item>
-                <img id="logo-png-asset" src="logo.png">
-            </a-assets>
-
-            <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-            
-            <a-entity mindar-image-target="targetIndex: 0">
-                <a-box position="-0.2 0 0.05" scale="0.12 0.12 0.12" color="#00dfd8"></a-box>
-                
-                <a-entity rotation="90 180 0" position="0 0 0">
-                    <a-entity gltf-model="#logo-jogo" scale="0.1 0.1 0.1" position="0 0 0.05"></a-entity>
-                </a-entity>
-            </a-entity>
-
-            <a-entity mindar-image-target="targetIndex: 1">
-                <a-plane position="0 0 0.05" rotation="-70 0 0" width="1.6" height="1.2" color="#0a192f" material="opacity: 0.88; transparent: true; side: double;">
-                    <a-rect width="1.56" height="1.16" fill="none" stroke="#00b894" stroke-width="1"></a-rect>
-                    <a-image src="#logo-png-asset" position="0 0.45 0.02" width="0.7" height="0.18" material="transparent: true; alphaTest: 0.5;"></a-image>
-                    <a-entity position="-0.48 0.1 0.02">
-                        <a-text value="ECONOMIA" color="#00a8ff" align="left" width="1.1" font="mozillavr"></a-text>
-                        <a-text value="Inflacao: 4%" color="#ffffff" align="left" width="0.85" position="0 -0.15 0"></a-text>
-                        <a-text value="Taxas Juro: 2.5%" color="#ffffff" align="left" width="0.85" position="0 -0.28 0"></a-text>
-                    </a-entity>
-                    <a-entity position="0 0.1 0.02">
-                        <a-text value="NOTICIAS DO BANQUEIRO" color="#e17055" align="center" width="1.1" font="mozillavr"></a-text>
-                        <a-plane color="#0f2342" width="0.52" height="0.45" position="0 -0.26 0.01" material="opacity: 0.9">
-                            <a-text id="ticker-3d-text" value="A aceder aos mercados..." color="#fbc531" align="center" width="0.58" wrap-count="17" position="0 0 0.01"></a-text>
-                        </a-plane>
-                    </a-entity>
-                    <a-entity position="0.48 0.1 0.02">
-                        <a-text value="RESERVAS" color="#00a8ff" align="right" width="1.1" font="mozillavr"></a-text>
-                        <a-text value="Liquidez do Banco:" color="#ffffff" align="right" width="0.85" position="0 -0.15 0"></a-text>
-                        <a-text value="50.000 EUR" color="#00b894" align="right" width="1.0" font="mozillavr" position="0 -0.28 0"></a-text>
-                    </a-entity>
-                </a-plane>
-            </a-entity>
-        </a-scene>
+        <!-- O contentor da cena tridimensional é gerido de forma limpa pelo JavaScript -->
+        <div id="ar-container" style="width:100%; height:100%;"></div>
     </div>
 
+    <!-- ================= 4) EDUCAÇÃO ================= -->
     <div id="view-education" class="app-view">
         <div class="app-header">
             <div class="brand-logo"><img src="logo.png" class="brand-logo-img" alt="Sarogati Logo"></div>
@@ -318,6 +270,7 @@
         </div>
     </div>
 
+    <!-- ================= 5) PERFIL ================= -->
     <div id="view-profile" class="app-view">
         <div class="profile-container">
             <div class="profile-hero">
@@ -334,6 +287,7 @@
         </div>
     </div>
 
+    <!-- ================= NAVEGAÇÃO INFERIOR ================= -->
     <nav class="bottom-nav">
         <div class="nav-item active" id="btn-welcome" onclick="mudarAba('welcome')"><i class="fa-solid fa-house"></i>Início</div>
         <div class="nav-item" id="btn-dashboard" onclick="mudarAba('dashboard')"><i class="fa-solid fa-chart-line"></i>Análises</div>
@@ -353,9 +307,7 @@
 
         function rodarEventos() {
             const txt2d = document.getElementById('ticker-2d-text');
-            const txt3d = document.getElementById('ticker-3d-text');
             if(txt2d) txt2d.innerText = alertas[ponteiro];
-            if(txt3d) txt3d.setAttribute('value', alertas[ponteiro]);
             ponteiro = (ponteiro + 1) % alertas.length;
         }
         setInterval(rodarEventos, 15000);
@@ -417,7 +369,7 @@
         }
 
         const nucleosEducacao = {
-            1: { titulo: "🧠 Núcleo 1: Fundamentos", subtitulo: "Nível Iniciante. Essenciais para todos os jogadores começarem.", topicos: [{ t: "💰 Dinheiro e valor", d: "O que é o dinheiro (funções: meio de troca, reserva de valor, unidade de conta), inflação e poder de compra, e a diferença entre necessidades e desejos.", g: "Missão de sobrevivência com orçamento limitado no tabuleiro." }, { t: "📊 Orçamento pessoal", d: "Como fazer um orçamento (receita vs despesas), despesas fixas vs variáveis e a famosa Regra 50-30-20.", g: "Jogo tipo 'simulador de mês' com eventos inesperados." }, { t: "🏦 Sistema financeiro básico", d: "O que são bancos e como funcionam, tipos de contas (ordem, poupça) e a mecânica de juros simples vs compostos.", g: "Desbloquear 'níveis de banco' com diferentes vantagens." }] },
+            1: { titulo: "🧠 Núcleo 1: Fundamentos", subtitulo: "Nível Iniciante. Essenciais para todos os jogadores começarem.", topicos: [{ t: "💰 Dinheiro e valor", d: "O que é o dinheiro (funções: meio de troca, reserva de valor, unidade de conta), inflação e poder de compra, e a diferença entre necessidades e desejos.", g: "Missão de sobrevivência com orçamento limitado no tabuleiro." }, { t: "📊 Orçamento pessoal", d: "Como fazer um orçamento (receita vs despesas), despesas fixas vs variáveis e a famosa Regra 50-30-20.", g: "Jogo tipo 'simulador de mês' com eventos inesperados." }, { t: "👑 Sistema financeiro básico", d: "O que são bancos e como funcionam, tipos de contas (ordem, poupança) e a mecânica de juros simples vs compostos.", g: "Desbloquear 'níveis de banco' com diferentes vantagens." }] },
             2: { titulo: "💡 Núcleo 2: Gestão Financeira Pessoal", subtitulo: "Nível Intermédio. Estratégias e mitigação de crises no tabuleiro.", topicos: [{ t: "💳 Crédito e dívida", d: "Tipos de crédito (habitação, pessoal, cartão), conceitos de TAEG, spread, juros e os riscos reais do sobre-endividamento.", g: "Desafios rápidos de decisão: 'Aceitar ou recusar crédito?'" }, { t: "🛟 Poupança e fundo de emergência", d: "Importância crítica da poupança, estabelecimento de objetivos financeiros e a gestão de liquidez vs rentabilidade.", g: "'Modo Crise' extremo onde só sobrevive quem poupou." }, { t: "📈 Introdução ao investimento", d: "Mapeamento de risco vs retorno, diversificação de portefólio e tipos de ativos (ações, obrigações, ETFs).", g: "Carteira virtual com evolução ao longo do jogo." }] },
             3: { titulo: "🚀 Núcleo 3: Tomada de Decisão", subtitulo: "Nível Avançado. Planeamento de metas complexas a longo prazo.", topicos: [{ t: "🧮 Planeamento financeiro", d: "Estratégias para curto, médio e longo prazo. Planeamento para grandes objetivos (casa, educação) e aposentação.", g: "Linha temporal onde decisões passadas afetam o futuro." }, { t: "📉 Literacia de risco", d: "A psicologia do risco (medo vs ganância), volatilidade e como evitar erros comuns como o timing de mercado.", g: "Eventos de crash de mercado simulados durante as rodadas." }, { t: "⚖️ Fiscalidade básica", d: "Impostos sobre rendimento, tributação de investimentos e aproveitamento de benefícios fiscais legítimos.", g: "Otimização fiscal para maximizar a pontuação líquida." }] },
             4: { titulo: "🌍 Núcleo 4: Contexto Económico", subtitulo: "Nível Especialista. As forças do mercado em escala global.", topicos: [{ t: "🌐 Economia real", d: "Análise do PIB, desemprego, inflação, políticas monetárias do BCE e leitura dos ciclos económicos.", g: "'Modo Governante' onde as tuas decisões impactam toda a economia do jogo." }, { t: "🏢 Empresas e mercados", d: "Como funcionam as empresas, bolsas de valores mundiais, IPOs e métodos de avaliação corporativa.", g: "Gerir uma empresa virtual concorrente." }, { t: "🌱 Finanças sustentáveis", d: "Princípios ESG (ambiental, social, governance), investimento responsável e o impacto social das finanças.", g: "Ganhar pontos bónus por decisões éticas e sustentáveis." }] },
@@ -438,9 +390,11 @@
             pane.innerHTML = html;
         }
 
+        // CONTROLADOR DE FLUXO DE COMPONENTES DE REALIDADE AUMENTADA SENSÍVEL AO ECRÃ DO SURFACE
         function mudarAba(destino) {
             document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+            
             document.getElementById('view-' + destino).classList.add('active');
             document.getElementById('btn-' + destino).classList.add('active');
             
@@ -457,38 +411,68 @@
                     }
                 }, 100);
             }
+            
             if (destino === 'education') mudarNucleo(1);
 
-            const cena = document.querySelector('a-scene');
-            if (cena) {
-                if (destino === 'ar') {
-                    setTimeout(() => {
-                        cena.resize();
-                        if (cena.hasLoaded) {
-                            arrancarMotorRA(cena);
-                        } else {
-                            cena.addEventListener('loaded', () => arrancarMotorRA(cena));
-                        }
-                    }, 150);
-                } else {
-                    if (cena.systems["mindar-image-system"]) {
-                        cena.systems["mindar-image-system"].stop();
-                    }
-                }
-            }
-        }
+            // GESTOR DE CONTEXTO GRÁFICO SEGURO (MINDAR / A-FRAME)
+            const container = document.getElementById('ar-container');
+            if (destino === 'ar') {
+                // Injeta uma estrutura limpa e fresca no DOM para forçar o WebGL a ler as proporções corretas do ecrã
+                container.innerHTML = `
+                    <a-scene id="ar-scene" mindar-image="imageTargetSrc: ./targets.mind; autoStart: true;" embedded vr-mode-ui="enabled: false">
+                        <a-assets>
+                            <a-asset-item id="logo-jogo" src="./sarogati.glb"></a-asset-item>
+                            <img id="logo-png-asset" src="logo.png">
+                        </a-assets>
 
-        function arrancarMotorRA(cena) {
-            try {
-                if (cena.systems["mindar-image-system"]) {
-                    cena.systems["mindar-image-system"].start();
-                    setTimeout(() => {
-                        const activeScene = document.querySelector('a-scene');
-                        if (activeScene) activeScene.resize();
-                    }, 100);
-                }
-            } catch (err) {
-                console.error("Erro ao iniciar o MindAR: ", err);
+                        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+                        
+                        <!-- TARGET 0: MARCADOR DA BÚSSOLA (IMAGEM image_7b6cec.jpg) -->
+                        <a-entity mindar-image-target="targetIndex: 0">
+                            <!-- Cubo Rosa de Validação Tridimensional Nítido -->
+                            <a-box position="-0.15 0 0.05" scale="0.1 0.1 0.1" color="#ff007f"></a-box>
+                            
+                            <!-- Modelo GLB do Logótipo Sarogati -->
+                            <a-entity rotation="90 180 0" position="0 0 0">
+                                <a-entity gltf-model="#logo-jogo" scale="0.05 0.05 0.05" position="0 0 0.02"></a-entity>
+                            </a-entity>
+                        </a-entity>
+
+                        <!-- TARGET 1: INFOPAINEL EXTRA -->
+                        <a-entity mindar-image-target="targetIndex: 1">
+                            <a-plane position="0 0 0.05" rotation="-70 0 0" width="1.6" height="1.2" color="#0a192f" material="opacity: 0.88; transparent: true; side: double;">
+                                <a-rect width="1.56" height="1.16" fill="none" stroke="#00b894" stroke-width="1"></a-rect>
+                                <a-image src="#logo-png-asset" position="0 0.45 0.02" width="0.7" height="0.18" material="transparent: true; alphaTest: 0.5;"></a-image>
+                                <a-entity position="-0.48 0.1 0.02">
+                                    <a-text value="ECONOMIA" color="#00a8ff" align="left" width="1.1" font="mozillavr"></a-text>
+                                    <a-text value="Inflacao: 4%" color="#ffffff" align="left" width="0.85" position="0 -0.15 0"></a-text>
+                                    <a-text value="Taxas Juro: 2.5%" color="#ffffff" align="left" width="0.85" position="0 -0.28 0"></a-text>
+                                </a-entity>
+                                <a-entity position="0 0.1 0.02">
+                                    <a-text value="NOTICIAS" color="#e17055" align="center" width="1.1" font="mozillavr"></a-text>
+                                    <a-plane color="#0f2342" width="0.52" height="0.45" position="0 -0.26 0.01" material="opacity: 0.9">
+                                        <a-text value="Mercados ativos." color="#fbc531" align="center" width="0.58" wrap-count="17" position="0 0 0.01"></a-text>
+                                    </a-plane>
+                                </a-entity>
+                                <a-entity position="0.48 0.1 0.02">
+                                    <a-text value="RESERVAS" color="#00a8ff" align="right" width="1.1" font="mozillavr"></a-text>
+                                    <a-text value="Liquidez:" color="#ffffff" align="right" width="0.85" position="0 -0.15 0"></a-text>
+                                    <a-text value="50.000 EUR" color="#00b894" align="right" width="1.0" font="mozillavr" position="0 -0.28 0"></a-text>
+                                </a-entity>
+                            </a-plane>
+                        </a-entity>
+                    </a-scene>
+                `;
+                // Garante o alinhamento pós-injeção
+                setTimeout(() => {
+                    const scene = document.querySelector('a-scene');
+                    if(scene) scene.resize();
+                }, 200);
+            } else {
+                // Remove completamente a cena do DOM nas outras abas. Isto liberta a memória da placa gráfica e desliga a câmara de imediato
+                container.innerHTML = '';
+                const videoFeed = document.querySelector('video');
+                if (videoFeed) videoFeed.remove();
             }
         }
     </script>
