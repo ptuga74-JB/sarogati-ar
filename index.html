@@ -427,7 +427,7 @@
 
                         <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
                         
-                        <!-- TARGET 0: MARCADOR DA BÚSSOLA (IMAGEM image_7b6cec.jpg) -->
+                        <!-- TARGET 0: MARCADOR DA BÚSSOLA (IMAGEM image_7b6cec.jpg)
                         <a-entity mindar-image-target="targetIndex: 0">
                             <!-- Cubo Rosa de Validação Tridimensional Nítido -->
                             <a-box position="-0.15 0 0.05" scale="0.1 0.1 0.1" color="#ff007f"></a-box>
@@ -436,7 +436,31 @@
                             <a-entity rotation="90 180 0" position="0 0 0">
                                 <a-entity gltf-model="#logo-jogo" scale="0.05 0.05 0.05" position="0 0 0.02"></a-entity>
                             </a-entity>
-                        </a-entity>
+                        </a-entity>  -->
+
+
+
+<!-- AQUI TARGET 0: MARCADOR DA BÚSSOLA (IMAGEM image_7b6cec.jpg) -->
+<a-entity mindar-image-target="targetIndex: 0">
+    <!-- O nosso cubo rosa de validação que já funciona -->
+    <a-box position="-0.2 0 0.05" scale="0.1 0.1 0.1" color="#ff007f"></a-box>
+    
+    <!-- EMBLEMA DO SAROGATI EM REALIDADE AUMENTADA -->
+    <a-entity rotation="90 180 0" position="0 0 0.05">
+        <!-- Disco Branco de Fundo (Efeito Moeda/Ficha de Jogo) -->
+        <a-cylinder rotation="90 0 0" radius="0.25" height="0.02" color="#ffffff" material="roughness: 0.2"></a-cylinder>
+        
+        <!-- Projeção da Imagem Oficial do Logo com Transparência Ativa -->
+        <a-image src="#logo-png-asset" position="0 0 0.015" width="0.4" height="0.1" material="transparent: true; alphaTest: 0.3;"></a-image>
+        
+        <!-- Anel de Luz Neon Ciano à Volta (Identidade Sarogati) -->
+        <a-ring color="#00dfd8" radius-inner="0.24" radius-outer="0.26" position="0 0 0.016"></a-ring>
+    </a-entity>
+</a-entity>
+
+
+
+                        
 
                         <!-- TARGET 1: INFOPAINEL EXTRA -->
                         <a-entity mindar-image-target="targetIndex: 1">
