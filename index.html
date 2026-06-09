@@ -238,7 +238,7 @@
         </div>
     </div>
 
-    <!-- ================= 3) DESAFIOS (RA ORIENTAÇÃO VERTICAL CALIBRADA) ================= -->
+    <!-- ================= 3) DESAFIOS (RA ESTABILIZADA + ORIENTAÇÃO OFICIAL) ================= -->
     <div id="view-ar" class="app-view">
         <div id="ar-container" style="width:100%; height:100%;"></div>
     </div>
@@ -279,7 +279,7 @@
                 <a href="#" class="profile-menu-item"><div class="pmi-left"><i class="fa-solid fa-gear"></i> Definições de Conta</div><i class="fa-solid fa-chevron-right" style="color:#cbd5e1;"></i></a>
                 <a href="#" class="profile-menu-item"><div class="pmi-left"><i class="fa-solid fa-credit-card"></i> Estado da Subscrição</div><i class="fa-solid fa-chevron-right" style="color:#cbd5e1;"></i></a>
                 <a href="#" class="profile-menu-item" style="color: #10b981;"><div class="pmi-left"><i class="fa-solid fa-wallet" style="color:#10b981;"></i> Conectar Carteira Digital</div><i class="fa-solid fa-chevron-right" style="color:#cbd5e1;"></i></a>
-                <a href="#" class="profile-menu-item" style="color: #ef4444; margin-top: 15px;"><div class="pmi-left"><i class="fa-solid fa-arrow-right-from-bracket" style="color:#ef4444;"></i> Terminar Sessão</div><i class="fa-solid fa-chevron-right" style="color:#cbd5e1;"></i></a>
+                <a href="#" class="profile-menu-item" style="color: #allowed; margin-top: 15px;"><div class="pmi-left"><i class="fa-solid fa-arrow-right-from-bracket" style="color:#ef4444;"></i> Terminar Sessão</div><i class="fa-solid fa-chevron-right" style="color:#cbd5e1;"></i></a>
             </div>
         </div>
     </div>
@@ -366,10 +366,10 @@
         }
 
         const nucleosEducacao = {
-            1: { titulo: "🧠 Núcleo 1: Fundamentos", subtitulo: "Nível Iniciante. Essenciais para todos os jogadores começarem.", topicos: [{ t: "💰 Dinheiro e valor", d: "O que é o dinheiro (funções: meio de troca, reserva de valor, unidade de conta), inflação e poder de compra, e a diferença entre necessidades e desejos.", g: "Missão de sobrevivência com orçamento limitado no tabuleiro." }, { t: "📊 Orçamento pessoal", d: "Como fazer um orçamento (receita vs despesas), despesas fixas vs variáveis e a famosa Regra 50-30-20.", g: "Jogo tipo 'simulador de mês' com eventos inesperados." }, { t: "💎 Sistema financeiro básico", d: "O que são bancos e como funcionam, tipos de contas (ordem, poupança) e a mecânica de juros simples vs compostos.", g: "Desbloquear 'níveis de banco' com diferentes vantagens." }] },
-            2: { titulo: "💡 Núcleo 2: Gestão Financeira Pessoal", subtitulo: "Nível Intermédio. Estratégias e mitigação de crises no tabuleiro.", topicos: [{ t: "💳 Crédito e dívida", d: "Tipos de crédito (habitação, pessoal, cartão), conceitos de TAEG, spread, juros e os riscos reais do sobre-endividamento.", g: "Desafios rápidos de decisão: 'Aceitar ou recusar crédito?'" }, { t: "🛟 Poupança e fundo de emergência", d: "Importância crítica da poupança, estabelecimento de objetivos financeiros e a gestão de liquidez vs rentabilidade.", g: "'Modo Crise' extremo onde só sobrevive quem poupou." }, { t: "📈 Introdução ao investimento", d: "Mapeamento de risco vs retorno, diversificação de portefólio e tipos de ativos (ações, obrigações, ETFs).", g: "Carteira virtual com evolução ao longo do jogo." }] },
+            1: { titulo: "🧠 Núcleo 1: Fundamentos", subtitulo: "Nível Iniciante. Essenciais para todos os jogadores começarem.", topicos: [{ t: "💰 Dinheiro e valor", d: "O que é o dinheiro (funções: meio de troca, reserva de valor, unidade de conta), inflação e poder de compra, e a diferença entre necessidades e desejos.", g: "Missão de sobrevivência com orçamento limitado no tabuleiro." }, { t: "📊 Orçamento pessoal", d: "Como fazer um orçamento (receita vs despesas), despesas fixas vs variáveis e a famosa Regra 50-30-20.", g: "Jogo tipo 'simulador de mês' com eventos inesperados." }, { t: "🏦 Sistema financeiro básico", d: "O que são bancos e como funcionam, tipos de contas (ordem, poupança) e a mecânica de juros simples vs compostos.", g: "Desbloquear 'níveis de banco' com diferentes vantagens." }] },
+            2: { titulo: "💡 Núcleo 2: Gestão Financeira Pessoal", subtitulo: "Nível Intermédio. Estratégias e mitigação de crises no tabuleiro.", topicos: [{ t: "💳 Crédito e dívida", d: "Tipos de crédito (habitação, pessoal, cartão), conceitos de TAEG, spread, juros e os riscos reais do sobre-endividamento.", g: "Desafios rápidos de decisão: 'Aceitar ou recusar crédito?'" }, { t: "🛟 Poupança e fundo de emergência", d: "Importância crítica da poupança, estabelecimento de objetivos financeiros e a gestão de liquidez vs rentabilidade.", g: "'Modo Crise' extremo onde só sobrevive quem poupou." }, { t: "📈 Introdução ao investimento", d: "Mapeamento de risco vs retorno, diversificação de portefólio e tipos de ativos (actions, obrigações, ETFs).", g: "Carteira virtual com evolução ao longo do jogo." }] },
             3: { titulo: "🚀 Núcleo 3: Tomada de Decisão", subtitulo: "Nível Avançado. Planeamento de metas complexas a longo prazo.", topicos: [{ t: "🧮 Planeamento financeiro", d: "Estratégias para curto, médio e longo prazo. Planeamento para grandes objetivos (casa, educação) e aposentação.", g: "Linha temporal onde decisões passadas afetam o futuro." }, { t: "📉 Literacia de risco", d: "A psicologia do risco (medo vs ganância), volatilidade e como evitar erros comuns como o timing de mercado.", g: "Eventos de crash de mercado simulados durante as rodadas." }, { t: "⚖️ Fiscalidade básica", d: "Impostos sobre rendimento, tributação de investimentos e aproveitamento de benefícios fiscais legítimos.", g: "Otimização fiscal para maximizar a pontuação líquida." }] },
-            4: { titulo: "🌍 Núcleo 4: Contexto Económico", subtitulo: "Nível Especialista. As forças do mercado em escala global.", topicos: [{ t: "🌐 Economia real", d: "Análise do PIB, desemprego, inflação, políticas monetárias do BCE e leitura dos ciclos económicos.", g: "'Modo Governante' onde as tuas decisões impactam toda a economia do jogo." }, { t: "🏢 Empresas e mercados", d: "Como funcionam as empresas, bolsas de valores mundiais, IPOs e métodos de avaliação corporativa.", g: "Gerir uma empresa virtual concorrente." }, { t: "🌱 Finanças sustentáveis", d: "Princípios ESG (ambiental, social, governance), investimento responsible e o impacto social das finanças.", g: "Ganhar pontos bónus por decisões éticas e sustentáveis." }] },
+            4: { titulo: "🌍 Núcleo 4: Contexto Económico", subtitulo: "Nível Especialista. As forças do mercado em escala global.", topicos: [{ t: "🌐 Economia real", d: "Análise do PIB, desemprego, inflação, políticas monetárias do BCE e leitura dos ciclos económicos.", g: "'Modo Governante' onde as tuas decisões impactam toda a economia do jogo." }, { t: "🏢 Empresas e mercados", d: "Como funcionam as empresas, bolsas de valores mundiais, IPOs e métodos de avaliação corporativa.", g: "Gerir uma empresa virtual concorrente." }, { t: "🌱 Finanças sustentáveis", d: "Princípios ESG (ambiental, social, governance), investimento responsável e o impacto social das finanças.", g: "Ganhar pontos bónus por decisões éticas e sustentáveis." }] },
             5: { titulo: "🧑‍🤝‍🧑 Núcleo 5: Competências Comportamentais", subtitulo: "Módulo Transversal. Fatores psicológicos cruciais.", topicos: [{ t: "🧠 Psicologia financeira", d: "Identificação de vieses cognitivos (como o excesso de confiança), controlo do consumo impulsivo e influência social.", g: "Eventos surpresa que testam a tua resiliência mental a impulsos." }, { t: "🎯 Literacia digital e fraude", d: "Deteção de phishing e scams financeiros, segurança online e análise de criptomoedas (risco vs hype).", g: "Detetar fraudes e esquemas em tempo limitado." }] },
             6: { titulo: "🏆 Núcleo 6: Aprendizagem Aplicada", subtitulo: "Meta-Jogo. A simulação da vida real consolidada.", topicos: [{ t: "📚 Missões e desafios", d: "Simulação de uma vida financeira completa. Cenários dinâmicos: estudante, família ou empresário.", g: "Tomar decisões com impacto cumulativo no resultado final." }] }
         };
@@ -412,8 +412,9 @@
 
             const container = document.getElementById('ar-container');
             if (destino === 'ar') {
+                // BLINDAGEM CONTRA FLICKER: filterMinCF reduzido para estabilizar posições tridimensionais estáticas
                 container.innerHTML = `
-                    <a-scene id="ar-scene" mindar-image="imageTargetSrc: ./targets.mind; autoStart: true;" embedded vr-mode-ui="enabled: false">
+                    <a-scene id="ar-scene" mindar-image="imageTargetSrc: ./targets.mind; autoStart: true; filterMinCF: 0.0001; filterBeta: 0.1;" embedded vr-mode-ui="enabled: false">
                         <a-assets>
                             <a-asset-item id="logo-jogo" src="./sarogati.glb"></a-asset-item>
                             <img id="logo-png-asset" src="logo.png">
@@ -425,12 +426,11 @@
 
                         <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
                         
-                        <!-- TARGET 0: MARCADOR DA BÚSSOLA (IMAGEM image_51a663.jpg) -->
+                        <!-- TARGET 0: MARCADOR DA BÚSSOLA (IMAGEM image_51979c.jpg) -->
                         <a-entity mindar-image-target="targetIndex: 0">
-                            <!-- CORREÇÃO DE ORIENTAÇÃO: Colocamos a rotação base a 0 0 0 para fixar o totem na vertical sobre a mesa horizontal -->
-                            <a-entity rotation="0 0 0" position="0 0 0">
-                                <!-- Escala calibrada estável e elevação leve (Z=0.08) para flutuar de forma limpa sobre o papel -->
-                                <a-entity gltf-model="#logo-jogo" scale="0.05 0.05 0.05" position="0 0 0.08"></a-entity>
+                            <!-- AJUSTE DE ORIENTAÇÃO FINAL: Rotação a '90 0 180' para colocar o laranja em cima, verde em baixo e virado para a câmara verticalmente -->
+                            <a-entity rotation="90 0 180" position="0 0 0.05">
+                                <a-entity gltf-model="#logo-jogo" scale="0.05 0.05 0.05" position="0 0 0"></a-entity>
                             </a-entity>
                         </a-entity>
 
